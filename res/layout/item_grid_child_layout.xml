@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+                  <com.rvidda.cn.view.MyGridView 
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/gridview"
+      android:layout_marginTop="@dimen/p40"
+      android:layout_marginLeft="@dimen/p30"
+      android:layout_marginRight="@dimen/p30"
+      android:verticalSpacing="@dimen/p36"
+      android:horizontalSpacing="@dimen/p30"
+      android:numColumns="3"
+      ></com.rvidda.cn.view.MyGridView>
+    
+    
+    
+</RelativeLayout>

@@ -1,0 +1,128 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background"
+ >
+
+         <RelativeLayout 
+                android:layout_width="fill_parent"
+                android:id="@+id/mRltt1"
+               style="@style/page_title1"
+               android:paddingLeft="@dimen/p40"
+               android:paddingRight="@dimen/p40"
+                >
+                        <ImageView
+            android:id="@+id/mBtn_back"
+            android:src="@drawable/fanhui2"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            />
+                <TextView
+                    style="@style/t_bl_30"
+                    android:id="@+id/mtv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                 android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                   android:text="@string/cs1" />
+            </RelativeLayout>
+    
+    <ScrollView 
+        android:layout_width="fill_parent"
+        android:layout_below="@id/mRltt1"
+        android:layout_marginTop="@dimen/p20"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        >
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            >
+            <RelativeLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cuxian"
+                >
+                                <TextView
+                              android:layout_centerVertical="true"
+                              android:paddingLeft="@dimen/p40"
+                    style="@style/t_d_30_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                   android:text="@string/cs2" />
+            </RelativeLayout>
+            
+                            <RelativeLayout 
+                android:layout_width="fill_parent"
+                
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                >
+                    <RelativeLayout 
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/p40"
+                        android:layout_marginLeft="@dimen/p40"
+                        >
+                          <ImageView 
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:id="@+id/mIvg1"
+         android:src="@drawable/chengshi"
+         />    
+               <TextView
+                    style="@style/t_d_30_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                   android:layout_centerInParent="true"
+                   android:text="@string/sq16" />
+               </RelativeLayout>
+            </RelativeLayout>
+            <RelativeLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cuxian"
+                >
+                                <TextView
+                              android:layout_centerVertical="true"
+                              android:paddingLeft="@dimen/p40"
+                    style="@style/t_d_30_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                   android:text="@string/cs3" />
+            </RelativeLayout>
+                  <com.rvidda.cn.view.MyGridView 
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/mGv1"
+      android:layout_marginTop="@dimen/p40"
+      android:layout_marginLeft="@dimen/p30"
+      android:layout_marginRight="@dimen/p30"
+      android:verticalSpacing="@dimen/p36"
+      android:horizontalSpacing="@dimen/p30"
+      android:numColumns="3"
+      ></com.rvidda.cn.view.MyGridView>
+              <com.rvidda.cn.view.MyExpandableListView
+            android:id="@+id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:childDivider="#c8c7cc"
+            android:divider="@null"
+            android:dividerHeight="2px"
+            android:gravity="center"
+            android:groupIndicator="@null"
+            android:listSelector="#00000000"
+            android:scrollbars="none" />
+                  
+        </LinearLayout>
+        
+        
+    </ScrollView>
+    
+    
+</RelativeLayout>

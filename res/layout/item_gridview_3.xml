@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/mRlg1"
+     >
+     <ImageView 
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:id="@+id/mIvg1"
+         android:src="@drawable/chengshi"
+         />
+                <TextView
+                    style="@style/t_b1_26"
+                    android:id="@+id/mTvg1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                  android:layout_centerInParent="true"
+                   android:text="ad" />
+
+    
+    
+    </RelativeLayout>
