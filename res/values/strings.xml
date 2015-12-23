@@ -9,7 +9,36 @@
         <string name="setting1">我要做律师</string>
         <string name="setting2">付款账单</string>
         <string name="setting3">退出登录</string>
-        
+        <string name="log1">请输入您的手机号码</string>
+         <string name="log2">获取验证码</string>
+         <string name="log3">请输入六位验证码</string>
+         <string name="log4">点击登陆，即表示同意《用户协议》</string>
+         <string name="log5">登陆</string>
+         
+<string name="zixun">律嗒</string>
+<string name="zixun1">咨询类别标签</string>
+
+<string name="sq1">申请资料</string>
+<string name="sq2">提交</string>
+<string name="sq3">姓名</string>
+<string name="sq4">请输入真实姓名</string>
+<string name="sq5">手机</string>
+<string name="sq6">13800138000</string>
+<string name="sq7">邮箱</string>
+<string name="sq8">请输入正确的邮箱地址</string>
+<string name="sq9">城市</string>
+<string name="sq10">深圳市</string>
+<string name="sq11">律师事务所</string>
+<string name="sq12">请输入工作的事务所</string>
+<string name="sq13">执业证号</string>
+<string name="sq14">请输入工作的事务所</string>
+<string name="sq15">执业照图片</string>
+<string name="sq16">深圳</string>
+<string name="cs1">选择城市</string>
+<string name="cs2">已定位城市</string>
+<string name="cs3">热门城市</string>
+
+         
         <!-- 下拉刷新列表 -->
     <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">松开刷新数据</string>

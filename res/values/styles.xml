@@ -1,6 +1,5 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
-    
         <style name="AppBaseTheme" parent="android:Theme.Light">
     </style>
     
@@ -35,6 +34,10 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/p30</item>
     </style>
+       <style name="t_bl_30">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/p30</item>
+    </style>
        <style name="t_d_30_1">
         <item name="android:textColor">@color/textco1</item>
         <item name="android:textSize">@dimen/p30</item>
@@ -43,14 +46,33 @@
         <item name="android:textColor">@color/textco3</item>
         <item name="android:textSize">@dimen/p30</item>
     </style>
+       <style name="t_d_30_3">
+        <item name="android:textColor">@color/textco2</item>
+        <item name="android:textSize">@dimen/p30</item>
+    </style>
+       <style name="t_d_24_1">
+        <item name="android:textColor">@color/textco3</item>
+        <item name="android:textSize">@dimen/p24</item>
+    </style>
+              <style name="t_b_36">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/p36</item>
+    </style>
        
           <style name="t_g_26">
         <item name="android:textColor">@color/textco2</item>
         <item name="android:textSize">@dimen/p26</item>
     </style>
        
-   
-   
+         <style name="t_b1_26">
+        <item name="android:textColor">@color/textco3</item>
+        <item name="android:textSize">@dimen/p26</item>
+    </style>
+         <style name="t_b2_26">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/p26</item>
+    </style>
+         
    
 
     <style name="list_dialog" parent="@style/Dialog">
@@ -67,7 +89,11 @@
         <item name="android:layout_height">@dimen/page_title_height</item>
         <item name="android:background">@color/transparent</item>
     </style>
-
+    <style name="page_title1">
+        <item name="android:layout_height">@dimen/page_title_height</item>
+        <item name="android:background">@color/white</item>
+    </style>
+    
     
     
     
@@ -93,35 +119,6 @@
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
 
-    <style name="radio_left_item">
-        <item name="android:textSize">@dimen/text_size_15</item>
-        <item name="android:textColor">@color/radio_text_selector</item>
-        <item name="android:button">@null</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/radio_btnleft_selector</item>
-        <item name="android:paddingTop">5dip</item>
-        <item name="android:paddingBottom">5dip</item>
-    </style>
-
-    <style name="radio_item">
-        <item name="android:textSize">@dimen/text_size_15</item>
-        <item name="android:textColor">@color/radio_text_selector</item>
-        <item name="android:button">@null</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/radio_btn_selector</item>
-        <item name="android:paddingTop">5dip</item>
-        <item name="android:paddingBottom">5dip</item>
-    </style>
-
-    <style name="radio_right_item">
-        <item name="android:textSize">@dimen/text_size_15</item>
-        <item name="android:textColor">@color/radio_text_selector</item>
-        <item name="android:button">@null</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/radio_btnright_selector</item>
-        <item name="android:paddingTop">5dip</item>
-        <item name="android:paddingBottom">5dip</item>
-    </style>
 
     <style name="bottom_radio_item">
         <item name="android:textSize">@dimen/text_size_14</item>
@@ -135,11 +132,6 @@
 
  
 
-    <style name="check_button_style">
-        <item name="android:textSize">@dimen/text_size_14</item>
-        <item name="android:textColor">@color/radio_text_selector</item>
-        <item name="android:background">@drawable/radio_btn_selector</item>
-    </style>
 
     <style name="button_style">
         <item name="android:textSize">@dimen/text_size_15</item>
@@ -356,25 +348,6 @@
         <item name="android:paddingTop">8dip</item>
         <item name="android:paddingBottom">8dip</item>
     </style>
-
-    <style name="eatimp_value" parent="check_button_style">
-        <item name="android:singleLine">true</item>
-        <item name="android:textSize">@dimen/text_size_15</item>
-        <item name="android:paddingTop">8dip</item>
-        <item name="android:paddingBottom">8dip</item>
-        <item name="android:textColor">@color/page_title_color</item>
-        <item name="android:background">@null</item>
-        <item name="android:gravity">right</item>
-    </style>
-
-    <style name="persent_progress">
-        <item name="android:textColor">@color/radio_text_selector</item>
-        <item name="android:textSize">@dimen/text_size_18</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:paddingTop">3dip</item>
-        <item name="android:paddingBottom">3dip</item>
-    </style>
-
     <style name="medicine_label">
         <item name="android:textColor">@color/label_color</item>
         <item name="android:textSize">@dimen/text_size_15</item>
