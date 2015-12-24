@@ -40,7 +40,13 @@
 
 <string name="tczx1">我提出的咨询</string>
 <string name="tczx2">发送</string>
-<string name="tczx3"></string>
+<string name="tczx3">修改咨询类型</string>
+<string name="tczx4">设置提问标题</string>
+<string name="tczx5">修改咨询类型</string>
+<string name="tczx6">确定</string>
+<string name="tczx7">请输入咨询标题</string>
+<string name="tczx8">取消</string>
+
 
         <!-- 下拉刷新列表 -->
     <string name="xlistview_header_hint_normal">下拉刷新</string>

@@ -43,7 +43,7 @@
             <RelativeLayout 
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/cuxian"
+                android:background="@drawable/cuxian1"
                 >
                                 <TextView
                               android:layout_centerVertical="true"

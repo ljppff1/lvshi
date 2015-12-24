@@ -6,6 +6,10 @@
     <style name="AppTheme" parent="AppBaseTheme">
         </style>
     
+    <style name="Popup_Animation_Alpha" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/layout_alpha_in</item>
+        <item name="android:windowExitAnimation">@anim/layout_alpha_out</item>
+    </style>
     <style name="Dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -58,7 +62,11 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/p36</item>
     </style>
-       
+              <style name="t_r_36">
+        <item name="android:textColor">@color/re1</item>
+        <item name="android:textSize">@dimen/p36</item>
+    </style>
+              
           <style name="t_g_26">
         <item name="android:textColor">@color/textco2</item>
         <item name="android:textSize">@dimen/p26</item>
