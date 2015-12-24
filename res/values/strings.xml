@@ -38,7 +38,10 @@
 <string name="cs2">已定位城市</string>
 <string name="cs3">热门城市</string>
 
-         
+<string name="tczx1">我提出的咨询</string>
+<string name="tczx2">发送</string>
+<string name="tczx3"></string>
+
         <!-- 下拉刷新列表 -->
     <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">松开刷新数据</string>
