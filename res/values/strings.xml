@@ -47,6 +47,10 @@
 <string name="tczx7">请输入咨询标题</string>
 <string name="tczx8">取消</string>
 
+<string name="zxlb1">咨询列表</string>
+<string name="zxlb2">签订合同问题</string>
+<string name="zxlb3">2015年10月3日 17：00</string>
+<string name="zxlb4">于律师</string>
 
         <!-- 下拉刷新列表 -->
     <string name="xlistview_header_hint_normal">下拉刷新</string>

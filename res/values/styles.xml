@@ -75,6 +75,13 @@
          <style name="t_b1_26">
         <item name="android:textColor">@color/textco3</item>
         <item name="android:textSize">@dimen/p26</item>
+    </style><style name="t_b1_24">
+        <item name="android:textColor">@color/textco3</item>
+        <item name="android:textSize">@dimen/p24</item>
+    </style>
+         <style name="t_b1_20">
+        <item name="android:textColor">@color/textco2</item>
+        <item name="android:textSize">@dimen/p20</item>
     </style>
          <style name="t_b2_26">
         <item name="android:textColor">@color/white</item>
