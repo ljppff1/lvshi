@@ -39,7 +39,7 @@ public class Zixun extends BaseActivity{
 		setContentView(R.layout.activity_zixun);
 		   
 		initData();
-		 initView();
+		initView();
 		 
 	}
 
@@ -55,26 +55,15 @@ public class Zixun extends BaseActivity{
 	private void initView() {
 		 mGv1 =(GridView)this.findViewById(R.id.mGv1);
 		 mGv1.setOnItemClickListener(new OnItemClickListener() {
-
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
 			       		
-					
-					
 				}
-		 });
-		 
-		 
-		 
+		 });		 
 			adapter= new Myadapter();
 			mGv1.setAdapter(adapter);
-
-		
 	}
-	
-	 
-
 
 		class Holder{
 			TextView mTvg1;
