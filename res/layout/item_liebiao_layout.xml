@@ -1,0 +1,288 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:background="@color/white"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="@dimen/p30"
+        android:layout_marginRight="@dimen/p30"
+        android:layout_height="wrap_content"
+        >
+        <RelativeLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/p40"
+            android:layout_centerVertical="true"
+            >
+                                   <TextView
+                    style="@style/t_b1_20"
+                    android:id="@+id/mtv2"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                   android:text="@string/zxlb3" />
+            
+                       <TextView
+                    style="@style/t_b1_26"
+                    android:layout_toLeftOf="@id/mtv2"
+                    android:id="@+id/mtv1"
+                    android:layout_width="fill_parent"
+                    
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                   android:text="@string/zxlb2" />
+                       
+        </RelativeLayout>
+    </RelativeLayout>
+    <ImageView 
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="@dimen/p30"
+        android:layout_marginRight="@dimen/p30"
+        android:src="@drawable/longline"
+        />
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+    <RelativeLayout 
+        android:layout_marginLeft="@dimen/p30"
+        android:layout_width="0dp"
+        
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        >
+      <RelativeLayout 
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/mRlshow1"
+          android:layout_centerInParent="true"
+          >             
+             <RelativeLayout 
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerHorizontal="true"
+                 android:id="@+id/mRlt1"
+                 >
+            <com.rvidda.cn.view.CircleImageView
+                    android:id="@+id/mPn1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/people" />
+            <View 
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/mV1"
+                
+                android:layout_alignRight="@id/mPn1"
+                android:layout_alignBottom="@id/mPn1"
+                />
+            </RelativeLayout>
+                                   <TextView
+                    style="@style/t_b1_24"
+                    android:id="@+id/mTv1"
+                    android:layout_below="@id/mRlt1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                   android:text="@string/zxlb4" />
+            </RelativeLayout>    
+    </RelativeLayout>
+        <RelativeLayout 
+                    android:layout_marginLeft="@dimen/p20"
+            
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        >
+      <RelativeLayout 
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerInParent="true"
+          android:id="@+id/mRlshow2"
+          >             
+             <RelativeLayout 
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerHorizontal="true"
+                 android:id="@+id/mRlt2"
+                 >
+            <com.rvidda.cn.view.CircleImageView
+                    android:id="@+id/mPn2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/people" />
+            <View 
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/mV2"
+                
+                android:layout_alignRight="@id/mPn2"
+                android:layout_alignBottom="@id/mPn2"
+                />
+            </RelativeLayout>
+                                   <TextView
+                    style="@style/t_b1_24"
+                    android:id="@+id/mTv2"
+                    android:layout_below="@id/mRlt2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                   android:text="@string/zxlb4" />
+            </RelativeLayout>    
+    </RelativeLayout>
+    
+            <RelativeLayout 
+        android:layout_width="0dp"
+        android:layout_weight="1"
+                android:layout_marginLeft="@dimen/p20"
+        
+        android:layout_height="wrap_content"
+        >
+      <RelativeLayout 
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerInParent="true"
+          android:id="@+id/mRlshow3"
+          >             
+             <RelativeLayout 
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerHorizontal="true"
+                 android:id="@+id/mRlt3"
+                 >
+            <com.rvidda.cn.view.CircleImageView
+                    android:id="@+id/mPn3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/people" />
+            <View 
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/mV3"
+                
+                android:layout_alignRight="@id/mPn3"
+                android:layout_alignBottom="@id/mPn3"
+                />
+            </RelativeLayout>
+                                   <TextView
+                    style="@style/t_b1_24"
+                    android:id="@+id/mTv3"
+                    android:layout_below="@id/mRlt3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                   android:text="@string/zxlb4" />
+            </RelativeLayout>    
+    </RelativeLayout>
+        
+        <RelativeLayout 
+        android:layout_width="0dp"
+        android:layout_weight="1"
+                android:layout_marginLeft="@dimen/p20"
+        
+        android:layout_height="wrap_content"
+        >
+      <RelativeLayout 
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerInParent="true"
+          android:id="@+id/mRlshow4"
+          >             
+             <RelativeLayout 
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerHorizontal="true"
+                 android:id="@+id/mRlt4"
+                 >
+            <com.rvidda.cn.view.CircleImageView
+                    android:id="@+id/mPn4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/people" />
+            <View 
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/mV4"
+                
+                android:layout_alignRight="@id/mPn4"
+                android:layout_alignBottom="@id/mPn4"
+                />
+            </RelativeLayout>
+                                   <TextView
+                    style="@style/t_b1_24"
+                    android:id="@+id/mTv4"
+                    android:layout_below="@id/mRlt4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                   android:text="@string/zxlb4" />
+            </RelativeLayout>    
+    </RelativeLayout>
+            <RelativeLayout 
+        android:layout_width="0dp"
+                        android:layout_marginLeft="@dimen/p20"
+        android:layout_marginRight="@dimen/p30"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        >
+        
+          <RelativeLayout 
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerInParent="true"
+          android:id="@+id/mRlshow5"
+          >             
+             <RelativeLayout 
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerHorizontal="true"
+                 android:id="@+id/mRlt5"
+                 >
+            <com.rvidda.cn.view.CircleImageView
+                    android:id="@+id/mPn5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/people" />
+            <View 
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/mV5"
+                
+                android:layout_alignRight="@id/mPn5"
+                android:layout_alignBottom="@id/mPn5"
+                />
+            </RelativeLayout>
+                                   <TextView
+                    style="@style/t_b1_24"
+                    android:id="@+id/mTv5"
+                    android:layout_below="@id/mRlt5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                   android:text="@string/zxlb4" />
+            </RelativeLayout>    
+    </RelativeLayout>
+    </LinearLayout>
+            <View 
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/p30"
+            />
+    
+</LinearLayout>
