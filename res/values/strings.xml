@@ -59,6 +59,10 @@
 <string name="zxlb3">2015年10月3日 17：00</string>
 <string name="zxlb4">于律师</string>
 
+<string name="xx1">消息</string>
+<string name="xx2">免费体检，尽在律嗒</string>
+<string name="xx3">1分钟前</string>
+
         <!-- 下拉刷新列表 -->
     <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">松开刷新数据</string>
