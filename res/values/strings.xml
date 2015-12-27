@@ -63,6 +63,12 @@
 <string name="xx2">免费体检，尽在律嗒</string>
 <string name="xx3">1分钟前</string>
 
+<string name="sz1">设置</string>
+<string name="sz2">消息中心</string>
+<string name="sz3">用户协议</string>
+<string name="sz4">意见反馈</string>
+<string name="sz5">版本更新</string>
+
         <!-- 下拉刷新列表 -->
     <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">松开刷新数据</string>
