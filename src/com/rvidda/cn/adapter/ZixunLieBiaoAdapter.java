@@ -4,13 +4,17 @@ package com.rvidda.cn.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.fanxin.app.fx.ChatActivity;
+import com.fanxin.app.fx.UserInfoActivity;
 import com.jauker.widget.BadgeView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -87,6 +91,22 @@ public class ZixunLieBiaoAdapter extends SBaseAdapter {
     	   holder.mRlshow4.setVisibility(View.GONE);
     	   holder.mRlshow5.setVisibility(View.GONE);
        }
+       
+       
+       holder.mRlshow2.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View arg0) {
+            Intent intent = new Intent();
+            intent.putExtra("userId", "ljppff1");
+            intent.putExtra("userAvatar", "dd");
+            intent.putExtra("userNick", "ljppff");
+
+            intent.setClass(context, ChatActivity.class);
+            context.startActivity(intent);
+			
+		}
+	});
 			
 		
 	}
