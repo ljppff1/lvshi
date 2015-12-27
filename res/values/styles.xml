@@ -71,12 +71,18 @@
         <item name="android:textColor">@color/textco2</item>
         <item name="android:textSize">@dimen/p26</item>
     </style>
-       
+         <style name="t_b1_28">
+        <item name="android:textColor">@color/textco3</item>
+        <item name="android:textSize">@dimen/p28</item>
+    </style>
          <style name="t_b1_26">
         <item name="android:textColor">@color/textco3</item>
         <item name="android:textSize">@dimen/p26</item>
     </style><style name="t_b1_24">
         <item name="android:textColor">@color/textco3</item>
+        <item name="android:textSize">@dimen/p24</item>
+    </style><style name="t_e1_24">
+        <item name="android:textColor">@color/textco5</item>
         <item name="android:textSize">@dimen/p24</item>
     </style>
          <style name="t_b1_20">
