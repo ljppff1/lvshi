@@ -420,6 +420,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             forwardMessage(forward_msg_id);
         }
         iv_setting = (ImageView) this.findViewById(R.id.iv_setting);
+        
+/*        iv_setting = (ImageView) this.findViewById(R.id.iv_setting);
         iv_setting_group = (ImageView) this.findViewById(R.id.iv_setting_group);
         if (chatType == CHATTYPE_SINGLE) {
             iv_setting.setVisibility(View.VISIBLE);
@@ -456,7 +458,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
             });
         }
-
+*/
     }
 
     /**

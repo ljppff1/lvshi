@@ -14,7 +14,7 @@
     <color name="possible_result_points">#c0ffff00</color>
     <color name="result_image_border">#ffffffff</color>
     
-         <color name="common_top_bar_blue">#22292c</color>
+         <color name="common_top_bar_blue">#FFFFFF</color>
       <color name="btn_login_normal">#007086</color>
     <color name="btn_login_pressed">#303744</color>
     <color name="btn_logout_normal">#d33f3f</color>
