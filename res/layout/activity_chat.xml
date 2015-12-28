@@ -8,21 +8,19 @@
 
        <RelativeLayout 
                 android:layout_width="fill_parent"
-               style="@style/page_title1"
-        android:id="@+id/top_bar"
+                style="@style/page_title1"
+                 android:id="@+id/top_bar"
                android:paddingLeft="@dimen/p40"
                android:paddingRight="@dimen/p40"
                 >
-                        <ImageView
+           <ImageView
             android:id="@+id/iv_back"
             android:src="@drawable/fanhui2"
-                        android:onClick="back"
-            
+            android:onClick="back"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_alignParentLeft="true"
             />
-            
                <ImageView
             android:id="@+id/mBtn_setting"
            android:src="@drawable/gengduo1"
@@ -32,7 +30,6 @@
             android:layout_height="wrap_content"
             />
                
-
                 <TextView
                     style="@style/t_bl_30"
             android:id="@+id/name"

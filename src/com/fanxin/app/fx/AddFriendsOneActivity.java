@@ -16,7 +16,6 @@ public class AddFriendsOneActivity extends Activity {
         setContentView(R.layout.activity_addfriends);
         TextView tv_search=(TextView) this.findViewById(R.id.tv_search);
         tv_search.setOnClickListener(new OnClickListener(){
-
             @Override
             public void onClick(View v) {
              startActivity(new Intent(AddFriendsOneActivity.this,AddFriendsTwoActivity.class));                

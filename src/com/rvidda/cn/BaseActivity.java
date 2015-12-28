@@ -3,6 +3,7 @@ package com.rvidda.cn;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public class BaseActivity extends Activity {
 	private boolean allowFullScreen = true;
@@ -19,6 +21,7 @@ public class BaseActivity extends Activity {
 
 	private View view;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
+	private SystemBarTintManager mTintManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,12 @@ public class BaseActivity extends Activity {
 						| WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		allowFullScreen = true;
 		AppManager.getAppManager().addActivity(this); 
+
+		mTintManager = new SystemBarTintManager(this);
+		mTintManager.setStatusBarTintEnabled(true);
+		mTintManager.setNavigationBarTintEnabled(true);
+		mTintManager.setTintColor(Color.RED);
+
 
 	}
    
