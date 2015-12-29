@@ -5,6 +5,10 @@
     
     <style name="AppTheme" parent="AppBaseTheme">
         </style>
+      <style name="tab_text">
+        <item name="android:textColor">@drawable/text_color_tab</item>
+        <item name="android:textSize">16sp</item>
+    </style>
     
     <style name="Popup_Animation_Alpha" parent="@android:style/Animation">
         <item name="android:windowEnterAnimation">@anim/layout_alpha_in</item>

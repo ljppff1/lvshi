@@ -15,6 +15,22 @@
          <string name="log4">点击登陆，即表示同意《用户协议》</string>
          <string name="log5">登陆</string>
          
+<string name="sqtk1">律师发函资料明细</string>
+<string name="sqtk2">服务信息</string>
+<string name="sqtk3">用户信息</string>
+<string name="sqtk4">律师催告(敦促)函</string>
+<string name="sqtk5">王先生委托敦促贷款归信函费用</string>
+<string name="sqtk6">¥800</string>
+<string name="sqtk7">内容:</string>
+<string name="sqtk8">呢个系帮助王生、王太太一家七口老小要返饭钱，呃租嘅人应经历补偿利息损失</string>
+<string name="sqtk9">支付日期:2015年8月15日</string>
+<string name="sqtk10">支付平台:支付宝</string>
+<string name="sqtk11">支付账号:1234567890</string>
+<string name="sqtk12">支付流水:989435834953908197235</string>
+<string name="sqtk13">系统订单号:1357924680</string>
+<string name="sqtk14">申请退款</string>
+
+
 <string name="grzl1">个人资料</string>         
 <string name="grzl2">Allen</string>         
 <string name="grzl3">（律师）</string>         
@@ -38,6 +54,22 @@
 <string name="lvsy3">个人房厂问题</string>
 <string name="lvsy4">合同纠纷</string>
 <string name="lvsy5">合同纠纷1</string>
+
+
+<string name="qlvfh1">律师发函资料</string>
+<string name="qlvfh2">委托人(我)</string>
+<string name="qlvfh3">请输入委托人姓名</string>
+<string name="qlvfh4">对方公司</string>
+<string name="qlvfh5">北京移动有限公司</string>
+<string name="qlvfh6">对方姓名</string>
+<string name="qlvfh7">请输入对方姓名</string>
+<string name="qlvfh8">对方电话</string>
+<string name="qlvfh9">请输入对方电话</string>
+<string name="qlvfh10">对方收信地址</string>
+<string name="qlvfh11">请输入对方具体地址</string>
+<string name="qlvfh12">取消</string>
+<string name="qlvfh13">提交</string>
+<string name="qlvfh14"></string>
 
 
 <string name="sq1">申请资料</string>

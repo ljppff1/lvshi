@@ -7,6 +7,7 @@
     <dimen  name="p3">3px</dimen>
     
     <dimen  name="p10">10px</dimen>
+    <dimen  name="p15">15px</dimen>
     <dimen  name="p20">20px</dimen>
     <dimen  name="p26">26px</dimen>
     <dimen  name="p28">28px</dimen>
@@ -20,6 +21,7 @@
     <dimen  name="p70">70px</dimen>
     <dimen  name="p65">65px</dimen>
     <dimen  name="p96">96px</dimen>
+    <dimen  name="p100">100px</dimen>
     <dimen  name="p150">150px</dimen>
     <dimen  name="p160">160px</dimen>
     <dimen  name="p85">85px</dimen>

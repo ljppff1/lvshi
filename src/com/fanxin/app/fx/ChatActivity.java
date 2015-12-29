@@ -208,12 +208,10 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
         // 读取本地自己的头像和昵称
         myUserNick = LocalUserInfo.getInstance(ChatActivity.this).getUserInfo(
                 "nick");
-        myUserAvatar = LocalUserInfo.getInstance(ChatActivity.this)
-                .getUserInfo("avatar");
+        myUserAvatar = LocalUserInfo.getInstance(ChatActivity.this).getUserInfo("avatar");
         initView();
         setUpView();
         iamge_path = this.getIntent().getStringExtra("iamge_path");
