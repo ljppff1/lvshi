@@ -26,6 +26,16 @@
     <dimen  name="p240">240px</dimen>
     
     
+    <dimen  name="sp20">10sp</dimen>
+    <dimen  name="sp26">13sp</dimen>
+    <dimen  name="sp28">14sp</dimen>
+    <dimen  name="sp30">15sp</dimen>
+    <dimen  name="sp34">17sp</dimen>
+    <dimen  name="sp24">12sp</dimen>
+    <dimen  name="sp36">18sp</dimen>
+    
+    
+    
 <dimen  name="dp5">5dp</dimen>
 <dimen  name="dp8">8dp</dimen>
 <dimen  name="dp10">10dp</dimen>

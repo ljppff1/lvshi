@@ -1,0 +1,93 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:background="@color/white"
+    android:layout_height="fill_parent"
+    >
+    
+    <RelativeLayout 
+        android:layout_width="50dp"
+        android:id="@+id/mRlw1"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="@dimen/p40"
+        >
+                        <com.rvidda.cn.view.CircleImageView
+                    android:id="@+id/mPn1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/people" />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="@dimen/p40"
+        
+        android:layout_marginRight="@dimen/p40"
+        android:layout_toRightOf="@id/mRlw1"
+        android:layout_marginLeft="@dimen/p30"
+        >
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            
+            android:orientation="vertical"
+            >
+            <RelativeLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    style="@style/t_e1_24"
+                    android:id="@+id/mtv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                   android:text="Victory" />
+                <TextView
+                    style="@style/t_b1_20"
+                    android:id="@+id/mtv2"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+android:layout_centerVertical="true"
+                   android:text="09:30" />
+                
+        </RelativeLayout>
+           <RelativeLayout 
+                android:layout_width="fill_parent"
+                android:layout_marginTop="@dimen/p20"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    style="@style/t_b1_28"
+                    android:id="@+id/mtv3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                   android:text="@string/lvsy3" />                
+        </RelativeLayout>
+                
+                           <RelativeLayout 
+                android:layout_width="fill_parent"
+                android:layout_marginTop="@dimen/p20"
+                android:layout_height="wrap_content"
+                >
+                
+    <com.rvidda.cn.view.FlowLayout
+        android:id="@+id/mFFF"
+        android:layout_width="fill_parent"
+        android:layout_marginRight="4dp"
+        android:layout_height="wrap_content" >
+            </com.rvidda.cn.view.FlowLayout>
+                               
+        </RelativeLayout>
+           
+                
+                </LinearLayout>
+    </RelativeLayout>
+    
+
+</RelativeLayout>

@@ -48,7 +48,7 @@
         android:label="@string/app_name"
        >
         <activity
-            android:name="com.rvidda.cn.ui.GeRenZiLiao"
+            android:name="com.rvidda.cn.ui.Login"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,22 +56,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.rvidda.cn.ui.ZiXunLieBiao"></activity>
+        
         <activity android:name="com.rvidda.cn.ui.ShenQingQiliao"></activity>
         <activity android:name="com.rvidda.cn.ui.Chengshi"></activity>
                 <activity android:name="com.rvidda.cn.ui.ShouYe"></activity>
                 <activity android:name="com.rvidda.cn.ui.TiChuZiXun"></activity>
                 <activity android:name="com.rvidda.cn.ui.UserSetting"></activity>
        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
                 <!-- 登陆 -->
         <activity
             android:name="com.fanxin.app.fx.LoginActivity"
