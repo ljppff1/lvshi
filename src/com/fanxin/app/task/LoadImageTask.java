@@ -22,15 +22,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout.LayoutParams;
 
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.EMMessage.ChatType;
+import com.easemob.util.ImageUtils;
 import com.fanxin.app.activity.ShowBigImage;
 import com.fanxin.app.utils.CommonUtils;
 import com.fanxin.app.utils.ImageCache;
-import com.easemob.util.ImageUtils;
 
 public class LoadImageTask extends AsyncTask<Object, Void, Bitmap> {
 	private ImageView iv = null;
@@ -62,7 +61,6 @@ public class LoadImageTask extends AsyncTask<Object, Void, Bitmap> {
 				return null;
 			}
 		}
-		
 
 	}
 
@@ -91,11 +89,14 @@ public class LoadImageTask extends AsyncTask<Object, Void, Bitmap> {
 						if (message.getChatType() != ChatType.Chat) {
 							// delete the image from server after download
 						}
-						if (message != null && message.direct == EMMessage.Direct.RECEIVE && !message.isAcked) {
+						if (message != null
+								&& message.direct == EMMessage.Direct.RECEIVE
+								&& !message.isAcked) {
 							message.isAcked = true;
 							try {
 								// 看了大图后发个已读回执给对方
-								EMChatManager.getInstance().ackMessageRead(message.getFrom(), message.getMsgId());
+								EMChatManager.getInstance().ackMessageRead(
+										message.getFrom(), message.getMsgId());
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -111,7 +112,8 @@ public class LoadImageTask extends AsyncTask<Object, Void, Bitmap> {
 
 						@Override
 						public void run() {
-							EMChatManager.getInstance().asyncFetchMessage(message);
+							EMChatManager.getInstance().asyncFetchMessage(
+									message);
 						}
 					}).start();
 				}

@@ -1,9 +1,5 @@
 package com.fanxin.app.fx.others;
 
- 
-
-import com.rvidda.cn.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,22 +9,22 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.ListView;
- 
+
+import com.rvidda.cn.R;
+
 public class AutoListView extends ListView implements OnScrollListener {
 
-	 
 	public static final int REFRESH = 0;
 	public static final int LOAD = 1;
 
- 
 	private static final int SPACE = 20;
 
-	 private static final int NONE = 0;
+	private static final int NONE = 0;
 	private static final int PULL = 1;
 	private static final int RELEASE = 2;
 	private static final int REFRESHING = 3;
@@ -57,10 +53,9 @@ public class AutoListView extends ListView implements OnScrollListener {
 	private int headerContentInitialHeight;
 	private int headerContentHeight;
 
-	 
 	private boolean isRecorded;
-	private boolean isLoading; 
-	private boolean loadEnable = true; 
+	private boolean isLoading;
+	private boolean loadEnable = true;
 	private boolean isLoadFull;
 	private int pageSize = 10;
 
@@ -82,11 +77,10 @@ public class AutoListView extends ListView implements OnScrollListener {
 		initView(context);
 	}
 
-	 
 	public void setOnRefreshListener(OnRefreshListener onRefreshListener) {
 		this.onRefreshListener = onRefreshListener;
 	}
- 
+
 	public void setOnLoadListener(OnLoadListener onLoadListener) {
 		this.loadEnable = true;
 		this.onLoadListener = onLoadListener;
@@ -96,7 +90,6 @@ public class AutoListView extends ListView implements OnScrollListener {
 		return loadEnable;
 	}
 
-	 
 	public void setLoadEnable(boolean loadEnable) {
 		this.loadEnable = loadEnable;
 		this.removeFooterView(footer);
@@ -110,9 +103,8 @@ public class AutoListView extends ListView implements OnScrollListener {
 		this.pageSize = pageSize;
 	}
 
-	 
 	private void initView(Context context) {
- 	animation = new RotateAnimation(0, -180,
+		animation = new RotateAnimation(0, -180,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f);
 		animation.setInterpolator(new LinearInterpolator());
@@ -139,7 +131,6 @@ public class AutoListView extends ListView implements OnScrollListener {
 		lastUpdate = (TextView) header.findViewById(R.id.lastUpdate);
 		refreshing = (ProgressBar) header.findViewById(R.id.refreshing);
 
-	 
 		headerContentInitialHeight = header.getPaddingTop();
 		measureView(header);
 		header.setTag("HEADER");
@@ -169,13 +160,12 @@ public class AutoListView extends ListView implements OnScrollListener {
 		state = NONE;
 		refreshHeaderViewByState();
 	}
- 
+
 	public void onRefreshComplete() {
 		String currentTime = TimeUtils.getCurrentTime();
 		onRefreshComplete(currentTime);
 	}
 
- 
 	public void onLoadComplete() {
 		isLoading = false;
 	}
@@ -191,7 +181,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 		this.scrollState = scrollState;
 		ifNeedLoad(view, scrollState);
 	}
- 
+
 	private void ifNeedLoad(AbsListView view, int scrollState) {
 		if (!loadEnable) {
 			return;
@@ -208,7 +198,6 @@ public class AutoListView extends ListView implements OnScrollListener {
 		}
 	}
 
- 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
 		switch (ev.getAction()) {
@@ -274,14 +263,12 @@ public class AutoListView extends ListView implements OnScrollListener {
 
 	}
 
-	 
 	private void topPadding(int topPadding) {
 		header.setPadding(header.getPaddingLeft(), topPadding,
 				header.getPaddingRight(), header.getPaddingBottom());
 		header.invalidate();
 	}
 
-	 
 	public void setResultSize(int resultSize) {
 		if (resultSize == 0) {
 			isLoadFull = true;
@@ -345,7 +332,6 @@ public class AutoListView extends ListView implements OnScrollListener {
 		}
 	}
 
- 
 	private void measureView(View child) {
 		ViewGroup.LayoutParams p = child.getLayoutParams();
 		if (p == null) {
@@ -365,12 +351,10 @@ public class AutoListView extends ListView implements OnScrollListener {
 		child.measure(childWidthSpec, childHeightSpec);
 	}
 
- 
 	public interface OnRefreshListener {
 		public void onRefresh();
 	}
 
- 
 	public interface OnLoadListener {
 		public void onLoad();
 	}

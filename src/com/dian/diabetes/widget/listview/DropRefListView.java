@@ -8,10 +8,6 @@
  */
 package com.dian.diabetes.widget.listview;
 
-
-
-import com.rvidda.cn.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -25,10 +21,13 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Scroller;
 
+import com.rvidda.cn.R;
+
 /**
  * 下拉加载下一页的listview
+ * 
  * @author Administrator
- *
+ * 
  */
 public class DropRefListView extends ListView implements OnScrollListener {
 
@@ -192,7 +191,7 @@ public class DropRefListView extends ListView implements OnScrollListener {
 	 * @param time
 	 */
 	public void setRefreshTime(String time) {
-		
+
 	}
 
 	private void invokeOnScrolling() {
@@ -331,7 +330,8 @@ public class DropRefListView extends ListView implements OnScrollListener {
 		mPullRefreshing = true;
 		mHeaderView.setState(XListViewHeader.STATE_REFRESHING);
 		if (mHeaderViewHeight == 0) {
-			mHeaderViewHeight = getResources().getDimensionPixelSize(R.dimen.list_head_height);
+			mHeaderViewHeight = getResources().getDimensionPixelSize(
+					R.dimen.list_head_height);
 		}
 		mScroller.startScroll(0, 0, 0, mHeaderViewHeight, SCROLL_DURATION);
 		// trigger computeScroll

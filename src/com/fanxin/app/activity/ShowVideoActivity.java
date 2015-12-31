@@ -16,10 +16,10 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.easemob.chat.EMChatConfig;
-import com.rvidda.cn.R;
 import com.easemob.cloud.CloudOperationCallback;
 import com.easemob.cloud.HttpFileManager;
 import com.easemob.util.PathUtil;
+import com.rvidda.cn.R;
 
 /**
  * 展示视频内容
@@ -27,7 +27,7 @@ import com.easemob.util.PathUtil;
  * @author Administrator
  * 
  */
-public class ShowVideoActivity extends BaseActivity{
+public class ShowVideoActivity extends BaseActivity {
 
 	private RelativeLayout loadingLayout;
 	private ProgressBar progressBar;
@@ -64,8 +64,8 @@ public class ShowVideoActivity extends BaseActivity{
 
 		}
 	}
-	
-	public String getLocalFilePath(String remoteUrl){
+
+	public String getLocalFilePath(String remoteUrl) {
 		String localPath;
 		if (remoteUrl.contains("/")) {
 			localPath = PathUtil.getInstance().getVideoPath().getAbsolutePath()
@@ -77,21 +77,19 @@ public class ShowVideoActivity extends BaseActivity{
 		}
 		return localPath;
 	}
-	
+
 	/**
 	 * 播放本地视频
-	 * @param localPath 视频路径
+	 * 
+	 * @param localPath
+	 *            视频路径
 	 */
-	private void showLocalVideo(String localPath){
+	private void showLocalVideo(String localPath) {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setDataAndType(Uri.fromFile(new File(localPath)),
-				"video/mp4");
+		intent.setDataAndType(Uri.fromFile(new File(localPath)), "video/mp4");
 		startActivity(intent);
 		finish();
 	}
-	
-	
-	
 
 	/**
 	 * 下载视频文件
@@ -162,6 +160,5 @@ public class ShowVideoActivity extends BaseActivity{
 	public void onBackPressed() {
 		finish();
 	}
- 
 
 }

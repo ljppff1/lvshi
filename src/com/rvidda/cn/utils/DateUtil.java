@@ -10,8 +10,6 @@ import java.util.Map;
 import android.util.Log;
 
 public class DateUtil {
-	
-
 
 	public static final String yyMMdd = "yy-MM-dd";
 	public static final String yyyyMMdd = "yyyy-MM-dd";
@@ -140,7 +138,7 @@ public class DateUtil {
 		String str = formatter.format(now.getTime());
 		return str;
 	}
-	
+
 	public static String parseToMD(long time) {
 		Calendar now = Calendar.getInstance();
 		now.setTimeInMillis(time);
@@ -257,8 +255,8 @@ public class DateUtil {
 		calendar.add(Calendar.YEAR, year);
 		return calendar.getTimeInMillis();
 	}
-	
-	public static int parseToInt(long time){
+
+	public static int parseToInt(long time) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMM");
 		String str = formatter.format(time);
 		return StringUtil.toInt(str);

@@ -13,15 +13,14 @@
  */
 package com.fanxin.app.utils;
 
-import com.fanxin.applib.utils.HXPreferenceUtils;
-
 import android.content.Context;
-import android.content.SharedPreferences;
+
+import com.fanxin.applib.utils.HXPreferenceUtils;
 
 /**
  * 
  * @deprecated this class is deprecated, please use {@link HXPreferenceUtils}
- *
+ * 
  */
 public class PreferenceUtils {
 
@@ -30,6 +29,7 @@ public class PreferenceUtils {
 	 */
 	public static final String PREFERENCE_NAME = "saveInfo";
 	private static PreferenceUtils mPreferenceUtils;
+
 	private PreferenceUtils() {
 	}
 
@@ -44,7 +44,7 @@ public class PreferenceUtils {
 			mPreferenceUtils = new PreferenceUtils();
 			HXPreferenceUtils.init(cxt);
 		}
-		
+
 		return mPreferenceUtils;
 	}
 
@@ -57,15 +57,15 @@ public class PreferenceUtils {
 	}
 
 	public void setSettingMsgSound(boolean paramBoolean) {
-	    HXPreferenceUtils.getInstance().setSettingMsgSound(paramBoolean);
+		HXPreferenceUtils.getInstance().setSettingMsgSound(paramBoolean);
 	}
 
 	public boolean getSettingMsgSound() {
-	    return HXPreferenceUtils.getInstance().getSettingMsgSound();
+		return HXPreferenceUtils.getInstance().getSettingMsgSound();
 	}
 
 	public void setSettingMsgVibrate(boolean paramBoolean) {
-	    HXPreferenceUtils.getInstance().setSettingMsgVibrate(paramBoolean);
+		HXPreferenceUtils.getInstance().setSettingMsgVibrate(paramBoolean);
 	}
 
 	public boolean getSettingMsgVibrate() {
@@ -73,7 +73,7 @@ public class PreferenceUtils {
 	}
 
 	public void setSettingMsgSpeaker(boolean paramBoolean) {
-	    HXPreferenceUtils.getInstance().setSettingMsgSpeaker(paramBoolean);
+		HXPreferenceUtils.getInstance().setSettingMsgSpeaker(paramBoolean);
 	}
 
 	public boolean getSettingMsgSpeaker() {

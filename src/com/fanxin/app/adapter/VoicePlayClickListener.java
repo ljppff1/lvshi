@@ -26,13 +26,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.easemob.chat.EMChatDB;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.EMMessage.ChatType;
 import com.easemob.chat.VoiceMessageBody;
-import com.rvidda.cn.R;
 import com.fanxin.app.fx.ChatActivity;
+import com.rvidda.cn.R;
 
 public class VoicePlayClickListener implements View.OnClickListener {
 
@@ -60,7 +59,8 @@ public class VoicePlayClickListener implements View.OnClickListener {
 	 * @param user
 	 * @param chatType
 	 */
-	public VoicePlayClickListener(EMMessage message, ImageView v, ImageView iv_read_status, BaseAdapter adapter, Activity activity,
+	public VoicePlayClickListener(EMMessage message, ImageView v,
+			ImageView iv_read_status, BaseAdapter adapter, Activity activity,
 			String username) {
 		this.message = message;
 		voiceBody = (VoiceMessageBody) message.getBody();
@@ -93,7 +93,8 @@ public class VoicePlayClickListener implements View.OnClickListener {
 			return;
 		}
 		((ChatActivity) activity).playMsgId = message.getMsgId();
-		AudioManager audioManager = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
+		AudioManager audioManager = (AudioManager) activity
+				.getSystemService(Context.AUDIO_SERVICE);
 
 		mediaPlayer = new MediaPlayer();
 		if (EMChatManager.getInstance().getChatOptions().getUseSpeaker()) {
@@ -109,17 +110,18 @@ public class VoicePlayClickListener implements View.OnClickListener {
 		try {
 			mediaPlayer.setDataSource(filePath);
 			mediaPlayer.prepare();
-			mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+			mediaPlayer
+					.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
-				@Override
-				public void onCompletion(MediaPlayer mp) {
-					// TODO Auto-generated method stub
-					mediaPlayer.release();
-					mediaPlayer = null;
-					stopPlayVoice(); // stop animation
-				}
+						@Override
+						public void onCompletion(MediaPlayer mp) {
+							// TODO Auto-generated method stub
+							mediaPlayer.release();
+							mediaPlayer = null;
+							stopPlayVoice(); // stop animation
+						}
 
-			});
+					});
 			isPlaying = true;
 			currentPlayListener = this;
 			mediaPlayer.start();
@@ -132,12 +134,14 @@ public class VoicePlayClickListener implements View.OnClickListener {
 						message.isAcked = true;
 						// 告知对方已读这条消息
 						if (chatType != ChatType.GroupChat)
-							EMChatManager.getInstance().ackMessageRead(message.getFrom(), message.getMsgId());
+							EMChatManager.getInstance().ackMessageRead(
+									message.getFrom(), message.getMsgId());
 					}
 				} catch (Exception e) {
 					message.isAcked = false;
 				}
-				if (!message.isListened() && iv_read_status != null && iv_read_status.getVisibility() == View.VISIBLE) {
+				if (!message.isListened() && iv_read_status != null
+						&& iv_read_status.getVisibility() == View.VISIBLE) {
 					// 隐藏自己未播放这条语音消息的标志
 					iv_read_status.setVisibility(View.INVISIBLE);
 					EMChatManager.getInstance().setMessageListened(message);
@@ -164,7 +168,9 @@ public class VoicePlayClickListener implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (isPlaying) {
-			if (((ChatActivity) activity).playMsgId != null && ((ChatActivity) activity).playMsgId.equals(message.getMsgId())) {
+			if (((ChatActivity) activity).playMsgId != null
+					&& ((ChatActivity) activity).playMsgId.equals(message
+							.getMsgId())) {
 				currentPlayListener.stopPlayVoice();
 				return;
 			}
@@ -183,9 +189,11 @@ public class VoicePlayClickListener implements View.OnClickListener {
 					System.err.println("file not exist");
 
 			} else if (message.status == EMMessage.Status.INPROGRESS) {
-				Toast.makeText(activity, "正在下载语音，稍后点击", Toast.LENGTH_SHORT).show();
+				Toast.makeText(activity, "正在下载语音，稍后点击", Toast.LENGTH_SHORT)
+						.show();
 			} else if (message.status == EMMessage.Status.FAIL) {
-				Toast.makeText(activity, "正在下载语音，稍后点击", Toast.LENGTH_SHORT).show();
+				Toast.makeText(activity, "正在下载语音，稍后点击", Toast.LENGTH_SHORT)
+						.show();
 				new AsyncTask<Void, Void, Void>() {
 
 					@Override

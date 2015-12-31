@@ -11,10 +11,10 @@ import android.widget.Toast;
 
 import com.easemob.chat.EMChatConfig;
 import com.easemob.chat.FileMessageBody;
-import com.rvidda.cn.R;
 import com.easemob.cloud.CloudOperationCallback;
 import com.easemob.cloud.HttpFileManager;
 import com.easemob.util.FileUtils;
+import com.rvidda.cn.R;
 
 public class ShowNormalFileActivity extends BaseActivity {
 	private ProgressBar progressBar;
@@ -26,30 +26,35 @@ public class ShowNormalFileActivity extends BaseActivity {
 		setContentView(R.layout.activity_show_file);
 		progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-		final FileMessageBody messageBody = getIntent().getParcelableExtra("msgbody");
+		final FileMessageBody messageBody = getIntent().getParcelableExtra(
+				"msgbody");
 		file = new File(messageBody.getLocalUrl());
-		//set head map
+		// set head map
 		final Map<String, String> maps = new HashMap<String, String>();
 		if (!TextUtils.isEmpty(messageBody.getSecret())) {
 			maps.put("share-secret", messageBody.getSecret());
 		}
-		//下载文件
+		// 下载文件
 		new Thread(new Runnable() {
 			public void run() {
-				HttpFileManager fileManager = new HttpFileManager(ShowNormalFileActivity.this, EMChatConfig.getInstance().getStorageUrl());
-				fileManager.downloadFile(messageBody.getRemoteUrl(), messageBody.getLocalUrl(), maps,
+				HttpFileManager fileManager = new HttpFileManager(
+						ShowNormalFileActivity.this, EMChatConfig.getInstance()
+								.getStorageUrl());
+				fileManager.downloadFile(messageBody.getRemoteUrl(),
+						messageBody.getLocalUrl(), maps,
 						new CloudOperationCallback() {
-							
+
 							@Override
 							public void onSuccess(String result) {
 								runOnUiThread(new Runnable() {
 									public void run() {
-										FileUtils.openFile(file, ShowNormalFileActivity.this);
+										FileUtils.openFile(file,
+												ShowNormalFileActivity.this);
 										finish();
 									}
 								});
 							}
-							
+
 							@Override
 							public void onProgress(final int progress) {
 								runOnUiThread(new Runnable() {
@@ -58,14 +63,18 @@ public class ShowNormalFileActivity extends BaseActivity {
 									}
 								});
 							}
-							
+
 							@Override
 							public void onError(final String msg) {
 								runOnUiThread(new Runnable() {
 									public void run() {
-										if(file != null && file.exists()&&file.isFile())
+										if (file != null && file.exists()
+												&& file.isFile())
 											file.delete();
-										Toast.makeText(ShowNormalFileActivity.this, "下载文件失败: "+msg, Toast.LENGTH_SHORT).show();
+										Toast.makeText(
+												ShowNormalFileActivity.this,
+												"下载文件失败: " + msg,
+												Toast.LENGTH_SHORT).show();
 										finish();
 									}
 								});
@@ -74,6 +83,6 @@ public class ShowNormalFileActivity extends BaseActivity {
 
 			}
 		}).start();
-		
+
 	}
 }

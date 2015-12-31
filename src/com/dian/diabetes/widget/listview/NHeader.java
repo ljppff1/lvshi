@@ -6,10 +6,6 @@
  */
 package com.dian.diabetes.widget.listview;
 
-
-
-import com.rvidda.cn.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -17,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.LinearLayout;
+
+import com.rvidda.cn.R;
 
 /**
  * 顶部有 加载进度条的
@@ -100,36 +98,40 @@ public class NHeader extends LinearLayout {
 	public int getVisiableHeight() {
 		return mContainer.getHeight();
 	}
-	
+
 	/**
 	 * hide footer when disable pull load more
 	 */
 	public void hide() {
-		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)mContainer.getLayoutParams();
+		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mContainer
+				.getLayoutParams();
 		lp.height = 0;
 		mContainer.setLayoutParams(lp);
 	}
-	
+
 	/**
 	 * show footer
 	 */
 	public void show() {
-		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)mContainer.getLayoutParams();
+		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mContainer
+				.getLayoutParams();
 		lp.height = LayoutParams.WRAP_CONTENT;
 		mContainer.setLayoutParams(lp);
 	}
-	
+
 	public void setBottomMargin(int height) {
-		if (height < 0) return ;
-		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)mContainer.getLayoutParams();
+		if (height < 0)
+			return;
+		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mContainer
+				.getLayoutParams();
 		lp.bottomMargin = height;
 		mContainer.setLayoutParams(lp);
 	}
-	
+
 	public int getBottomMargin() {
-		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)mContainer.getLayoutParams();
+		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mContainer
+				.getLayoutParams();
 		return lp.bottomMargin;
 	}
-
 
 }

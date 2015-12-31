@@ -37,8 +37,6 @@ import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.LruCache;
-import android.util.Log;
-
 
 /**
  * This class memory caching of bitmaps in conjunction with the
@@ -230,7 +228,6 @@ public class ImageCache {
 			memValue = mMemoryCache.get(data);
 		}
 
-
 		return memValue;
 		// END_INCLUDE(get_bitmap_from_mem_cache)
 	}
@@ -297,7 +294,6 @@ public class ImageCache {
 		public boolean memoryCacheEnabled = DEFAULT_MEM_CACHE_ENABLED;
 		public boolean initDiskCacheOnCreate = DEFAULT_INIT_DISK_CACHE_ON_CREATE;
 
-		 
 		/**
 		 * Sets the memory cache size based on a percentage of the max available
 		 * VM memory. Eg. setting percent to 0.2 would set the memory cache to
@@ -443,9 +439,9 @@ public class ImageCache {
 		// From KitKat onward use getAllocationByteCount() as allocated bytes
 		// can potentially be
 		// larger than bitmap byte count.
-//		if (Utils.hasKitKat()) {
-//			return bitmap.getAllocationByteCount();
-//		}
+		// if (Utils.hasKitKat()) {
+		// return bitmap.getAllocationByteCount();
+		// }
 
 		if (Utils.hasHoneycombMR1()) {
 			return bitmap.getByteCount();

@@ -32,24 +32,25 @@ public class BaseActivity extends Activity {
 				WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 						| WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		allowFullScreen = true;
-		AppManager.getAppManager().addActivity(this); 
+		AppManager.getAppManager().addActivity(this);
 
 		mTintManager = new SystemBarTintManager(this);
 		mTintManager.setStatusBarTintEnabled(true);
 		mTintManager.setNavigationBarTintEnabled(true);
 		mTintManager.setTintColor(Color.RED);
 
-
 	}
-   
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 	}
+
 	@Override
 	protected void onPause() {
 		super.onPause();
 	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -78,14 +79,14 @@ public class BaseActivity extends Activity {
 				.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		return false;
 	};
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(keyCode==KeyEvent.KEYCODE_BACK){
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			AppManager.getAppManager().finishActivity();
-			 return true;
+			return true;
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 }

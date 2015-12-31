@@ -1,14 +1,12 @@
 package com.rvidda.cn.view;
 
-
-
-import com.rvidda.cn.R;
-
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.PopupWindow;
+
+import com.rvidda.cn.R;
 
 public abstract class BasePopupWindow extends PopupWindow {
 

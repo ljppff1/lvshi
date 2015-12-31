@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -48,10 +49,11 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.VideoView;
-import com.rvidda.cn.R;
-import com.fanxin.app.video.util.Utils;
+
 import com.easemob.util.EMLog;
 import com.easemob.util.PathUtil;
+import com.fanxin.app.video.util.Utils;
+import com.rvidda.cn.R;
 
 public class RecorderVideoActivity extends BaseActivity implements
 		OnClickListener, SurfaceHolder.Callback, OnErrorListener,

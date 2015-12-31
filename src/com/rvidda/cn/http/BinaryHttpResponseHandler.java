@@ -20,7 +20,6 @@ package com.rvidda.cn.http;
 
 import java.io.IOException;
 
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -43,209 +42,185 @@ import android.os.Message;
  * AsyncHttpClient client = new AsyncHttpClient();
  * String[] allowedTypes = new String[] { &quot;image/png&quot; };
  * client.get(&quot;http://www.example.com/image.png&quot;, new BinaryHttpResponseHandler(
- *         allowedTypes)
- * {
- *     &#064;Override
- *     public void onSuccess(byte[] imageData)
- *     {
- *         // Successfully got a response
- *     }
+ * 		allowedTypes) {
+ * 	&#064;Override
+ * 	public void onSuccess(byte[] imageData) {
+ * 		// Successfully got a response
+ * 	}
  * 
- *     &#064;Override
- *     public void onFailure(Throwable e, byte[] imageData)
- *     {
- *         // Response failed :(
- *     }
+ * 	&#064;Override
+ * 	public void onFailure(Throwable e, byte[] imageData) {
+ * 		// Response failed :(
+ * 	}
  * });
  * </pre>
  */
-public class BinaryHttpResponseHandler extends AsyncHttpResponseHandler
-{
-    // Allow images by default
-    private static String[] mAllowedContentTypes = new String[] { "image/jpeg",
-            "image/png" };
+public class BinaryHttpResponseHandler extends AsyncHttpResponseHandler {
+	// Allow images by default
+	private static String[] mAllowedContentTypes = new String[] { "image/jpeg",
+			"image/png" };
 
-    /**
-     * Creates a new BinaryHttpResponseHandler
-     */
-    public BinaryHttpResponseHandler()
-    {
-        super();
-    }
+	/**
+	 * Creates a new BinaryHttpResponseHandler
+	 */
+	public BinaryHttpResponseHandler() {
+		super();
+	}
 
-    /**
-     * Creates a new BinaryHttpResponseHandler, and overrides the default
-     * allowed content types with passed String array (hopefully) of content
-     * types.
-     */
-    public BinaryHttpResponseHandler(String[] allowedContentTypes)
-    {
-        this();
-        mAllowedContentTypes = allowedContentTypes;
-    }
+	/**
+	 * Creates a new BinaryHttpResponseHandler, and overrides the default
+	 * allowed content types with passed String array (hopefully) of content
+	 * types.
+	 */
+	public BinaryHttpResponseHandler(String[] allowedContentTypes) {
+		this();
+		mAllowedContentTypes = allowedContentTypes;
+	}
 
-    //
-    // Callbacks to be overridden, typically anonymously
-    //
+	//
+	// Callbacks to be overridden, typically anonymously
+	//
 
-    /**
-     * 
-     * 返回true时在onSuccess方法中返回byte[] 否则返回null 数据执行中非ui线程运行
-     */
-    public boolean onProcess(byte[] bytes) throws IOException
-    {
-        return true;
-    }
+	/**
+	 * 
+	 * 返回true时在onSuccess方法中返回byte[] 否则返回null 数据执行中非ui线程运行
+	 */
+	public boolean onProcess(byte[] bytes) throws IOException {
+		return true;
+	}
 
-    /**
-     * Fired when a request returns successfully, override to handle in your own
-     * code
-     * 
-     * @param binaryData
-     *            the body of the HTTP response from the server
-     */
-    public void onSuccess(byte[] binaryData)
-    {
-    }
+	/**
+	 * Fired when a request returns successfully, override to handle in your own
+	 * code
+	 * 
+	 * @param binaryData
+	 *            the body of the HTTP response from the server
+	 */
+	public void onSuccess(byte[] binaryData) {
+	}
 
-    /**
-     * Fired when a request returns successfully, override to handle in your own
-     * code
-     * 
-     * @param statusCode
-     *            the status code of the response
-     * @param binaryData
-     *            the body of the HTTP response from the server
-     */
-    public void onSuccess(int statusCode, byte[] binaryData)
-    {
-        onSuccess(binaryData);
-    }
+	/**
+	 * Fired when a request returns successfully, override to handle in your own
+	 * code
+	 * 
+	 * @param statusCode
+	 *            the status code of the response
+	 * @param binaryData
+	 *            the body of the HTTP response from the server
+	 */
+	public void onSuccess(int statusCode, byte[] binaryData) {
+		onSuccess(binaryData);
+	}
 
-    /**
-     * Fired when a request fails to complete, override to handle in your own
-     * code
-     * 
-     * @param error
-     *            the underlying cause of the failure
-     * @param binaryData
-     *            the response body, if any
-     * @deprecated
-     */
-    public void onFailure(Throwable error, byte[] binaryData)
-    {
-        // By default, call the deprecated onFailure(Throwable) for
-        // compatibility
-        onFailure(error);
-    }
+	/**
+	 * Fired when a request fails to complete, override to handle in your own
+	 * code
+	 * 
+	 * @param error
+	 *            the underlying cause of the failure
+	 * @param binaryData
+	 *            the response body, if any
+	 * @deprecated
+	 */
+	public void onFailure(Throwable error, byte[] binaryData) {
+		// By default, call the deprecated onFailure(Throwable) for
+		// compatibility
+		onFailure(error);
+	}
 
-    //
-    // Pre-processing of messages (executes in background threadpool thread)
-    //
+	//
+	// Pre-processing of messages (executes in background threadpool thread)
+	//
 
-    protected void sendSuccessMessage(int statusCode, byte[] responseBody)
-    {
-        sendMessage(obtainMessage(SUCCESS_MESSAGE, new Object[] { statusCode,
-                responseBody }));
-    }
+	protected void sendSuccessMessage(int statusCode, byte[] responseBody) {
+		sendMessage(obtainMessage(SUCCESS_MESSAGE, new Object[] { statusCode,
+				responseBody }));
+	}
 
-    protected void sendFailureMessage(Throwable e, byte[] responseBody)
-    {
-        sendMessage(obtainMessage(FAILURE_MESSAGE, new Object[] { e,
-                responseBody }));
-    }
+	protected void sendFailureMessage(Throwable e, byte[] responseBody) {
+		sendMessage(obtainMessage(FAILURE_MESSAGE, new Object[] { e,
+				responseBody }));
+	}
 
-    //
-    // Pre-processing of messages (in original calling thread, typically the UI
-    // thread)
-    //
+	//
+	// Pre-processing of messages (in original calling thread, typically the UI
+	// thread)
+	//
 
-    protected void handleSuccessMessage(int statusCode, byte[] responseBody)
-    {
-        onSuccess(statusCode, responseBody);
-    }
+	protected void handleSuccessMessage(int statusCode, byte[] responseBody) {
+		onSuccess(statusCode, responseBody);
+	}
 
-    protected void handleFailureMessage(Throwable e, byte[] responseBody)
-    {
-        onFailure(e, responseBody);
-    }
+	protected void handleFailureMessage(Throwable e, byte[] responseBody) {
+		onFailure(e, responseBody);
+	}
 
-    // Methods which emulate android's Handler and Message methods
-    protected void handleMessage(Message msg)
-    {
-        Object[] response;
-        switch (msg.what)
-        {
-        case SUCCESS_MESSAGE:
-            response = (Object[]) msg.obj;
-            handleSuccessMessage(((Integer) response[0]).intValue(),
-                    (byte[]) response[1]);
-            break;
-        case FAILURE_MESSAGE:
-            response = (Object[]) msg.obj;
-            String str = (String) response[1];
-            handleFailureMessage((Throwable) response[0], str == null ? null
-                    : str.getBytes());
-            break;
-        default:
-            super.handleMessage(msg);
-            break;
-        }
-    }
+	// Methods which emulate android's Handler and Message methods
+	protected void handleMessage(Message msg) {
+		Object[] response;
+		switch (msg.what) {
+		case SUCCESS_MESSAGE:
+			response = (Object[]) msg.obj;
+			handleSuccessMessage(((Integer) response[0]).intValue(),
+					(byte[]) response[1]);
+			break;
+		case FAILURE_MESSAGE:
+			response = (Object[]) msg.obj;
+			String str = (String) response[1];
+			handleFailureMessage((Throwable) response[0], str == null ? null
+					: str.getBytes());
+			break;
+		default:
+			super.handleMessage(msg);
+			break;
+		}
+	}
 
-    // Interface to AsyncHttpRequest
-    void sendResponseMessage(HttpResponse response)
-    {
-        StatusLine status = response.getStatusLine();
-        // Header[] contentTypeHeaders = response.getHeaders("Content-Type");
-        byte[] responseBody = null;
-        /*
-         * if(contentTypeHeaders.length != 1) { //malformed/ambiguous HTTP
-         * Header, ABORT! sendFailureMessage(new
-         * HttpResponseException(status.getStatusCode(),
-         * "None, or more than one, Content-Type Header found!"), responseBody);
-         * return; }
-         */
-        /*
-         * Header contentTypeHeader = contentTypeHeaders[0]; boolean
-         * foundAllowedContentType = false; for(String anAllowedContentType :
-         * mAllowedContentTypes) {
-         * if(anAllowedContentType.equals(contentTypeHeader.getValue())) {
-         * foundAllowedContentType = true; } } if(!foundAllowedContentType) {
-         * //Content-Type not in allowed list, ABORT! sendFailureMessage(new
-         * HttpResponseException(status.getStatusCode(),
-         * "Content-Type not allowed!"), responseBody); return; }
-         */
-        try
-        {
-            HttpEntity entity = null;
-            HttpEntity temp = response.getEntity();
-            if (temp != null)
-            {
-                entity = new BufferedHttpEntity(temp);
-            }
-            responseBody = EntityUtils.toByteArray(entity);
+	// Interface to AsyncHttpRequest
+	void sendResponseMessage(HttpResponse response) {
+		StatusLine status = response.getStatusLine();
+		// Header[] contentTypeHeaders = response.getHeaders("Content-Type");
+		byte[] responseBody = null;
+		/*
+		 * if(contentTypeHeaders.length != 1) { //malformed/ambiguous HTTP
+		 * Header, ABORT! sendFailureMessage(new
+		 * HttpResponseException(status.getStatusCode(),
+		 * "None, or more than one, Content-Type Header found!"), responseBody);
+		 * return; }
+		 */
+		/*
+		 * Header contentTypeHeader = contentTypeHeaders[0]; boolean
+		 * foundAllowedContentType = false; for(String anAllowedContentType :
+		 * mAllowedContentTypes) {
+		 * if(anAllowedContentType.equals(contentTypeHeader.getValue())) {
+		 * foundAllowedContentType = true; } } if(!foundAllowedContentType) {
+		 * //Content-Type not in allowed list, ABORT! sendFailureMessage(new
+		 * HttpResponseException(status.getStatusCode(),
+		 * "Content-Type not allowed!"), responseBody); return; }
+		 */
+		try {
+			HttpEntity entity = null;
+			HttpEntity temp = response.getEntity();
+			if (temp != null) {
+				entity = new BufferedHttpEntity(temp);
+			}
+			responseBody = EntityUtils.toByteArray(entity);
 
-            // 数据处理，文件保存
-            boolean isReturn = onProcess(responseBody);
-            if (!isReturn)
-                responseBody = null;
-        }
-        catch(IOException e)
-        {
-            sendFailureMessage(e, (byte[]) null);
-            return;
-        }
+			// 数据处理，文件保存
+			boolean isReturn = onProcess(responseBody);
+			if (!isReturn)
+				responseBody = null;
+		} catch (IOException e) {
+			sendFailureMessage(e, (byte[]) null);
+			return;
+		}
 
-        if (status.getStatusCode() >= 300)
-        {
-            sendFailureMessage(new HttpResponseException(
-                    status.getStatusCode(), status.getReasonPhrase()),
-                    responseBody);
-        }
-        else
-        {
-            sendSuccessMessage(status.getStatusCode(), responseBody);
-        }
-    }
+		if (status.getStatusCode() >= 300) {
+			sendFailureMessage(new HttpResponseException(
+					status.getStatusCode(), status.getReasonPhrase()),
+					responseBody);
+		} else {
+			sendSuccessMessage(status.getStatusCode(), responseBody);
+		}
+	}
 }

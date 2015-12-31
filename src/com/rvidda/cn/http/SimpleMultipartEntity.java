@@ -32,12 +32,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.Random;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 
@@ -45,231 +43,189 @@ import org.apache.http.protocol.HTTP;
  * 文件上传实体
  * 
  */
-class SimpleMultipartEntity implements HttpEntity
-{
-    private final static char[] MULTIPART_CHARS = "-_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            .toCharArray();
+class SimpleMultipartEntity implements HttpEntity {
+	private final static char[] MULTIPART_CHARS = "-_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+			.toCharArray();
 
-    private String boundary = null;
+	private String boundary = null;
 
-    private String PREFIX = "--", LINEND = "\r\n", CHARSET = "UTF-8";
+	private String PREFIX = "--", LINEND = "\r\n", CHARSET = "UTF-8";
 
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
+	ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-    boolean isSetLast = false;
+	boolean isSetLast = false;
 
-    boolean isSetFirst = false;
+	boolean isSetFirst = false;
 
-    public SimpleMultipartEntity()
-    {
-        final StringBuffer buf = new StringBuffer();
-        final Random rand = new Random();
-        for (int i = 0; i < 30; i++)
-        {
-            buf.append(MULTIPART_CHARS[rand.nextInt(MULTIPART_CHARS.length)]);
-        }
-        this.boundary = buf.toString();
-    }
+	public SimpleMultipartEntity() {
+		final StringBuffer buf = new StringBuffer();
+		final Random rand = new Random();
+		for (int i = 0; i < 30; i++) {
+			buf.append(MULTIPART_CHARS[rand.nextInt(MULTIPART_CHARS.length)]);
+		}
+		this.boundary = buf.toString();
+	}
 
-    public void writeFirstBoundaryIfNeeds()
-    {
-        if (!isSetFirst)
-        {
-            try
-            {
-                out.write(("--" + boundary + "\r\n").getBytes());
-            }
-            catch(final IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
+	public void writeFirstBoundaryIfNeeds() {
+		if (!isSetFirst) {
+			try {
+				out.write(("--" + boundary + "\r\n").getBytes());
+			} catch (final IOException e) {
+				e.printStackTrace();
+			}
+		}
 
-        isSetFirst = true;
-    }
+		isSetFirst = true;
+	}
 
-    public void writeLastBoundaryIfNeeds()
-    {
-        if (isSetLast)
-        {
-            return;
-        }
+	public void writeLastBoundaryIfNeeds() {
+		if (isSetLast) {
+			return;
+		}
 
-        try
-        {
-            out.write(("\r\n--" + boundary + "--\r\n").getBytes());
-        }
-        catch(final IOException e)
-        {
-            e.printStackTrace();
-        }
+		try {
+			out.write(("\r\n--" + boundary + "--\r\n").getBytes());
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
 
-        isSetLast = true;
-    }
+		isSetLast = true;
+	}
 
-    /**
-     * 添加参数
-     * 
-     * @param key
-     * @param prame
-     */
-    public void addParame(String key, String prame)
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append(PREFIX);
-        sb.append(boundary);
-        sb.append(LINEND);
-        sb.append("Content-Disposition: form-data; name=\"" + key + "\""
-                + LINEND);
-        sb.append("Content-Type: multipart/form-data; charset=" + CHARSET
-                + LINEND);
-        sb.append("Content-Transfer-Encoding: 8bit" + LINEND);
-        sb.append(LINEND);
-        sb.append(prame);
-        sb.append(LINEND);
-    }
+	/**
+	 * 添加参数
+	 * 
+	 * @param key
+	 * @param prame
+	 */
+	public void addParame(String key, String prame) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(PREFIX);
+		sb.append(boundary);
+		sb.append(LINEND);
+		sb.append("Content-Disposition: form-data; name=\"" + key + "\""
+				+ LINEND);
+		sb.append("Content-Type: multipart/form-data; charset=" + CHARSET
+				+ LINEND);
+		sb.append("Content-Transfer-Encoding: 8bit" + LINEND);
+		sb.append(LINEND);
+		sb.append(prame);
+		sb.append(LINEND);
+	}
 
-    public void addPart(final String key, final String value)
-    {
-        writeFirstBoundaryIfNeeds();
-        try
-        {
-            out.write(("Content-Disposition: form-data; name=\"" + key + "\"\r\n\r\n")
-                    .getBytes());
-            String value1 = URLEncoder.encode(value, HTTP.UTF_8);
-            out.write(value1.getBytes());
-            out.write(("\r\n--" + boundary + "\r\n").getBytes());
-        }
-        catch(final IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
+	public void addPart(final String key, final String value) {
+		writeFirstBoundaryIfNeeds();
+		try {
+			out.write(("Content-Disposition: form-data; name=\"" + key + "\"\r\n\r\n")
+					.getBytes());
+			String value1 = URLEncoder.encode(value, HTTP.UTF_8);
+			out.write(value1.getBytes());
+			out.write(("\r\n--" + boundary + "\r\n").getBytes());
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    public void addPart(final String key, final String fileName,
-            final InputStream fin, final boolean isLast)
-    {
-        addPart(key, fileName, fin, "application/octet-stream", isLast);
-    }
+	public void addPart(final String key, final String fileName,
+			final InputStream fin, final boolean isLast) {
+		addPart(key, fileName, fin, "application/octet-stream", isLast);
+	}
 
-    /**
-     * 添加文件上传部分
-     * 
-     * @param key
-     * @param fileName
-     * @param fin
-     * @param type
-     * @param isLast
-     */
-    public void addPart(final String key, final String fileName,
-            final InputStream fin, String type, final boolean isLast)
-    {
-        writeFirstBoundaryIfNeeds();
-        try
-        {
-            type = "Content-Type: " + type + "\r\n";
-            out.write(("Content-Disposition: form-data; name=\"" + key
-                    + "\"; filename=\"" + fileName + "\"\r\n").getBytes());
-            out.write(type.getBytes());
-            out.write("Content-Transfer-Encoding: binary\r\n\r\n".getBytes());
+	/**
+	 * 添加文件上传部分
+	 * 
+	 * @param key
+	 * @param fileName
+	 * @param fin
+	 * @param type
+	 * @param isLast
+	 */
+	public void addPart(final String key, final String fileName,
+			final InputStream fin, String type, final boolean isLast) {
+		writeFirstBoundaryIfNeeds();
+		try {
+			type = "Content-Type: " + type + "\r\n";
+			out.write(("Content-Disposition: form-data; name=\"" + key
+					+ "\"; filename=\"" + fileName + "\"\r\n").getBytes());
+			out.write(type.getBytes());
+			out.write("Content-Transfer-Encoding: binary\r\n\r\n".getBytes());
 
-            final byte[] tmp = new byte[4096];
-            int l = 0;
-            while ((l = fin.read(tmp)) != -1)
-            {
-                out.write(tmp, 0, l);
-            }
-            if (!isLast)
-                out.write(("\r\n--" + boundary + "\r\n").getBytes());
-            out.flush();
-        }
-        catch(final IOException e)
-        {
-            e.printStackTrace();
-        } finally
-        {
-            try
-            {
-                fin.close();
-            }
-            catch(final IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
+			final byte[] tmp = new byte[4096];
+			int l = 0;
+			while ((l = fin.read(tmp)) != -1) {
+				out.write(tmp, 0, l);
+			}
+			if (!isLast)
+				out.write(("\r\n--" + boundary + "\r\n").getBytes());
+			out.flush();
+		} catch (final IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				fin.close();
+			} catch (final IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-    public void addPart(final String key, final File value, final boolean isLast)
-    {
-        try
-        {
-            addPart(key, value.getName(), new FileInputStream(value), isLast);
-        }
-        catch(final FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-    }
+	public void addPart(final String key, final File value, final boolean isLast) {
+		try {
+			addPart(key, value.getName(), new FileInputStream(value), isLast);
+		} catch (final FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 
-    @Override
-    public long getContentLength()
-    {
-        writeLastBoundaryIfNeeds();
-        return out.toByteArray().length;
-    }
+	@Override
+	public long getContentLength() {
+		writeLastBoundaryIfNeeds();
+		return out.toByteArray().length;
+	}
 
-    @Override
-    public Header getContentType()
-    {
-        return new BasicHeader("Content-Type", "multipart/form-data; boundary="
-                + boundary);
-    }
+	@Override
+	public Header getContentType() {
+		return new BasicHeader("Content-Type", "multipart/form-data; boundary="
+				+ boundary);
+	}
 
-    @Override
-    public boolean isChunked()
-    {
-        return false;
-    }
+	@Override
+	public boolean isChunked() {
+		return false;
+	}
 
-    @Override
-    public boolean isRepeatable()
-    {
-        return true;
-    }
+	@Override
+	public boolean isRepeatable() {
+		return true;
+	}
 
-    @Override
-    public boolean isStreaming()
-    {
-        return false;
-    }
+	@Override
+	public boolean isStreaming() {
+		return false;
+	}
 
-    @Override
-    public void writeTo(final OutputStream outstream) throws IOException
-    {
-        outstream.write(out.toByteArray());
-    }
+	@Override
+	public void writeTo(final OutputStream outstream) throws IOException {
+		outstream.write(out.toByteArray());
+	}
 
-    @Override
-    public Header getContentEncoding()
-    {
-        return null;
-    }
+	@Override
+	public Header getContentEncoding() {
+		return null;
+	}
 
-    @Override
-    public void consumeContent() throws IOException,
-            UnsupportedOperationException
-    {
-        if (isStreaming())
-        {
-            throw new UnsupportedOperationException(
-                    "Streaming entity does not implement #consumeContent()");
-        }
-    }
+	@Override
+	public void consumeContent() throws IOException,
+			UnsupportedOperationException {
+		if (isStreaming()) {
+			throw new UnsupportedOperationException(
+					"Streaming entity does not implement #consumeContent()");
+		}
+	}
 
-    @Override
-    public InputStream getContent() throws IOException,
-            UnsupportedOperationException
-    {
-        return new ByteArrayInputStream(out.toByteArray());
-    }
+	@Override
+	public InputStream getContent() throws IOException,
+			UnsupportedOperationException {
+		return new ByteArrayInputStream(out.toByteArray());
+	}
 }

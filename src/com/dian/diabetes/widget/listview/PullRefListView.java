@@ -8,10 +8,6 @@
  */
 package com.dian.diabetes.widget.listview;
 
-
-
-import com.rvidda.cn.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -26,10 +22,13 @@ import android.widget.ListView;
 import android.widget.Scroller;
 import android.widget.TextView;
 
+import com.rvidda.cn.R;
+
 /**
  * 下拉刷新，上拉加载下一页
+ * 
  * @author Administrator
- *
+ * 
  */
 public class PullRefListView extends ListView implements OnScrollListener {
 
@@ -332,7 +331,8 @@ public class PullRefListView extends ListView implements OnScrollListener {
 		mPullRefreshing = true;
 		mHeaderView.setState(XListViewHeader.STATE_REFRESHING);
 		if (mHeaderViewHeight == 0) {
-			mHeaderViewHeight = getResources().getDimensionPixelSize(R.dimen.list_head_height);
+			mHeaderViewHeight = getResources().getDimensionPixelSize(
+					R.dimen.list_head_height);
 		}
 		mScroller.startScroll(0, 0, 0, mHeaderViewHeight, SCROLL_DURATION);
 		// trigger computeScroll

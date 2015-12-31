@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 
-
 public class AppManager {
 
 	private static Stack<Activity> activityStack;
@@ -21,11 +20,11 @@ public class AppManager {
 		}
 		return instance;
 	}
-	
-	public static boolean isAppmanager(){
-		boolean flag =false;
-		if(instance==null){
-			flag =true;
+
+	public static boolean isAppmanager() {
+		boolean flag = false;
+		if (instance == null) {
+			flag = true;
 		}
 		return flag;
 	}
@@ -55,37 +54,40 @@ public class AppManager {
 		Activity activity = activityStack.lastElement();
 		finishActivity(activity);
 	}
-	public boolean hasActivity(Class<?> cls){
-	   boolean flag =false;
-		if(activityStack!=null){
-		for (Activity activity : activityStack) {
-			if (activity.getClass().equals(cls)) {
-				flag =true;
+
+	public boolean hasActivity(Class<?> cls) {
+		boolean flag = false;
+		if (activityStack != null) {
+			for (Activity activity : activityStack) {
+				if (activity.getClass().equals(cls)) {
+					flag = true;
+				}
 			}
 		}
-		}
-     return flag;
+		return flag;
 	}
+
 	public void finishActivityJob4() {
-		for(int i=0;i<2;i++){
-		Activity activity = activityStack.lastElement();
-		finishActivity(activity);
-		}
-	}
-	public void finishActivityJob3() {
-		for(int i=0;i<3;i++){
-		Activity activity = activityStack.lastElement();
-		finishActivity(activity);
-		}
-	}
-	public void finishActivity5() {
-		for(int i=0;i<4;i++){
-		Activity activity = activityStack.lastElement();
-		
-		finishActivity(activity);
+		for (int i = 0; i < 2; i++) {
+			Activity activity = activityStack.lastElement();
+			finishActivity(activity);
 		}
 	}
 
+	public void finishActivityJob3() {
+		for (int i = 0; i < 3; i++) {
+			Activity activity = activityStack.lastElement();
+			finishActivity(activity);
+		}
+	}
+
+	public void finishActivity5() {
+		for (int i = 0; i < 4; i++) {
+			Activity activity = activityStack.lastElement();
+
+			finishActivity(activity);
+		}
+	}
 
 	/**
 	 * ������ǰActivity����ջ�����һ��ѹ��ģ�
@@ -106,43 +108,43 @@ public class AppManager {
 	 * ����ָ��������Activityn
 	 */
 	public void finishActivity(Class<?> cls) {
-		if(activityStack!=null){
-		for (Activity activity : activityStack) {
-			if (activity.getClass().equals(cls)) {
-				finishActivity(activity);
+		if (activityStack != null) {
+			for (Activity activity : activityStack) {
+				if (activity.getClass().equals(cls)) {
+					finishActivity(activity);
+				}
 			}
 		}
-		}
 	}
+
 	/**
 	 * ����ǰ���Activity
 	 */
 
 	public void finishAll1Activity() {
-		if(activityStack!=null){
-		for (int i = 0, size = activityStack.size()-1; i < size; i++) {
-			if (null != activityStack.get(i)) {
-				activityStack.get(i).finish();
+		if (activityStack != null) {
+			for (int i = 0, size = activityStack.size() - 1; i < size; i++) {
+				if (null != activityStack.get(i)) {
+					activityStack.get(i).finish();
+				}
 			}
-		}
-		//activityStack.clear();
-		//activityStack=null;
+			// activityStack.clear();
+			// activityStack=null;
 		}
 	}
-
 
 	/**
 	 * ��������Activity
 	 */
 	public void finishAllActivity() {
-		if(activityStack!=null){
-		for (int i = 0, size = activityStack.size(); i < size; i++) {
-			if (null != activityStack.get(i)) {
-				activityStack.get(i).finish();
+		if (activityStack != null) {
+			for (int i = 0, size = activityStack.size(); i < size; i++) {
+				if (null != activityStack.get(i)) {
+					activityStack.get(i).finish();
+				}
 			}
-		}
-		activityStack.clear();
-		activityStack=null;
+			activityStack.clear();
+			activityStack = null;
 		}
 	}
 
@@ -152,7 +154,8 @@ public class AppManager {
 	public void AppExit(Context context) {
 		try {
 			finishAllActivity();
-			ActivityManager activityMgr = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+			ActivityManager activityMgr = (ActivityManager) context
+					.getSystemService(Context.ACTIVITY_SERVICE);
 			activityMgr.restartPackage(context.getPackageName());
 			System.exit(0);
 		} catch (Exception e) {

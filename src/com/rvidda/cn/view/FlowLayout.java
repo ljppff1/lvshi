@@ -9,33 +9,27 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FlowLayout extends ViewGroup
-{
+public class FlowLayout extends ViewGroup {
 
 	private static final String TAG = "FlowLayout";
 
-
-	public FlowLayout(Context context, AttributeSet attrs)
-	{
+	public FlowLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
 	@Override
 	protected ViewGroup.LayoutParams generateLayoutParams(
-			ViewGroup.LayoutParams p)
-	{
+			ViewGroup.LayoutParams p) {
 		return new MarginLayoutParams(p);
 	}
 
 	@Override
-	public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs)
-	{
+	public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
 		return new MarginLayoutParams(getContext(), attrs);
 	}
 
 	@Override
-	protected ViewGroup.LayoutParams generateDefaultLayoutParams()
-	{
+	protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
 		return new MarginLayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.MATCH_PARENT);
 	}
@@ -44,8 +38,7 @@ public class FlowLayout extends ViewGroup
 	 * 璐熻矗璁剧疆瀛愭帶浠剁殑娴嬮噺妯″紡鍜屽ぇ灏� 鏍规嵁鎵�鏈夊瓙鎺т欢璁剧疆鑷繁鐨勫鍜岄珮
 	 */
 	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-	{
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		// 鑾峰緱瀹冪殑鐖跺鍣ㄤ负瀹冭缃殑娴嬮噺妯″紡鍜屽ぇ灏�
 		int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
@@ -70,8 +63,7 @@ public class FlowLayout extends ViewGroup
 		int cCount = getChildCount();
 
 		// 閬嶅巻姣忎釜瀛愬厓绱�
-		for (int i = 0; i < cCount; i++)
-		{
+		for (int i = 0; i < cCount; i++) {
 			View child = getChildAt(i);
 			// 娴嬮噺姣忎竴涓猚hild鐨勫鍜岄珮
 			measureChild(child, widthMeasureSpec, heightMeasureSpec);
@@ -84,8 +76,7 @@ public class FlowLayout extends ViewGroup
 			// 褰撳墠瀛愮┖闂村疄闄呭崰鎹殑楂樺害
 			int childHeight = child.getMeasuredHeight() + lp.topMargin
 					+ lp.bottomMargin;
-			if (lineWidth + childWidth > sizeWidth)
-			{
+			if (lineWidth + childWidth > sizeWidth) {
 				width = Math.max(lineWidth, childWidth);// 鍙栨渶澶х殑
 				lineWidth = childWidth; // 閲嶆柊寮�鍚柊琛岋紝寮�濮嬭褰�
 				// 鍙犲姞褰撳墠楂樺害锛�
@@ -99,8 +90,7 @@ public class FlowLayout extends ViewGroup
 				lineHeight = Math.max(lineHeight, childHeight);
 			}
 			// 濡傛灉鏄渶鍚庝竴涓紝鍒欏皢褰撳墠璁板綍鐨勬渶澶у搴﹀拰褰撳墠lineWidth鍋氭瘮杈�
-			if (i == cCount - 1)
-			{
+			if (i == cCount - 1) {
 				width = Math.max(width, lineWidth);
 				height += lineHeight;
 			}
@@ -111,6 +101,7 @@ public class FlowLayout extends ViewGroup
 				: height);
 
 	}
+
 	/**
 	 * 瀛樺偍鎵�鏈夌殑View锛屾寜琛岃褰�
 	 */
@@ -119,9 +110,9 @@ public class FlowLayout extends ViewGroup
 	 * 璁板綍姣忎竴琛岀殑鏈�澶ч珮搴�
 	 */
 	private List<Integer> mLineHeight = new ArrayList<Integer>();
+
 	@Override
-	protected void onLayout(boolean changed, int l, int t, int r, int b)
-	{
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		mAllViews.clear();
 		mLineHeight.clear();
 
@@ -133,8 +124,7 @@ public class FlowLayout extends ViewGroup
 		List<View> lineViews = new ArrayList<View>();
 		int cCount = getChildCount();
 		// 閬嶅巻鎵�鏈夌殑瀛╁瓙
-		for (int i = 0; i < cCount; i++)
-		{
+		for (int i = 0; i < cCount; i++) {
 			View child = getChildAt(i);
 			MarginLayoutParams lp = (MarginLayoutParams) child
 					.getLayoutParams();
@@ -142,8 +132,7 @@ public class FlowLayout extends ViewGroup
 			int childHeight = child.getMeasuredHeight();
 
 			// 濡傛灉宸茬粡闇�瑕佹崲琛�
-			if (childWidth + lp.leftMargin + lp.rightMargin + lineWidth > width)
-			{
+			if (childWidth + lp.leftMargin + lp.rightMargin + lineWidth > width) {
 				// 璁板綍杩欎竴琛屾墍鏈夌殑View浠ュ強鏈�澶ч珮搴�
 				mLineHeight.add(lineHeight);
 				// 灏嗗綋鍓嶈鐨刢hildView淇濆瓨锛岀劧鍚庡紑鍚柊鐨凙rrayList淇濆瓨涓嬩竴琛岀殑childView
@@ -167,38 +156,36 @@ public class FlowLayout extends ViewGroup
 		int top = 0;
 		// 寰楀埌鎬昏鏁�
 		int lineNums = mAllViews.size();
-		for (int i = 0; i < lineNums; i++)
-		{
+		for (int i = 0; i < lineNums; i++) {
 			// 姣忎竴琛岀殑鎵�鏈夌殑views
 			lineViews = mAllViews.get(i);
 			// 褰撳墠琛岀殑鏈�澶ч珮搴�
 			lineHeight = mLineHeight.get(i);
 
-			Log.e(TAG, "绗�" + i + "琛� 锛�" + lineViews.size() + " , " + lineViews);
+			Log.e(TAG, "绗�" + i + "琛� 锛�" + lineViews.size() + " , "
+					+ lineViews);
 			Log.e(TAG, "绗�" + i + "琛岋紝 锛�" + lineHeight);
 
 			// 閬嶅巻褰撳墠琛屾墍鏈夌殑View
-			for (int j = 0; j < lineViews.size(); j++)
-			{
+			for (int j = 0; j < lineViews.size(); j++) {
 				View child = lineViews.get(j);
-				if (child.getVisibility() == View.GONE)
-				{
+				if (child.getVisibility() == View.GONE) {
 					continue;
 				}
 				MarginLayoutParams lp = (MarginLayoutParams) child
 						.getLayoutParams();
 
-				//璁＄畻childView鐨刲eft,top,right,bottom
+				// 璁＄畻childView鐨刲eft,top,right,bottom
 				int lc = left + lp.leftMargin;
 				int tc = top + lp.topMargin;
-				int rc =lc + child.getMeasuredWidth();
+				int rc = lc + child.getMeasuredWidth();
 				int bc = tc + child.getMeasuredHeight();
 
 				Log.e(TAG, child + " , l = " + lc + " , t = " + t + " , r ="
 						+ rc + " , b = " + bc);
 
 				child.layout(lc, tc, rc, bc);
-				
+
 				left += child.getMeasuredWidth() + lp.rightMargin
 						+ lp.leftMargin;
 			}

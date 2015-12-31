@@ -10,8 +10,6 @@ import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.provider.MediaStore.Video.Thumbnails;
-import android.util.Log;
-
 
 public class ImageResizer extends ImageWorker {
 	private static final String TAG = "ImageResizer";
@@ -78,9 +76,10 @@ public class ImageResizer extends ImageWorker {
 
 	@Override
 	protected Bitmap processBitmap(Object data) {
-		
-		String filePath=String.valueOf(data);
-		return ThumbnailUtils.createVideoThumbnail(filePath, Thumbnails.MICRO_KIND);
+
+		String filePath = String.valueOf(data);
+		return ThumbnailUtils.createVideoThumbnail(filePath,
+				Thumbnails.MICRO_KIND);
 	}
 
 	/**

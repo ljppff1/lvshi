@@ -13,10 +13,10 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.rvidda.cn.R;
+import com.easemob.util.DensityUtil;
 import com.fanxin.app.domain.VideoEntity;
 import com.fanxin.app.task.AsyncImageLoader;
-import com.easemob.util.DensityUtil;
+import com.rvidda.cn.R;
 
 public class ChooseVideoAdapter extends BaseAdapter {
 
@@ -88,9 +88,9 @@ public class ChooseVideoAdapter extends BaseAdapter {
 			holder.tv_size.setText(videoEntity.size + "");
 			holder.videoImage.setImageResource(R.drawable.default_image);
 			holder.videoImage.setTag(position);
-			asyncImageLoader.loadImage(position, videoEntity.filePath, imageLoadListener);
+			asyncImageLoader.loadImage(position, videoEntity.filePath,
+					imageLoadListener);
 
-			 
 		}
 		return convertView;
 	}
@@ -100,55 +100,44 @@ public class ChooseVideoAdapter extends BaseAdapter {
 		TextView tv_duration;
 		ImageView videoImage;
 	}
-	
-	
-	
-	
-	AsyncImageLoader.OnImageLoadListener  imageLoadListener=new AsyncImageLoader.OnImageLoadListener() {
-		
+
+	AsyncImageLoader.OnImageLoadListener imageLoadListener = new AsyncImageLoader.OnImageLoadListener() {
+
 		@Override
 		public void onImageLoad(Integer t, Bitmap bitmap) {
-			System.out.println("posiIOn:"+t);
-			ImageView  view=(ImageView) gridView.findViewWithTag(t);
-			if(view!=null)
-			{
+			System.out.println("posiIOn:" + t);
+			ImageView view = (ImageView) gridView.findViewWithTag(t);
+			if (view != null) {
 				view.setImageBitmap(bitmap);
 			}
 		}
-		
+
 		@Override
 		public void onError(Integer t) {
-			System.out.println("onerror:"+t);
-			VideoEntity entity=getItem(t);
-			ImageView view=(ImageView) gridView.findViewWithTag(entity);
-			if(view!=null)
-			{
+			System.out.println("onerror:" + t);
+			VideoEntity entity = getItem(t);
+			ImageView view = (ImageView) gridView.findViewWithTag(entity);
+			if (view != null) {
 				view.setImageResource(R.drawable.default_image);
 			}
-			
+
 		}
 	};
-	
-	
-	
-	public void loadImage(){
-		int start=gridView.getFirstVisiblePosition();
-		int end=gridView.getLastVisiblePosition();
-		
-		if(end>=getCount())
-		{
-			end=getCount()-1;
+
+	public void loadImage() {
+		int start = gridView.getFirstVisiblePosition();
+		int end = gridView.getLastVisiblePosition();
+
+		if (end >= getCount()) {
+			end = getCount() - 1;
 		}
 		asyncImageLoader.setLoadLimit(start, end);
 		asyncImageLoader.unlock();
-		
+
 	}
-	
-	
-	
-	
-	AbsListView.OnScrollListener onScrollListener=new AbsListView.OnScrollListener() {
-		
+
+	AbsListView.OnScrollListener onScrollListener = new AbsListView.OnScrollListener() {
+
 		@Override
 		public void onScrollStateChanged(AbsListView view, int scrollState) {
 			switch (scrollState) {
@@ -161,46 +150,19 @@ public class ChooseVideoAdapter extends BaseAdapter {
 			case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
 				asyncImageLoader.lock();
 				break;
-				
+
 			default:
 				break;
 			}
-			
+
 		}
-		
+
 		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		public void onScroll(AbsListView view, int firstVisibleItem,
+				int visibleItemCount, int totalItemCount) {
 			// TODO Auto-generated method stub
-			
+
 		}
 	};
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

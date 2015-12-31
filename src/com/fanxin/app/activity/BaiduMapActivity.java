@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.BDNotifyListener;
@@ -48,7 +49,6 @@ import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.CoordinateConverter;
 import com.rvidda.cn.R;
 
-
 public class BaiduMapActivity extends BaseActivity {
 
 	static MapView mMapView = null;
@@ -67,9 +67,9 @@ public class BaiduMapActivity extends BaseActivity {
 	public static BaiduMapActivity instance = null;
 	ProgressDialog progressDialog;
 	private BaiduMap mBaiduMap;
-	
+
 	private LocationMode mCurrentMode;
-	
+
 	/**
 	 * 构造广播监听类，监听 SDK key 验证以及网络异常广播
 	 */
@@ -77,23 +77,25 @@ public class BaiduMapActivity extends BaseActivity {
 		public void onReceive(Context context, Intent intent) {
 			String s = intent.getAction();
 			if (s.equals(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR)) {
-				Toast.makeText(instance, "key 验证出错! 请在 AndroidManifest.xml 文件中检查 key 设置", Toast.LENGTH_SHORT).show();
-			} else if (s.equals(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR)) {
+				Toast.makeText(instance,
+						"key 验证出错! 请在 AndroidManifest.xml 文件中检查 key 设置",
+						Toast.LENGTH_SHORT).show();
+			} else if (s
+					.equals(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR)) {
 				Toast.makeText(instance, "网络出错", Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
 
 	private BaiduSDKReceiver mBaiduReceiver;
-	
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		instance = this;
-		//在使用SDK各组件之前初始化context信息，传入ApplicationContext  
-        //注意该方法要再setContentView方法之前实现  
-        SDKInitializer.initialize(getApplicationContext());  
+		// 在使用SDK各组件之前初始化context信息，传入ApplicationContext
+		// 注意该方法要再setContentView方法之前实现
+		SDKInitializer.initialize(getApplicationContext());
 		setContentView(R.layout.activity_baidumap);
 		mMapView = (MapView) findViewById(R.id.bmapView);
 		sendButton = (Button) findViewById(R.id.btn_location_send);
@@ -107,7 +109,7 @@ public class BaiduMapActivity extends BaseActivity {
 		if (latitude == 0) {
 			mMapView = new MapView(this, new BaiduMapOptions());
 			mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
-							mCurrentMode, true, null));
+					mCurrentMode, true, null));
 			showMapWithLocationClient();
 		} else {
 			double longtitude = intent.getDoubleExtra("longitude", 0);
@@ -129,15 +131,18 @@ public class BaiduMapActivity extends BaseActivity {
 	private void showMap(double latitude, double longtitude, String address) {
 		sendButton.setVisibility(View.GONE);
 		LatLng llA = new LatLng(latitude, longtitude);
-		CoordinateConverter converter= new CoordinateConverter();
+		CoordinateConverter converter = new CoordinateConverter();
 		converter.coord(llA);
 		converter.from(CoordinateConverter.CoordType.COMMON);
 		LatLng convertLatLng = converter.convert();
-		OverlayOptions ooA = new MarkerOptions().position(convertLatLng).icon(BitmapDescriptorFactory
-				.fromResource(R.drawable.icon_marka))
-				.zIndex(4).draggable(true);
+		OverlayOptions ooA = new MarkerOptions()
+				.position(convertLatLng)
+				.icon(BitmapDescriptorFactory
+						.fromResource(R.drawable.icon_marka)).zIndex(4)
+				.draggable(true);
 		mBaiduMap.addOverlay(ooA);
-		MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(convertLatLng, 17.0f);
+		MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(convertLatLng,
+				17.0f);
 		mBaiduMap.animateMapStatus(u);
 	}
 
@@ -201,6 +206,7 @@ public class BaiduMapActivity extends BaseActivity {
 		unregisterReceiver(mBaiduReceiver);
 		super.onDestroy();
 	}
+
 	private void initMapView() {
 		mMapView.setLongClickable(true);
 	}
@@ -222,7 +228,9 @@ public class BaiduMapActivity extends BaseActivity {
 			}
 
 			if (lastLocation != null) {
-				if (lastLocation.getLatitude() == location.getLatitude() && lastLocation.getLongitude() == location.getLongitude()) {
+				if (lastLocation.getLatitude() == location.getLatitude()
+						&& lastLocation.getLongitude() == location
+								.getLongitude()) {
 					Log.d("map", "same location, skip refresh");
 					// mMapView.refresh(); //need this refresh?
 					return;
@@ -230,16 +238,20 @@ public class BaiduMapActivity extends BaseActivity {
 			}
 			lastLocation = location;
 			mBaiduMap.clear();
-			LatLng llA = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-			CoordinateConverter converter= new CoordinateConverter();
+			LatLng llA = new LatLng(lastLocation.getLatitude(),
+					lastLocation.getLongitude());
+			CoordinateConverter converter = new CoordinateConverter();
 			converter.coord(llA);
 			converter.from(CoordinateConverter.CoordType.COMMON);
 			LatLng convertLatLng = converter.convert();
-			OverlayOptions ooA = new MarkerOptions().position(convertLatLng).icon(BitmapDescriptorFactory
-					.fromResource(R.drawable.icon_marka))
-					.zIndex(4).draggable(true);
+			OverlayOptions ooA = new MarkerOptions()
+					.position(convertLatLng)
+					.icon(BitmapDescriptorFactory
+							.fromResource(R.drawable.icon_marka)).zIndex(4)
+					.draggable(true);
 			mBaiduMap.addOverlay(ooA);
-			MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(convertLatLng, 17.0f);
+			MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(
+					convertLatLng, 17.0f);
 			mBaiduMap.animateMapStatus(u);
 		}
 
@@ -266,7 +278,8 @@ public class BaiduMapActivity extends BaseActivity {
 		intent.putExtra("address", lastLocation.getAddrStr());
 		this.setResult(RESULT_OK, intent);
 		finish();
-		overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
+		overridePendingTransition(R.anim.slide_in_from_left,
+				R.anim.slide_out_to_right);
 	}
 
 }

@@ -3,16 +3,10 @@ package com.rvidda.cn.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.style.ClickableSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -38,7 +32,7 @@ public class ZiXunLieBiao extends BaseActivity {
 	private long curentTime;
 	private List<ZXList> data = new ArrayList<ZXList>();
 	private List<ZXList> pageList = new ArrayList<ZXList>();
-    
+
 	private ZixunLieBiaoAdapter adapter;
 
 	@Override
@@ -89,16 +83,17 @@ public class ZiXunLieBiao extends BaseActivity {
 
 	private List<String> str = new ArrayList<String>();
 	private List<String> num = new ArrayList<String>();
-   
-	private Handler handler =new Handler(){
+
+	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			
+
 		};
 	};
+
 	private void loadData(final boolean state) {
-       		
+
 		handler.postDelayed(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				str.clear();
@@ -131,7 +126,7 @@ public class ZiXunLieBiao extends BaseActivity {
 				onLoad();
 			}
 		}, 2000);
-		
+
 	}
 
 	private void onLoad() {

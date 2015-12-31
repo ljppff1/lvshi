@@ -72,18 +72,15 @@ public class AsyncImageLoader {
 
 					}
 
-					
 				}
-				
+
 				if (mAllowLoad && firstLoad) {
 					loadImage(mImageUrl, mt, mListener);
 				}
-				if (mAllowLoad && mt <= mStopLoadLimit
-						&& mt >= mStartLoadLimit) {
+				if (mAllowLoad && mt <= mStopLoadLimit && mt >= mStartLoadLimit) {
 					loadImage(mImageUrl, mt, mListener);
 				}
-				
-				
+
 			}
 		}).start();
 	}

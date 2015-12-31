@@ -13,83 +13,82 @@ import android.widget.TextView;
 
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
-import com.rvidda.cn.R;
 import com.fanxin.app.activity.BaseActivity;
 import com.fanxin.app.fx.others.ChatRoomAdapter;
+import com.rvidda.cn.R;
 
 @SuppressLint("InflateParams")
 public class ChatRoomActivity extends BaseActivity {
-    private ListView groupListView;
-    protected List<EMGroup> grouplist;
-    private ChatRoomAdapter groupAdapter;
-    TextView tv_total;
-    public static ChatRoomActivity instance;
+	private ListView groupListView;
+	protected List<EMGroup> grouplist;
+	private ChatRoomAdapter groupAdapter;
+	TextView tv_total;
+	public static ChatRoomActivity instance;
 
- 
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mychatroom);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_mychatroom);
 
-        instance = this;
+		instance = this;
 
-        grouplist = EMGroupManager.getInstance().getAllGroups();
+		grouplist = EMGroupManager.getInstance().getAllGroups();
 
-        groupListView = (ListView) findViewById(R.id.groupListView);
-        View headerView = LayoutInflater.from(this).inflate(
-                R.layout.item_mychatroom_header, null);
-        View footerView = LayoutInflater.from(this).inflate(
-                R.layout.item_mychatroom_footer, null);
-        tv_total = (TextView) footerView.findViewById(R.id.tv_total);
-        tv_total.setText(String.valueOf(grouplist.size()) + "个群聊");
-        groupAdapter = new ChatRoomAdapter(this, grouplist);
-        groupListView.addHeaderView(headerView);
-        groupListView.addFooterView(footerView);
-        groupListView.setAdapter(groupAdapter);
+		groupListView = (ListView) findViewById(R.id.groupListView);
+		View headerView = LayoutInflater.from(this).inflate(
+				R.layout.item_mychatroom_header, null);
+		View footerView = LayoutInflater.from(this).inflate(
+				R.layout.item_mychatroom_footer, null);
+		tv_total = (TextView) footerView.findViewById(R.id.tv_total);
+		tv_total.setText(String.valueOf(grouplist.size()) + "个群聊");
+		groupAdapter = new ChatRoomAdapter(this, grouplist);
+		groupListView.addHeaderView(headerView);
+		groupListView.addFooterView(footerView);
+		groupListView.setAdapter(groupAdapter);
 
-        final ImageView iv_add = (ImageView) this.findViewById(R.id.iv_add);
-        ImageView iv_search = (ImageView) this.findViewById(R.id.iv_search);
-        iv_add.setOnClickListener(new OnClickListener() {
+		final ImageView iv_add = (ImageView) this.findViewById(R.id.iv_add);
+		ImageView iv_search = (ImageView) this.findViewById(R.id.iv_search);
+		iv_add.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                AddPopWindow addPopWindow = new AddPopWindow(
-                        ChatRoomActivity.this);
-                addPopWindow.showPopupWindow(iv_add);
-            }
+			@Override
+			public void onClick(View v) {
+				AddPopWindow addPopWindow = new AddPopWindow(
+						ChatRoomActivity.this);
+				addPopWindow.showPopupWindow(iv_add);
+			}
 
-        });
-        iv_search.setOnClickListener(new OnClickListener() {
+		});
+		iv_search.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
+			@Override
+			public void onClick(View v) {
 
-            }
+			}
 
-        });
-    }
+		});
+	}
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        // grouplist = EMGroupManager.getInstance().getAllGroups();
-        // groupAdapter = new MyChatRoomAdapter(this, 1, grouplist);
-        // groupListView.setAdapter(groupAdapter);
-        // groupAdapter.notifyDataSetChanged();
-    }
+	@Override
+	public void onResume() {
+		super.onResume();
+		// grouplist = EMGroupManager.getInstance().getAllGroups();
+		// groupAdapter = new MyChatRoomAdapter(this, 1, grouplist);
+		// groupListView.setAdapter(groupAdapter);
+		// groupAdapter.notifyDataSetChanged();
+	}
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        instance = null;
-    }
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		instance = null;
+	}
 
-    /**
-     * 返回
-     * 
-     * @param view
-     */
-    public void back(View view) {
-        finish();
-    }
+	/**
+	 * 返回
+	 * 
+	 * @param view
+	 */
+	public void back(View view) {
+		finish();
+	}
 }

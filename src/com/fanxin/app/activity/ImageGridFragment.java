@@ -11,11 +11,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build.VERSION_CODES;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,14 +29,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rvidda.cn.R;
+import com.easemob.util.DateUtils;
+import com.easemob.util.TextFormater;
 import com.fanxin.app.domain.VideoEntity;
 import com.fanxin.app.video.util.ImageCache;
 import com.fanxin.app.video.util.ImageResizer;
 import com.fanxin.app.video.util.Utils;
 import com.fanxin.app.widget.RecyclingImageView;
-import com.easemob.util.DateUtils;
-import com.easemob.util.TextFormater;
+import com.rvidda.cn.R;
 
 public class ImageGridFragment extends Fragment implements OnItemClickListener {
 
@@ -62,11 +60,11 @@ public class ImageGridFragment extends Fragment implements OnItemClickListener {
 				R.dimen.image_thumbnail_size);
 		mImageThumbSpacing = getResources().getDimensionPixelSize(
 				R.dimen.image_thumbnail_spacing);
-		mList=new ArrayList<VideoEntity>();
+		mList = new ArrayList<VideoEntity>();
 		getVideoFile();
 		mAdapter = new ImageAdapter(getActivity());
-		
-		ImageCache.ImageCacheParams cacheParams=new ImageCache.ImageCacheParams();
+
+		ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams();
 
 		cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of
 													// app memory
@@ -77,13 +75,12 @@ public class ImageGridFragment extends Fragment implements OnItemClickListener {
 		mImageResizer.setLoadingImage(R.drawable.empty_photo);
 		mImageResizer.addImageCache(getActivity().getSupportFragmentManager(),
 				cacheParams);
-		
-		
+
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater,
-			 ViewGroup container,  Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		final View v = inflater.inflate(R.layout.image_grid_fragment,
 				container, false);
 		final GridView mGridView = (GridView) v.findViewById(R.id.gridView);
@@ -159,24 +156,27 @@ public class ImageGridFragment extends Fragment implements OnItemClickListener {
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View v, final int position, long id) {
-		
+	public void onItemClick(AdapterView<?> parent, View v, final int position,
+			long id) {
+
 		mImageResizer.setPauseWork(true);
-		
-		if(position==0)
-		{
-			
-			Intent intent=new Intent();
+
+		if (position == 0) {
+
+			Intent intent = new Intent();
 			intent.setClass(getActivity(), RecorderVideoActivity.class);
 			startActivityForResult(intent, 100);
-		}else{
-			VideoEntity vEntty=mList.get(position-1);
+		} else {
+			VideoEntity vEntty = mList.get(position - 1);
 			// 限制大小不能超过10M
 			if (vEntty.size > 1024 * 1024 * 10) {
-				Toast.makeText(getActivity(), "暂不支持大于10M的视频！", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "暂不支持大于10M的视频！",
+						Toast.LENGTH_SHORT).show();
 				return;
 			}
-			Intent intent=getActivity().getIntent().putExtra("path", vEntty.filePath).putExtra("dur", vEntty.duration);
+			Intent intent = getActivity().getIntent()
+					.putExtra("path", vEntty.filePath)
+					.putExtra("dur", vEntty.duration);
 			getActivity().setResult(Activity.RESULT_OK, intent);
 			getActivity().finish();
 		}
@@ -197,38 +197,41 @@ public class ImageGridFragment extends Fragment implements OnItemClickListener {
 
 		@Override
 		public int getCount() {
-			return mList.size()+1;
+			return mList.size() + 1;
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return (position==0)?null:mList.get(position-1);
+			return (position == 0) ? null : mList.get(position - 1);
 		}
 
 		@Override
 		public long getItemId(int position) {
-			return position ;
+			return position;
 		}
- 
- 
+
 		@Override
 		public View getView(int position, View convertView, ViewGroup container) {
-			 ViewHolder holder=null;
-			 if(convertView==null)
-			 {
-				 holder=new ViewHolder();
-				 convertView=LayoutInflater.from(mContext).inflate(R.layout.choose_griditem, container,false);
-				 holder.imageView=(RecyclingImageView) convertView.findViewById(R.id.imageView);
-				 holder.icon=(ImageView) convertView.findViewById(R.id.video_icon);
-				 holder.tvDur=(TextView)convertView.findViewById(R.id.chatting_length_iv);
-				 holder.tvSize=(TextView)convertView.findViewById(R.id.chatting_size_iv);
-				 holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-				 holder.imageView.setLayoutParams(mImageViewLayoutParams);
-				 convertView.setTag(holder);
-			 }else{
-				 holder=(ViewHolder) convertView.getTag();
-			 }
-			 
+			ViewHolder holder = null;
+			if (convertView == null) {
+				holder = new ViewHolder();
+				convertView = LayoutInflater.from(mContext).inflate(
+						R.layout.choose_griditem, container, false);
+				holder.imageView = (RecyclingImageView) convertView
+						.findViewById(R.id.imageView);
+				holder.icon = (ImageView) convertView
+						.findViewById(R.id.video_icon);
+				holder.tvDur = (TextView) convertView
+						.findViewById(R.id.chatting_length_iv);
+				holder.tvSize = (TextView) convertView
+						.findViewById(R.id.chatting_size_iv);
+				holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+				holder.imageView.setLayoutParams(mImageViewLayoutParams);
+				convertView.setTag(holder);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
+			}
+
 			// Check the height matches our calculated column width
 			if (holder.imageView.getLayoutParams().height != mItemHeight) {
 				holder.imageView.setLayoutParams(mImageViewLayoutParams);
@@ -237,17 +240,17 @@ public class ImageGridFragment extends Fragment implements OnItemClickListener {
 			// Finally load the image asynchronously into the ImageView, this
 			// also takes care of
 			// setting a placeholder image while the background thread runs
-			if(position==0)
-			{
+			if (position == 0) {
 				holder.icon.setVisibility(View.GONE);
 				holder.tvDur.setVisibility(View.GONE);
 				holder.tvSize.setText("拍摄录像");
-				holder.imageView.setImageResource(R.drawable.actionbar_camera_icon);
-			}else{
+				holder.imageView
+						.setImageResource(R.drawable.actionbar_camera_icon);
+			} else {
 				holder.icon.setVisibility(View.VISIBLE);
-				VideoEntity entty=mList.get(position-1);
+				VideoEntity entty = mList.get(position - 1);
 				holder.tvDur.setVisibility(View.VISIBLE);
-				
+
 				holder.tvDur.setText(DateUtils.toTime(entty.duration));
 				holder.tvSize.setText(TextFormater.getDataSize(entty.size));
 				holder.imageView.setImageResource(R.drawable.empty_photo);
@@ -274,37 +277,23 @@ public class ImageGridFragment extends Fragment implements OnItemClickListener {
 			notifyDataSetChanged();
 		}
 
-		
-		
-		class ViewHolder{
-			
+		class ViewHolder {
+
 			RecyclingImageView imageView;
 			ImageView icon;
 			TextView tvDur;
 			TextView tvSize;
-			
-			
+
 		}
-		
-		
-		
-		
-		
-		
-		 
+
 	}
 
-	
-	
-	
-	
-	
-	
-	private void getVideoFile()
-	{
-		ContentResolver mContentResolver=getActivity().getContentResolver();
-		Cursor cursor=mContentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null, null, null,MediaStore.Video.DEFAULT_SORT_ORDER);
-		
+	private void getVideoFile() {
+		ContentResolver mContentResolver = getActivity().getContentResolver();
+		Cursor cursor = mContentResolver.query(
+				MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null, null, null,
+				MediaStore.Video.DEFAULT_SORT_ORDER);
+
 		if (cursor.moveToFirst()) {
 			do {
 
@@ -342,63 +331,47 @@ public class ImageGridFragment extends Fragment implements OnItemClickListener {
 			cursor.close();
 			cursor = null;
 		}
-	
-	
+
 	}
-	
-	
-	
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if(resultCode==Activity.RESULT_OK)
-		{
-			if(requestCode==100)
-			{
-				Uri uri=data.getParcelableExtra("uri");
+		if (resultCode == Activity.RESULT_OK) {
+			if (requestCode == 100) {
+				Uri uri = data.getParcelableExtra("uri");
 				String[] projects = new String[] { MediaStore.Video.Media.DATA,
 						MediaStore.Video.Media.DURATION };
-				Cursor cursor = getActivity().getContentResolver().query(
-						uri, projects, null,
-						null, null);
-				int duration=0;
-				String filePath=null;
-				
+				Cursor cursor = getActivity().getContentResolver().query(uri,
+						projects, null, null, null);
+				int duration = 0;
+				String filePath = null;
+
 				if (cursor.moveToFirst()) {
 					// 路径：MediaStore.Audio.Media.DATA
-					filePath = cursor.getString(cursor
-							.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
+					filePath = cursor
+							.getString(cursor
+									.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
 					// 总播放时长：MediaStore.Audio.Media.DURATION
 					duration = cursor
 							.getInt(cursor
 									.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION));
-					System.out.println("duration:"+duration);
+					System.out.println("duration:" + duration);
 				}
-				if(cursor!=null)
-                {
-                	cursor.close();
-                	cursor=null;
-                }
-				 
-				getActivity().setResult(Activity.RESULT_OK, getActivity().getIntent().putExtra("path", filePath).putExtra("dur", duration));
+				if (cursor != null) {
+					cursor.close();
+					cursor = null;
+				}
+
+				getActivity().setResult(
+						Activity.RESULT_OK,
+						getActivity().getIntent().putExtra("path", filePath)
+								.putExtra("dur", duration));
 				getActivity().finish();
-				
+
 			}
 		}
-		
+
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

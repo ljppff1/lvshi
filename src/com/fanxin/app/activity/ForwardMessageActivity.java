@@ -1,4 +1,5 @@
 package com.fanxin.app.activity;
+
 /**
  * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
  *
@@ -16,32 +17,32 @@ package com.fanxin.app.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.rvidda.cn.R;
 import com.fanxin.app.domain.User;
 import com.fanxin.app.fx.ChatActivity;
+import com.rvidda.cn.R;
 
 public class ForwardMessageActivity extends PickContactNoCheckboxActivity {
 	private User selectUser;
 	private String forward_msg_id;
 
-	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		forward_msg_id = getIntent().getStringExtra("forward_msg_id");
 	}
-	
-	
-	
 
 	@Override
 	protected void onListItemClick(int position) {
 		if (position != 0) {
 			selectUser = contactAdapter.getItem(position);
-			Intent intent = new Intent(ForwardMessageActivity.this, FXAlertDialog.class);
+			Intent intent = new Intent(ForwardMessageActivity.this,
+					FXAlertDialog.class);
 			intent.putExtra("cancel", true);
 			intent.putExtra("titleIsCancel", true);
-			intent.putExtra("msg", getString(R.string.confirm_forward_to, selectUser.getUsername()));
+			intent.putExtra(
+					"msg",
+					getString(R.string.confirm_forward_to,
+							selectUser.getUsername()));
 			startActivityForResult(intent, 1);
 		}
 	}

@@ -8,7 +8,6 @@ import java.util.Date;
 
 public class StringUtil {
 
-
 	/**
 	 * �?��是否为空
 	 * 
@@ -52,9 +51,9 @@ public class StringUtil {
 		if (obj == null || "".equals(obj) || "null".equals(obj)) {
 			return 0;
 		} else {
-			try{
+			try {
 				return Integer.parseInt(obj.toString());
-			}catch(Exception e){
+			} catch (Exception e) {
 				return 0;
 			}
 		}
@@ -64,9 +63,9 @@ public class StringUtil {
 		if (obj == null || "".equals(obj) || "null".equals(obj)) {
 			return 0;
 		} else {
-			try{
+			try {
 				return Short.parseShort(obj.toString());
-			}catch(Exception e){
+			} catch (Exception e) {
 				return 0;
 			}
 		}
@@ -276,7 +275,7 @@ public class StringUtil {
 
 	public static int level(float value, float level[]) {
 		for (int i = 0; i < level.length; i++) {
-			if(value < level[i]){
+			if (value < level[i]) {
 				return i;
 			}
 		}
@@ -290,6 +289,5 @@ public class StringUtil {
 		}
 
 	}
-
 
 }

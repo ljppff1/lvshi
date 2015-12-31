@@ -6,15 +6,13 @@
  */
 package com.dian.diabetes.widget.listview;
 
-
-
-import com.rvidda.cn.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import com.rvidda.cn.R;
 
 public class DFooter extends LinearLayout {
 	public final static int STATE_NORMAL = 0;
@@ -24,77 +22,82 @@ public class DFooter extends LinearLayout {
 	private Context mContext;
 
 	private View mContentView;
-	
+
 	public DFooter(Context context) {
 		super(context);
 		initView(context);
 	}
-	
+
 	public DFooter(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initView(context);
 	}
 
-	
 	public void setState(int state) {
 
 	}
-	
+
 	public void setBottomMargin(int height) {
-		if (height < 0) return ;
-		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)mContentView.getLayoutParams();
+		if (height < 0)
+			return;
+		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mContentView
+				.getLayoutParams();
 		lp.bottomMargin = height;
 		mContentView.setLayoutParams(lp);
 	}
-	
+
 	public int getBottomMargin() {
-		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)mContentView.getLayoutParams();
+		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mContentView
+				.getLayoutParams();
 		return lp.bottomMargin;
 	}
-	
+
 	/**
 	 * normal status
 	 */
 	public void normal() {
-		
+
 	}
-	
-	
+
 	/**
-	 * loading status 
+	 * loading status
 	 */
 	public void loading() {
-		
+
 	}
-	
+
 	/**
 	 * hide footer when disable pull load more
 	 */
 	public void hide() {
-		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)mContentView.getLayoutParams();
+		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mContentView
+				.getLayoutParams();
 		lp.height = 0;
 		mContentView.setLayoutParams(lp);
 	}
-	
+
 	/**
 	 * show footer
 	 */
 	public void show() {
-		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)mContentView.getLayoutParams();
+		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mContentView
+				.getLayoutParams();
 		lp.height = LayoutParams.WRAP_CONTENT;
 		mContentView.setLayoutParams(lp);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private void initView(Context context) {
 		mContext = context;
-		LinearLayout moreView = (LinearLayout)LayoutInflater.from(mContext).inflate(R.layout.widget_dbottom_rtop, null);
+		LinearLayout moreView = (LinearLayout) LayoutInflater.from(mContext)
+				.inflate(R.layout.widget_dbottom_rtop, null);
 		addView(moreView);
-		moreView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-		
+		moreView.setLayoutParams(new LinearLayout.LayoutParams(
+				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+
 		mContentView = moreView.findViewById(R.id.xlistview_footer_content);
 	}
-	
+
 	public void setVisiableHeight(int height) {
 		if (height < 0)
 			height = 0;
@@ -103,7 +106,7 @@ public class DFooter extends LinearLayout {
 		lp.height = height;
 		mContentView.setLayoutParams(lp);
 	}
-	
+
 	public int getVisiableHeight() {
 		return mContentView.getHeight();
 	}

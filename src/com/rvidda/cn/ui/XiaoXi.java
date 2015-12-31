@@ -14,30 +14,27 @@ import com.dian.diabetes.widget.listview.PullRefListView;
 import com.dian.diabetes.widget.listview.PullRefListView.IXListViewListener;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
-import com.rvidda.cn.adapter.LvShiShouYeAdapter1;
 import com.rvidda.cn.adapter.XiaoXiAdapter;
-import com.rvidda.cn.domain.LSSYList;
 import com.rvidda.cn.utils.DateUtil;
 
-public class XiaoXi extends BaseActivity{
+public class XiaoXi extends BaseActivity {
 	private List<com.rvidda.cn.domain.XiaoXi> data = new ArrayList<com.rvidda.cn.domain.XiaoXi>();
 	private List<com.rvidda.cn.domain.XiaoXi> pageList = new ArrayList<com.rvidda.cn.domain.XiaoXi>();
 	private PullRefListView listView;
 	private long curentTime;
 	private XiaoXiAdapter adapter;
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_xiaoxi);
-		   
-		 initView();
-		 
+
+		initView();
+
 	}
 
 	private void initView() {
-		
+
 		listView = (com.dian.diabetes.widget.listview.PullRefListView) this
 				.findViewById(R.id.news_list);
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -75,25 +72,26 @@ public class XiaoXi extends BaseActivity{
 	}
 
 	private List<String> str = new ArrayList<String>();
-   
-	private Handler handler =new Handler(){
+
+	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			
+
 		};
 	};
+
 	private void loadData(final boolean state) {
-       		
+
 		handler.postDelayed(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				str.clear();
 				pageList.clear();
 				for (int i = 0; i < 10; i++) {
 					com.rvidda.cn.domain.XiaoXi zx = new com.rvidda.cn.domain.XiaoXi();
-					zx.setContent("消息免费体验，，，，，"+i);
-					zx.setTime(i+"分钟前");
-					zx.setTitle("消息免费体验，，，d，，"+i);
+					zx.setContent("消息免费体验，，，，，" + i);
+					zx.setTime(i + "分钟前");
+					zx.setTitle("消息免费体验，，，d，，" + i);
 					pageList.add(zx);
 				}
 				if (state) {
@@ -108,7 +106,7 @@ public class XiaoXi extends BaseActivity{
 				onLoad();
 			}
 		}, 2000);
-		
+
 	}
 
 	private void onLoad() {
@@ -117,16 +115,15 @@ public class XiaoXi extends BaseActivity{
 		listView.setRefreshTime(DateUtil.getNowTime());
 	}
 
-	
-	OnClickListener listener =new OnClickListener() {
-		
+	OnClickListener listener = new OnClickListener() {
+
 		@Override
 		public void onClick(View v) {
-		switch (v.getId()) {
-		
-		default:
-			break;
-		}
+			switch (v.getId()) {
+
+			default:
+				break;
+			}
 		}
 	};
 

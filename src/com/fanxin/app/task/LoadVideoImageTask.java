@@ -13,10 +13,10 @@ import android.widget.ImageView;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.VideoMessageBody;
+import com.easemob.util.ImageUtils;
 import com.fanxin.app.activity.ShowVideoActivity;
 import com.fanxin.app.utils.CommonUtils;
 import com.fanxin.app.utils.ImageCache;
-import com.easemob.util.ImageUtils;
 
 public class LoadVideoImageTask extends AsyncTask<Object, Void, Bitmap> {
 
@@ -84,8 +84,7 @@ public class LoadVideoImageTask extends AsyncTask<Object, Void, Bitmap> {
 					|| message.direct == EMMessage.Direct.RECEIVE) {
 				if (CommonUtils.isNetWorkConnected(activity)) {
 					new AsyncTask<Void, Void, Void>() {
-						 
-						
+
 						@Override
 						protected Void doInBackground(Void... params) {
 							EMChatManager.getInstance().asyncFetchMessage(

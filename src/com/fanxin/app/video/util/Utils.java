@@ -20,30 +20,21 @@ public class Utils {
 
 	@SuppressLint("NewApi")
 	public static void enableStrictMode() {
-		if(Utils.hasGingerbread())
-		{
-			StrictMode.ThreadPolicy.Builder threadPolicyBuilder =
-                    new StrictMode.ThreadPolicy.Builder()
-                            .detectAll()
-                            .penaltyLog();
-            StrictMode.VmPolicy.Builder vmPolicyBuilder =
-                    new StrictMode.VmPolicy.Builder()
-                            .detectAll()
-                            .penaltyLog();
+		if (Utils.hasGingerbread()) {
+			StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder()
+					.detectAll().penaltyLog();
+			StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder()
+					.detectAll().penaltyLog();
 
-            if (Utils.hasHoneycomb()) {
-                threadPolicyBuilder.penaltyFlashScreen();
-                vmPolicyBuilder
-                        .setClassInstanceLimit(ImageGridActivity.class, 1);
-            }
-            StrictMode.setThreadPolicy(threadPolicyBuilder.build());
-            StrictMode.setVmPolicy(vmPolicyBuilder.build());
+			if (Utils.hasHoneycomb()) {
+				threadPolicyBuilder.penaltyFlashScreen();
+				vmPolicyBuilder.setClassInstanceLimit(ImageGridActivity.class,
+						1);
+			}
+			StrictMode.setThreadPolicy(threadPolicyBuilder.build());
+			StrictMode.setVmPolicy(vmPolicyBuilder.build());
 		}
-		
-		
-		
-		
-		
+
 	}
 
 	public static boolean hasFroyo() {
@@ -71,26 +62,22 @@ public class Utils {
 		return Build.VERSION.SDK_INT >= 19;
 	}
 
-	public static List<Camera.Size> getResolutionList(Camera camera)
-	{ 
+	public static List<Camera.Size> getResolutionList(Camera camera) {
 		Parameters parameters = camera.getParameters();
 		List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
 		return previewSizes;
 	}
-	
-	public static class ResolutionComparator implements Comparator<Camera.Size>{
+
+	public static class ResolutionComparator implements Comparator<Camera.Size> {
 
 		@Override
 		public int compare(Size lhs, Size rhs) {
-			if(lhs.height!=rhs.height)
-			return lhs.height-rhs.height;
+			if (lhs.height != rhs.height)
+				return lhs.height - rhs.height;
 			else
-			return lhs.width-rhs.width;
+				return lhs.width - rhs.width;
 		}
-		 
+
 	}
-	
-	
-	
-	
+
 }

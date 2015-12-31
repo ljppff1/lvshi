@@ -32,14 +32,14 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 public class DemoApplication extends Application {
-    public static String last_time ="0";
-    public List<JSONObject> list= new ArrayList<JSONObject>();    
-    public static int page=0;
+	public static String last_time = "0";
+	public List<JSONObject> list = new ArrayList<JSONObject>();
+	public static int page = 0;
 	public static Context applicationContext;
 	private static DemoApplication instance;
 	// login user name
 	public final String PREF_USERNAME = "username";
-	
+
 	/**
 	 * 当前用户nickname,为了苹果推送不是userid而是昵称
 	 */
@@ -49,34 +49,32 @@ public class DemoApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-        applicationContext = this;
-        instance = this;
+		applicationContext = this;
+		instance = this;
 
-        /**
-         * this function will initialize the HuanXin SDK
-         * 
-         * @return boolean true if caller can continue to call HuanXin related APIs after calling onInit, otherwise false.
-         * 
-         * 环信初始化SDK帮助函数
-         * 返回true如果正确初始化，否则false，如果返回为false，请在后续的调用中不要调用任何和环信相关的代码
-         * 
-         * for example:
-         * 例子：
-         * 
-         * public class DemoHXSDKHelper extends HXSDKHelper
-         * 
-         * HXHelper = new DemoHXSDKHelper();
-         * if(HXHelper.onInit(context)){
-         *     // do HuanXin related work
-         * }
-         */
-        
-        hxSDKHelper.onInit(applicationContext);    
-        getTime();
+		/**
+		 * this function will initialize the HuanXin SDK
+		 * 
+		 * @return boolean true if caller can continue to call HuanXin related
+		 *         APIs after calling onInit, otherwise false.
+		 * 
+		 *         环信初始化SDK帮助函数
+		 *         返回true如果正确初始化，否则false，如果返回为false，请在后续的调用中不要调用任何和环信相关的代码
+		 * 
+		 *         for example: 例子：
+		 * 
+		 *         public class DemoHXSDKHelper extends HXSDKHelper
+		 * 
+		 *         HXHelper = new DemoHXSDKHelper();
+		 *         if(HXHelper.onInit(context)){ // do HuanXin related work }
+		 */
+
+		hxSDKHelper.onInit(applicationContext);
+		getTime();
 		initImageLoader(getApplicationContext());
 
-        
 	}
+
 	/** 初始化图片加载类配置信息 **/
 	private void initImageLoader(Context context) {
 		@SuppressWarnings("deprecation")
@@ -90,71 +88,71 @@ public class DemoApplication extends Application {
 		ImageLoader.getInstance().init(config);
 	}
 
-	
-    private  void getTime(){
-        String hxid=getUserName();
-        if(hxid==null) return;
-        Map<String,String > map=new HashMap<String,String >();
-        map.put("hxid",hxid );
-        LoadDataFromServer task=new LoadDataFromServer(getApplicationContext(), Constant.URL_UPDATETIME, map);
-        task.getData(null);
-        
-    }
+	private void getTime() {
+		String hxid = getUserName();
+		if (hxid == null)
+			return;
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("hxid", hxid);
+		LoadDataFromServer task = new LoadDataFromServer(
+				getApplicationContext(), Constant.URL_UPDATETIME, map);
+		task.getData(null);
+
+	}
+
 	public static DemoApplication getInstance() {
 		return instance;
 	}
- 
+
 	/**
 	 * 获取内存中好友user list
-	 *
+	 * 
 	 * @return
 	 */
 	public Map<String, User> getContactList() {
-	    return hxSDKHelper.getContactList();
+		return hxSDKHelper.getContactList();
 	}
-	
-	
-	/**
-     * 获取内存中置顶好友user list
-     *
-     * @return
-     */
-	
-	public Map<String, TopUser> getTopUserList() {
-        return hxSDKHelper.getTopUserList();
-    }
-	 
-   
-	/**
-     * 设置好友user list到内存中
-     *
-     * @param contactList
-     */
-    public void setContactList(Map<String, User> contactList) {
-        hxSDKHelper.setContactList(contactList);
-    }
-    /**
-     * 设置置顶好友到内存中
-     *
-     * @param contactList
-     */
-    public void setTopUserList(Map<String, TopUser> contactList) {
-        hxSDKHelper.setTopUserList(contactList);
-    }
 
-	
+	/**
+	 * 获取内存中置顶好友user list
+	 * 
+	 * @return
+	 */
+
+	public Map<String, TopUser> getTopUserList() {
+		return hxSDKHelper.getTopUserList();
+	}
+
+	/**
+	 * 设置好友user list到内存中
+	 * 
+	 * @param contactList
+	 */
+	public void setContactList(Map<String, User> contactList) {
+		hxSDKHelper.setContactList(contactList);
+	}
+
+	/**
+	 * 设置置顶好友到内存中
+	 * 
+	 * @param contactList
+	 */
+	public void setTopUserList(Map<String, TopUser> contactList) {
+		hxSDKHelper.setTopUserList(contactList);
+	}
+
 	/**
 	 * 获取当前登陆用户名
-	 *
+	 * 
 	 * @return
 	 */
 	public String getUserName() {
-	    return hxSDKHelper.getHXId();
+		return hxSDKHelper.getHXId();
 	}
 
 	/**
 	 * 获取密码
-	 *
+	 * 
 	 * @return
 	 */
 	public String getPassword() {
@@ -163,21 +161,21 @@ public class DemoApplication extends Application {
 
 	/**
 	 * 设置用户名
-	 *
+	 * 
 	 * @param user
 	 */
 	public void setUserName(String username) {
-	    hxSDKHelper.setHXId(username);
+		hxSDKHelper.setHXId(username);
 	}
 
 	/**
 	 * 设置密码 下面的实例代码 只是demo，实际的应用中需要加password 加密后存入 preference 环信sdk
 	 * 内部的自动登录需要的密码，已经加密存储了
-	 *
+	 * 
 	 * @param pwd
 	 */
 	public void setPassword(String pwd) {
-	    hxSDKHelper.setPassword(pwd);
+		hxSDKHelper.setPassword(pwd);
 	}
 
 	/**
@@ -185,6 +183,6 @@ public class DemoApplication extends Application {
 	 */
 	public void logout(final EMCallBack emCallBack) {
 		// 先调用sdk logout，在清理app中自己的数据
-	    hxSDKHelper.logout(emCallBack);
+		hxSDKHelper.logout(emCallBack);
 	}
 }

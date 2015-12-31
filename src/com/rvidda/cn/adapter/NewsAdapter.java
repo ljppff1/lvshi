@@ -1,6 +1,5 @@
 package com.rvidda.cn.adapter;
 
-
 import java.util.List;
 
 import android.content.Context;
@@ -47,22 +46,24 @@ public class NewsAdapter extends SBaseAdapter {
 	@Override
 	protected void holderView(View convertView, Object itemObject, int position) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
-		
+
 		News news = (News) itemObject;
 		if (position == 0) {
 			holder.one.setVisibility(View.VISIBLE);
 			holder.second.setVisibility(View.GONE);
 			holder.oneTitle.setText(news.getTitle());
-			ImageLoader.getInstance().displayImage(news.getThumbnail(), holder.oneIcon, options);
+			ImageLoader.getInstance().displayImage(news.getThumbnail(),
+					holder.oneIcon, options);
 		} else {
 			holder.one.setVisibility(View.GONE);
 			holder.second.setVisibility(View.VISIBLE);
 			holder.titleView.setText(news.getTitle());
 			holder.contentView.setText(news.getSummary());
 			holder.timeView.setText(DateUtil.parseToDate(news.getDay()));
-			ImageLoader.getInstance().displayImage(news.getThumbnail(), holder.iconView, options);
+			ImageLoader.getInstance().displayImage(news.getThumbnail(),
+					holder.iconView, options);
 		}
-		
+
 	}
 
 	class ViewHolder {

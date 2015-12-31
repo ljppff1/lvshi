@@ -31,14 +31,15 @@ public class HXPreferenceUtils {
 	private String SHARED_KEY_SETTING_SPEAKER = "shared_key_setting_speaker";
 
 	private HXPreferenceUtils(Context cxt) {
-		mSharedPreferences = cxt.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+		mSharedPreferences = cxt.getSharedPreferences(PREFERENCE_NAME,
+				Context.MODE_PRIVATE);
 		editor = mSharedPreferences.edit();
 	}
 
-	public static synchronized void init(Context cxt){
-	    if(mPreferenceUtils == null){
-	        mPreferenceUtils = new HXPreferenceUtils(cxt);
-	    }
+	public static synchronized void init(Context cxt) {
+		if (mPreferenceUtils == null) {
+			mPreferenceUtils = new HXPreferenceUtils(cxt);
+		}
 	}
 
 	/**
@@ -51,7 +52,7 @@ public class HXPreferenceUtils {
 		if (mPreferenceUtils == null) {
 			throw new RuntimeException("please init first!");
 		}
-		
+
 		return mPreferenceUtils;
 	}
 
@@ -61,7 +62,8 @@ public class HXPreferenceUtils {
 	}
 
 	public boolean getSettingMsgNotification() {
-		return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_NOTIFICATION, true);
+		return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_NOTIFICATION,
+				true);
 	}
 
 	public void setSettingMsgSound(boolean paramBoolean) {

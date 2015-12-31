@@ -10,15 +10,15 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 /**
  * 应用入口
+ * 
  * @author hua
- *
+ * 
  */
 public class AppApplication extends Application {
 
-
 	public void onCreate() {
 		super.onCreate();
-		
+
 		initImageLoader(getApplicationContext());
 	}
 

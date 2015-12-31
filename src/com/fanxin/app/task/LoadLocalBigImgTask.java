@@ -20,10 +20,10 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.rvidda.cn.R;
+import com.easemob.util.ImageUtils;
 import com.fanxin.app.utils.ImageCache;
 import com.fanxin.app.widget.photoview.PhotoView;
-import com.easemob.util.ImageUtils;
+import com.rvidda.cn.R;
 
 public class LoadLocalBigImgTask extends AsyncTask<Void, Void, Bitmap> {
 
@@ -34,8 +34,8 @@ public class LoadLocalBigImgTask extends AsyncTask<Void, Void, Bitmap> {
 	private int height;
 	private Context context;
 
-	public LoadLocalBigImgTask(Context context,String path, PhotoView photoView,
-			ProgressBar pb, int width, int height) {
+	public LoadLocalBigImgTask(Context context, String path,
+			PhotoView photoView, ProgressBar pb, int width, int height) {
 		this.context = context;
 		this.path = path;
 		this.photoView = photoView;

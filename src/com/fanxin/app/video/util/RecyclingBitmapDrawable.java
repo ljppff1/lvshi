@@ -3,8 +3,6 @@ package com.fanxin.app.video.util;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
-
 
 public class RecyclingBitmapDrawable extends BitmapDrawable {
 	static final String TAG = "CountingBitmapDrawable";

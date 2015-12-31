@@ -30,10 +30,10 @@ import android.widget.ListView;
 
 import com.fanxin.app.Constant;
 import com.fanxin.app.DemoApplication;
-import com.rvidda.cn.R;
 import com.fanxin.app.domain.User;
 import com.fanxin.app.fx.others.ContactAdapter;
 import com.fanxin.app.widget.Sidebar;
+import com.rvidda.cn.R;
 
 public class PickContactNoCheckboxActivity extends BaseActivity {
 
@@ -53,12 +53,14 @@ public class PickContactNoCheckboxActivity extends BaseActivity {
 		// 获取设置contactlist
 		getContactList();
 		// 设置adapter
-		contactAdapter = new ContactAdapter(this, R.layout.row_contact, contactList);
+		contactAdapter = new ContactAdapter(this, R.layout.row_contact,
+				contactList);
 		listView.setAdapter(contactAdapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
 				onListItemClick(position);
 			}
 		});
@@ -66,11 +68,13 @@ public class PickContactNoCheckboxActivity extends BaseActivity {
 	}
 
 	protected void onListItemClick(int position) {
-//		if (position != 0) {
-			setResult(RESULT_OK, new Intent().putExtra("username", contactAdapter.getItem(position)
-					.getUsername()));
-			finish();
-//		}
+		// if (position != 0) {
+		setResult(
+				RESULT_OK,
+				new Intent().putExtra("username",
+						contactAdapter.getItem(position).getUsername()));
+		finish();
+		// }
 	}
 
 	public void back(View view) {
@@ -79,11 +83,13 @@ public class PickContactNoCheckboxActivity extends BaseActivity {
 
 	private void getContactList() {
 		contactList.clear();
-		Map<String, User> users = DemoApplication.getInstance().getContactList();
+		Map<String, User> users = DemoApplication.getInstance()
+				.getContactList();
 		Iterator<Entry<String, User>> iterator = users.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Entry<String, User> entry = iterator.next();
-			if (!entry.getKey().equals(Constant.NEW_FRIENDS_USERNAME) && !entry.getKey().equals(Constant.GROUP_USERNAME))
+			if (!entry.getKey().equals(Constant.NEW_FRIENDS_USERNAME)
+					&& !entry.getKey().equals(Constant.GROUP_USERNAME))
 				contactList.add(entry.getValue());
 		}
 		// 排序
