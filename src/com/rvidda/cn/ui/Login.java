@@ -1,6 +1,17 @@
 package com.rvidda.cn.ui;
 
-import org.json.JSONArray;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,7 +21,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -27,11 +37,16 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import com.fanxin.app.DemoApplication;
 import com.fanxin.app.DemoHXSDKHelper;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
+import com.rvidda.cn.AppManager;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
-import com.rvidda.cn.http.HttpRestClient;
-import com.rvidda.cn.http.JsonHttpResponseHandler;
-import com.rvidda.cn.http.RequestParams;
+import com.rvidda.cn.utils.Content;
+import com.rvidda.cn.utils.PreferenceUtils;
 
 public class Login extends BaseActivity {
 	private TextView mTvde;
@@ -39,13 +54,16 @@ public class Login extends BaseActivity {
 	private RelativeLayout mRll1;
 	private TextView mTvcode;
 	private CountDownTimer timer;
+	private PreferenceUtils pp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		dialog = new ProgressDialog(Login.this);
-
+     pp =PreferenceUtils.getInstance(Login.this);
+     pp.put(Content.TOKEN, "");
+     
 		if (DemoHXSDKHelper.getInstance().isLogined()) {
 			// ** 免登陆情况 加载所有本地群和会话
 			// 不是必须的，不加sdk也会自动异步去加载(不会重复加载)；
@@ -92,48 +110,86 @@ public class Login extends BaseActivity {
 		mTvde.append(spStr);
 
 	}
-	
-	private Handler handler =new Handler(){
-		public void handleMessage(android.os.Message msg) {
-		 String str =msg.toString();	
-			
-		};
-	};
-	
-	/**
-	 * 		onSuccess(statusCode, responseBody);
-	}
-
-	protected void handleFailureMessage(Throwable e, String responseBody) {
-		onFailure(e, responseBody);
-
-	 * 取验证码
-	 */
-		
-	
+    
+    
 	private void initSendCode()
 	{
-		JSONObject obj =new JSONObject();
-		try {
-			obj.put("mobile", "13652435378");
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		
-		RequestParams rp =new RequestParams();
-		rp.put("user[mobile]","18612965346" + "");
-		HttpRestClient.postLogin(this, rp,"",  new JsonHttpResponseHandler(){
-		public void onSuccess(int statusCode, String content) {
-			String str =content;
-			int dd =statusCode;
-		};
-		public void onFailure(Throwable error, String content) {
-			String str =content;
-		};
-			
-		}
-	);
+	
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("user[mobile]","13652435378" + "");
+		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.UPDATE_CHECK_URL, "post", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							JSONObject jsonObj = new JSONObject(json);
+							if (com.rvidda.cn.http.CheckUtil.checkStatusOk(jsonObj
+									.getInt("status"))) {
+								 JSONObject user = jsonObj.getJSONObject("user");
+								 String auth_token = user.getString("auth_token"); 
+								 String mobile = user.getString("mobile"); 
+								 String avatar = user.getString("avatar"); 
+								 String avatar_url = user.getString("avatar_url"); 
+								 String auth_code = user.getString("auth_code"); 
+								 String hx_user = user.getString("hx_user"); 
+								 String email = user.getString("email"); 
+								 String hx_password = user.getString("hx_password"); 
+								 int id = user.getInt("id"); 
+								 boolean mobile_confirm = user.getBoolean("mobile_confirm");
+					             pp.put(Content.TOKEN, auth_token);
+					             pp.put(Content.UserID, id);
+					             pp.put(Content.Avator_Url, avatar_url);
+					             
+					             startActivity(new Intent(getApplicationContext(), ShouYe.class));
+								 AppManager.getAppManager().finishActivity();
+
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
 	}
+		private void initLogin()
+		{
+			
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("user[mobile]","13652435378" + "");
+			com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.UPDATE_CHECK_URL, "get", params,
+					new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+						@Override
+						public void callback(String json) {
+							try {
+								JSONObject jsonObj = new JSONObject(json);
+								if (com.rvidda.cn.http.CheckUtil.checkStatusOk(jsonObj
+										.getInt("status"))) {
+									 JSONObject user = jsonObj.getJSONObject("user");
+									 String auth_token = user.getString("auth_token"); 
+									 String mobile = user.getString("mobile"); 
+									 String avatar = user.getString("avatar"); 
+									 String avatar_url = user.getString("avatar_url"); 
+									 String auth_code = user.getString("auth_code"); 
+									 String hx_user = user.getString("hx_user"); 
+									 String email = user.getString("email"); 
+									 String hx_password = user.getString("hx_password"); 
+									 int id = user.getInt("id"); 
+									 boolean mobile_confirm = user.getBoolean("mobile_confirm");
+						             pp.put(Content.TOKEN, auth_token);
+						             pp.put(Content.UserID, id);
+						             pp.put(Content.Avator_Url, avatar_url);
+						             
+						             startActivity(new Intent(getApplicationContext(), ShouYe.class));
+									 AppManager.getAppManager().finishActivity();
+
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+					});
+
+		}
 
 	 public static String createJsonString(String key, Object value) {
 		  JSONObject jsonObject = new JSONObject();

@@ -70,6 +70,10 @@
         <item name="android:textColor">@color/re1</item>
         <item name="android:textSize">@dimen/sp36</item>
     </style>
+              <style name="t_r_30">
+        <item name="android:textColor">@color/re1</item>
+        <item name="android:textSize">@dimen/sp30</item>
+    </style>
               
           <style name="t_g_26">
         <item name="android:textColor">@color/textco2</item>

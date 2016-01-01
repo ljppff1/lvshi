@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -29,6 +32,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lidroid.xutils.http.RequestParams;
+import com.rvidda.cn.AppManager;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
 import com.rvidda.cn.domain.Items;
@@ -71,8 +76,14 @@ public class ShouYe extends BaseActivity {
 			items.setFlag(false);
 			list.add(items);
 		}
+		initgetBiaoqian();
+		
 	}
 
+	private void initgetBiaoqian()
+	{}
+
+	
 	private void createFileK() {
 		if (Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
@@ -133,8 +144,8 @@ public class ShouYe extends BaseActivity {
 		mRlsure = (RelativeLayout) this.findViewById(R.id.mRlsure);
 		mRlsure.setVisibility(View.GONE);
 		mRlsure.setOnClickListener(listener);
-
 		mIvtalk = (ImageView) this.findViewById(R.id.mIvtalk);
+		mIvtalk.setVisibility(View.VISIBLE);
 		anim = (AnimationDrawable) mIvtalk.getBackground();
 		mIvtalk.setOnClickListener(listener);
 		mIvtalk.setOnLongClickListener(new OnLongClickListener() {
@@ -156,6 +167,7 @@ public class ShouYe extends BaseActivity {
 							mRlsure.setVisibility(View.VISIBLE);
 							mIvshow1.setVisibility(View.GONE);
 							mIvshow2.setVisibility(View.GONE);
+							mIvtalk.setVisibility(View.GONE);
 							mLLshow3.setVisibility(View.VISIBLE);
 							flagl = false;
 						} else {
@@ -167,6 +179,39 @@ public class ShouYe extends BaseActivity {
 						}
 					}
 				}, 2000);
+				handler.postDelayed(new Runnable() {
+					
+					@Override
+					public void run() {
+						Toast toast = Toast.makeText(
+								getApplicationContext(), "录音时间还剩10s", 0);
+						toast.setGravity(Gravity.CENTER, 0, 0);
+						toast.show();
+						
+					}
+				}, 10000);
+				handler.postDelayed(new Runnable() {
+					
+					@Override
+					public void run() {
+						Toast toast = Toast.makeText(
+								getApplicationContext(), "录音完成", 0);
+						toast.setGravity(Gravity.CENTER, 0, 0);
+						toast.show();
+
+						if (Flag) {
+							media.stopRecord();
+							Flag = false;
+						}
+						if (anim != null && anim.isRunning()) {
+							anim.selectDrawable(0);
+							anim.stop();
+
+							// startActivity(new Intent(ShouYe.this, Zixun.class));
+						}
+						
+					}
+				}, 20000);
 
 				media.startRecord();
 				Flag = true;
@@ -234,6 +279,9 @@ public class ShouYe extends BaseActivity {
 					} else {
 						flagl = true;
 					}
+					
+
+					
 					if (Flag) {
 						media.stopRecord();
 						Flag = false;
@@ -322,7 +370,6 @@ public class ShouYe extends BaseActivity {
 
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
 			return list.size();
 		}
 
@@ -348,6 +395,7 @@ public class ShouYe extends BaseActivity {
 
 				break;
 			case R.id.mRlsure:
+				initgetBiaoqian();
 				startActivity(new Intent(getApplicationContext(),
 						TiChuZiXun.class));
 				break;
@@ -357,4 +405,11 @@ public class ShouYe extends BaseActivity {
 		}
 	};
 
+	//七牛的
+	private void initgetQiNiu()
+	{}
+
+	
+	
+	
 }

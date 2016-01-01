@@ -2178,107 +2178,107 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int zxlb4=0x7f08005c;
     }
     public static final class style {
-        public static final int AnimBottom=0x7f09001c;
-        public static final int AnimFade=0x7f09001a;
-        public static final int AnimFade2=0x7f09001b;
-        public static final int AnimHead=0x7f09001f;
-        public static final int AnimTop=0x7f09001d;
-        public static final int AnimTop2=0x7f09001e;
-        public static final int Anim_style=0x7f090020;
-        public static final int Anim_style2=0x7f090021;
+        public static final int AnimBottom=0x7f09001d;
+        public static final int AnimFade=0x7f09001b;
+        public static final int AnimFade2=0x7f09001c;
+        public static final int AnimHead=0x7f090020;
+        public static final int AnimTop=0x7f09001e;
+        public static final int AnimTop2=0x7f09001f;
+        public static final int Anim_style=0x7f090021;
+        public static final int Anim_style2=0x7f090022;
         /**  右上角popupwindow 
          */
-        public static final int AnimationPreview=0x7f09002b;
+        public static final int AnimationPreview=0x7f09002c;
         public static final int AppBaseTheme=0x7f090000;
         public static final int AppTheme=0x7f090001;
         public static final int Dialog=0x7f090004;
         /**  模糊 
          */
-        public static final int HeadScale=0x7f090028;
-        public static final int MyAlertDialog=0x7f090025;
+        public static final int HeadScale=0x7f090029;
+        public static final int MyAlertDialog=0x7f090026;
         /** 
     <style name="horizontal_slide2" parent="android:style/Theme.Holo.Light.NoActionBar">
         <item name="android:windowAnimationStyle">@style/AnimFade2</item>
     </style>
     
          */
-        public static final int MyDialogStyle=0x7f090024;
+        public static final int MyDialogStyle=0x7f090025;
         /**  模糊 
          */
-        public static final int MyDialogStyleBottom=0x7f090026;
+        public static final int MyDialogStyleBottom=0x7f090027;
         /**  模糊 
          */
-        public static final int MyDialogStyleTop=0x7f090027;
+        public static final int MyDialogStyleTop=0x7f090028;
         public static final int Popup_Animation_Alpha=0x7f090003;
         public static final int TranDialog=0x7f090005;
         public static final int activityTheme=0x7f090006;
-        public static final int add_entry_text=0x7f09004c;
-        public static final int alarm_alert=0x7f090056;
-        public static final int back_button_style=0x7f090037;
-        public static final int bingli_value=0x7f090062;
-        public static final int bottom_line_edit_text_style=0x7f09002a;
-        public static final int bottom_radio_item=0x7f090035;
-        public static final int button_style=0x7f090036;
-        public static final int chart_title_text=0x7f09005e;
-        public static final int chat_content_date_style=0x7f090017;
-        public static final int chat_text_date_style=0x7f090019;
-        public static final int chat_text_name_style=0x7f090018;
-        public static final int content=0x7f090031;
-        public static final int curent_day=0x7f090038;
+        public static final int add_entry_text=0x7f09004d;
+        public static final int alarm_alert=0x7f090057;
+        public static final int back_button_style=0x7f090038;
+        public static final int bingli_value=0x7f090063;
+        public static final int bottom_line_edit_text_style=0x7f09002b;
+        public static final int bottom_radio_item=0x7f090036;
+        public static final int button_style=0x7f090037;
+        public static final int chart_title_text=0x7f09005f;
+        public static final int chat_content_date_style=0x7f090018;
+        public static final int chat_text_date_style=0x7f09001a;
+        public static final int chat_text_name_style=0x7f090019;
+        public static final int content=0x7f090032;
+        public static final int curent_day=0x7f090039;
         /**  下拉刷新，上拉加载 
          */
-        public static final int customProgressBar=0x7f09002c;
-        public static final int date_label=0x7f09003b;
-        public static final int date_show=0x7f090041;
-        public static final int devide_line_eee=0x7f090029;
-        public static final int eat_curent_day=0x7f090039;
-        public static final int eat_sport_date=0x7f090042;
-        public static final int eatimp_label=0x7f090058;
-        public static final int edit_text_style=0x7f090046;
-        public static final int ee_content=0x7f090032;
-        public static final int effect_day=0x7f09003a;
-        public static final int effect_label=0x7f09004e;
-        public static final int effect_line=0x7f090050;
-        public static final int effect_title=0x7f090043;
-        public static final int effect_title_label=0x7f090044;
-        public static final int effect_title_value=0x7f090045;
-        public static final int effect_value=0x7f09004f;
-        public static final int equip_entry_text=0x7f09004d;
-        public static final int grid_clock=0x7f09003e;
-        public static final int grid_title=0x7f09003f;
-        public static final int horizontal_slide=0x7f090022;
-        public static final int impl_item_style=0x7f090060;
-        public static final int indicate_head=0x7f09005b;
-        public static final int indicate_label_title=0x7f090061;
-        public static final int indicate_top=0x7f09005f;
-        public static final int item_content=0x7f090064;
-        public static final int item_eat=0x7f09005d;
-        public static final int item_white_bg=0x7f090040;
-        public static final int list_dialog=0x7f09002d;
-        public static final int listview_style=0x7f090055;
-        public static final int main_button_item=0x7f090033;
-        public static final int main_button_text=0x7f090034;
-        public static final int medicine_edittext=0x7f09005c;
-        public static final int medicine_item=0x7f09005a;
-        public static final int medicine_label=0x7f090059;
-        public static final int memberinfo_item_edittext=0x7f090053;
-        public static final int memberinfoedit_item_edittext=0x7f090054;
-        public static final int nornal_style=0x7f090023;
-        public static final int page_title=0x7f09002f;
-        public static final int page_title1=0x7f090030;
-        public static final int page_title_str=0x7f09002e;
-        public static final int pick_photo_style=0x7f09003c;
-        public static final int radio_group=0x7f090051;
-        public static final int report_label=0x7f090057;
-        public static final int report_title=0x7f090063;
-        public static final int sugar_effect_label=0x7f090047;
-        public static final int sugar_effect_value=0x7f090048;
-        public static final int sugar_target_label=0x7f09004a;
-        public static final int t_b1_20=0x7f090015;
-        public static final int t_b1_24=0x7f090012;
-        public static final int t_b1_26=0x7f090011;
-        public static final int t_b1_28=0x7f090010;
-        public static final int t_b2_26=0x7f090016;
+        public static final int customProgressBar=0x7f09002d;
+        public static final int date_label=0x7f09003c;
+        public static final int date_show=0x7f090042;
+        public static final int devide_line_eee=0x7f09002a;
+        public static final int eat_curent_day=0x7f09003a;
+        public static final int eat_sport_date=0x7f090043;
+        public static final int eatimp_label=0x7f090059;
+        public static final int edit_text_style=0x7f090047;
+        public static final int ee_content=0x7f090033;
+        public static final int effect_day=0x7f09003b;
+        public static final int effect_label=0x7f09004f;
+        public static final int effect_line=0x7f090051;
+        public static final int effect_title=0x7f090044;
+        public static final int effect_title_label=0x7f090045;
+        public static final int effect_title_value=0x7f090046;
+        public static final int effect_value=0x7f090050;
+        public static final int equip_entry_text=0x7f09004e;
+        public static final int grid_clock=0x7f09003f;
+        public static final int grid_title=0x7f090040;
+        public static final int horizontal_slide=0x7f090023;
+        public static final int impl_item_style=0x7f090061;
+        public static final int indicate_head=0x7f09005c;
+        public static final int indicate_label_title=0x7f090062;
+        public static final int indicate_top=0x7f090060;
+        public static final int item_content=0x7f090065;
+        public static final int item_eat=0x7f09005e;
+        public static final int item_white_bg=0x7f090041;
+        public static final int list_dialog=0x7f09002e;
+        public static final int listview_style=0x7f090056;
+        public static final int main_button_item=0x7f090034;
+        public static final int main_button_text=0x7f090035;
+        public static final int medicine_edittext=0x7f09005d;
+        public static final int medicine_item=0x7f09005b;
+        public static final int medicine_label=0x7f09005a;
+        public static final int memberinfo_item_edittext=0x7f090054;
+        public static final int memberinfoedit_item_edittext=0x7f090055;
+        public static final int nornal_style=0x7f090024;
+        public static final int page_title=0x7f090030;
+        public static final int page_title1=0x7f090031;
+        public static final int page_title_str=0x7f09002f;
+        public static final int pick_photo_style=0x7f09003d;
+        public static final int radio_group=0x7f090052;
+        public static final int report_label=0x7f090058;
+        public static final int report_title=0x7f090064;
+        public static final int sugar_effect_label=0x7f090048;
+        public static final int sugar_effect_value=0x7f090049;
+        public static final int sugar_target_label=0x7f09004b;
+        public static final int t_b1_20=0x7f090016;
+        public static final int t_b1_24=0x7f090013;
+        public static final int t_b1_26=0x7f090012;
+        public static final int t_b1_28=0x7f090011;
+        public static final int t_b2_26=0x7f090017;
         public static final int t_b_30=0x7f090007;
         public static final int t_b_36=0x7f09000d;
         public static final int t_bl_30=0x7f090008;
@@ -2286,15 +2286,16 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int t_d_30_1=0x7f090009;
         public static final int t_d_30_2=0x7f09000a;
         public static final int t_d_30_3=0x7f09000b;
-        public static final int t_e1_24=0x7f090013;
-        public static final int t_e3_24=0x7f090014;
-        public static final int t_g_26=0x7f09000f;
+        public static final int t_e1_24=0x7f090014;
+        public static final int t_e3_24=0x7f090015;
+        public static final int t_g_26=0x7f090010;
+        public static final int t_r_30=0x7f09000f;
         public static final int t_r_36=0x7f09000e;
         public static final int tab_text=0x7f090002;
-        public static final int target_edit=0x7f09004b;
-        public static final int title_text_btn=0x7f090052;
-        public static final int total_chart_title=0x7f090049;
-        public static final int week=0x7f09003d;
+        public static final int target_edit=0x7f09004c;
+        public static final int title_text_btn=0x7f090053;
+        public static final int total_chart_title=0x7f09004a;
+        public static final int week=0x7f09003e;
     }
     public static final class styleable {
         /** Attributes that can be used with a CircleImageView.
