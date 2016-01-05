@@ -11,11 +11,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,10 +42,19 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
 import com.easemob.EMCallBack;
+import com.easemob.EMError;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
+import com.easemob.util.VoiceRecorder;
 import com.fanxin.app.DemoApplication;
+import com.fanxin.app.adapter.VoicePlayClickListener;
+import com.fanxin.app.utils.CommonUtils;
 import com.lidroid.xutils.http.RequestParams;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UpProgressHandler;
+import com.qiniu.android.storage.UploadManager;
+import com.qiniu.android.storage.UploadOptions;
 import com.rvidda.cn.AppManager;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
@@ -51,6 +65,8 @@ import com.rvidda.cn.utils.Media;
 import com.rvidda.cn.utils.PreferenceUtils;
 
 public class ShouYe extends BaseActivity {
+	private String toChatUsername;
+	private String filepath;
 
 	private ImageView mIvtalk;
 	private AnimationDrawable anim;
@@ -60,20 +76,48 @@ public class ShouYe extends BaseActivity {
 	private ImageView mIvshow2;
 	private LinearLayout mLLshow3;
 	private long exitTime1 = 0;
-	private boolean flagl = true;;
+	private boolean flagl = true;;//判断时间 入口，<2s就继续。>2s肯定会显示那个列表。。
 	private boolean flagan = false;//是否按下
+	private String file_path;
 
 	private String[] listd1 = { "婚姻", "交通", "税务", "债务", "合同", "房屋", "劳动协议",
 			"知识产权", "其它", "婚姻", "更多" };
 	private GridView mGv1;
 	private List<Items> list = new ArrayList<Items>();
 	private Myadapter adapter;
+	private WakeLock wakeLock;
+	private Handler micImageHandler = new Handler() {
+		@Override
+		public void handleMessage(android.os.Message msg) {
+			// 切换msg切换图片
+			micImage.setImageDrawable(micImages[msg.what]);
+		}
+	};
+	private VoiceRecorder voiceRecorder;
+	private Drawable[] micImages;
+	private ImageView micImage;
+	private View recordingContainer;
+	private TextView recordingHint;
 
+	@Override
+	protected void onResume() {
+		//取消
+		flagan=false;
+		flagl = true;
+				mIvshow1.setVisibility(View.VISIBLE);
+				mIvshow2.setVisibility(View.VISIBLE);
+				mLLshow3.setVisibility(View.GONE);
+				mRlsure.setVisibility(View.GONE);
+				mIvtalk.setVisibility(View.VISIBLE);
+				
+		super.onResume();
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_shouye);
 		media = new Media();
+		initHuanXin();
 		login();
 		initView();
 
@@ -82,7 +126,34 @@ public class ShouYe extends BaseActivity {
 		// createFileK();
 	}
 
+    private void initHuanXin(){
+		micImage = (ImageView) findViewById(R.id.mic_image);
 
+		// 动画资源文件,用于录制语音时
+		micImages = new Drawable[] {
+				getResources().getDrawable(R.drawable.record_animate_01),
+				getResources().getDrawable(R.drawable.record_animate_02),
+				getResources().getDrawable(R.drawable.record_animate_03),
+				getResources().getDrawable(R.drawable.record_animate_04),
+				getResources().getDrawable(R.drawable.record_animate_05),
+				getResources().getDrawable(R.drawable.record_animate_06),
+				getResources().getDrawable(R.drawable.record_animate_07),
+				getResources().getDrawable(R.drawable.record_animate_08),
+				getResources().getDrawable(R.drawable.record_animate_09),
+				getResources().getDrawable(R.drawable.record_animate_10),
+				getResources().getDrawable(R.drawable.record_animate_11),
+				getResources().getDrawable(R.drawable.record_animate_12),
+				getResources().getDrawable(R.drawable.record_animate_13),
+				getResources().getDrawable(R.drawable.record_animate_14), };
+
+		recordingContainer = findViewById(R.id.recording_container);
+		recordingHint = (TextView) findViewById(R.id.recording_hint);
+		voiceRecorder = new VoiceRecorder(micImageHandler);
+		wakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE))
+				.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "demo");
+
+    }
+	
 	private void initgetBiaoqian()
 	{
 	
@@ -119,43 +190,7 @@ public class ShouYe extends BaseActivity {
 					}
 				});
 	}
-	private void inisendBiaoqian()
-	{
-		List<Integer> listss =new ArrayList<Integer>();
-	  for(int i=0;i<list.size();i++){
-		  if(list.get(i).getFlag()){
-			  listss.add(list.get(i).getId());
-		  }
-	  }
-	  String str ="[";
-	  for(int i=0;i<listss.size();i++){
-		  if(i<=listss.size()-1){
-			str =str +listss.get(i)+"]";  
-		  }else{
-				str =str +listss.get(i)+",";   
-		  }
-	  }
-	  
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("subject.title", "");
-		params.put("subject.label_ids", str);
-		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.HOST+"/subjects/"+"id", "put", params,
-				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
-					@Override
-					public void callback(String json) {
-						try {
-							if(!json.equals("0")){
-							JSONObject jsonObj = new JSONObject(json);
-
-							}else{
-			                       Toast.makeText(getApplicationContext(), R.string.zx1, 0).show();
-										}
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-					}
-				});
-	}
+	
 	
 	
 	private void initData() {
@@ -283,20 +318,16 @@ public class ShouYe extends BaseActivity {
 		mIvshow2 = (ImageView) this.findViewById(R.id.mIvshow2);
 		mLLshow3 = (LinearLayout) this.findViewById(R.id.mLLshow3);
 		mRlsure = (RelativeLayout) this.findViewById(R.id.mRlsure);
+		mRlsure.setOnClickListener(listener);
 		mRlsure.setVisibility(View.GONE);
-		mRlsure.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(getApplicationContext(),
-						TiChuZiXun.class));				
-			}
-		});
 		mIvtalk = (ImageView) this.findViewById(R.id.mIvtalk);
 		mIvtalk.setVisibility(View.VISIBLE);
 		anim = (AnimationDrawable) mIvtalk.getBackground();
-		mIvtalk.setOnClickListener(listener);
-		mIvtalk.setOnLongClickListener(new OnLongClickListener() {
+		
+		
+		
+		mIvtalk.setOnTouchListener(new PressToSpeakListen());
+/*		mIvtalk.setOnLongClickListener(new OnLongClickListener() {
 
 			@Override
 			public boolean onLongClick(View v) {
@@ -367,7 +398,7 @@ public class ShouYe extends BaseActivity {
 				return false;
 			}
 		});
-		mVVli = (RelativeLayout) this.findViewById(R.id.mRlwhatshow);
+*/		mVVli = (RelativeLayout) this.findViewById(R.id.mRlwhatshow);
 		mVVli.setOnTouchListener(new OnTouchListener() {
 
 			private float x1;
@@ -394,7 +425,7 @@ public class ShouYe extends BaseActivity {
 			}
 		});
 
-		mIvtalk.setOnTouchListener(new OnTouchListener() {
+/*		mIvtalk.setOnTouchListener(new OnTouchListener() {
 
 			private float x1;
 			private float y1;
@@ -441,9 +472,146 @@ public class ShouYe extends BaseActivity {
 				}
 				return false;
 			}
-		});
+		});*/
 
 	}
+	
+
+	/**
+	 * 按住说话listener
+	 * 
+	 */
+	class PressToSpeakListen implements View.OnTouchListener {
+
+		@SuppressLint({ "ClickableViewAccessibility", "Wakelock" })
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				exitTime1 = System.currentTimeMillis();
+				flagan = true;
+				if (!CommonUtils.isExitsSdcard()) {
+					Toast.makeText(ShouYe.this, "发送语音需要sdcard支持！",
+							Toast.LENGTH_SHORT).show();
+					return false;
+				}
+				try {
+					v.setPressed(true);
+					wakeLock.acquire();
+					if (VoicePlayClickListener.isPlaying)
+						VoicePlayClickListener.currentPlayListener
+								.stopPlayVoice();
+					recordingContainer.setVisibility(View.VISIBLE);
+					recordingHint
+							.setText(getString(R.string.move_up_to_cancel));
+					recordingHint.setBackgroundColor(Color.TRANSPARENT);
+					voiceRecorder.startRecording(null, toChatUsername,
+							getApplicationContext());
+					
+					handler.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							if (flagl&&flagan) {
+								mIvshow1.setVisibility(View.GONE);
+								mIvshow2.setVisibility(View.GONE);
+								mLLshow3.setVisibility(View.VISIBLE);
+								flagl = false;
+							} else {
+								flagl = true;
+								Toast toast = Toast.makeText(
+										getApplicationContext(), "录音时间太短", 0);
+								toast.setGravity(Gravity.CENTER, 0, 0);
+								toast.show();
+							}
+						}
+					}, 2000);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					v.setPressed(false);
+					if (wakeLock.isHeld())
+						wakeLock.release();
+					if (voiceRecorder != null)
+						voiceRecorder.discardRecording();
+					recordingContainer.setVisibility(View.INVISIBLE);
+					Toast.makeText(ShouYe.this, R.string.recoding_fail,
+							Toast.LENGTH_SHORT).show();
+					return false;
+				}
+
+				return true;
+			case MotionEvent.ACTION_MOVE: {
+				if (event.getY() < 0) {
+					recordingHint
+							.setText(getString(R.string.release_to_cancel));
+					recordingHint
+							.setBackgroundResource(R.drawable.recording_text_hint_bg);
+				} else {
+					recordingHint
+							.setText(getString(R.string.move_up_to_cancel));
+					recordingHint.setBackgroundColor(Color.TRANSPARENT);
+				}
+				return true;
+			}
+			case MotionEvent.ACTION_UP:
+				//抬起，如果大于2s是true，
+				if (System.currentTimeMillis() - exitTime1 < 2000) {
+					flagl = false;
+				} else {
+					flagl = true;
+					mRlsure.setVisibility(View.VISIBLE);
+					mIvtalk.setVisibility(View.GONE);
+				}
+
+				v.setPressed(false);
+				recordingContainer.setVisibility(View.INVISIBLE);
+				if (wakeLock.isHeld())
+					wakeLock.release();
+				if (event.getY() < 0) {
+					// discard the recorded audio.
+					voiceRecorder.discardRecording();
+					//取消
+					flagan=false;
+							mIvshow1.setVisibility(View.VISIBLE);
+							mIvshow2.setVisibility(View.VISIBLE);
+							mLLshow3.setVisibility(View.GONE);
+							mRlsure.setVisibility(View.GONE);
+							mIvtalk.setVisibility(View.VISIBLE);
+
+				} else {
+					// stop recording and send voice file
+					try {
+						int length = voiceRecorder.stopRecoding();
+						if (length > 0) {
+/*							sendVoice(voiceRecorder.getVoiceFilePath(),
+									voiceRecorder
+											.getVoiceFileName(toChatUsername),
+									Integer.toString(length), false);
+*/				//	sendFileAndLvyin(voiceRecorder.getVoiceFilePath());
+							file_path =voiceRecorder.getVoiceFilePath();
+							} else if (length == EMError.INVALID_FILE) {
+							Toast.makeText(getApplicationContext(), "无录音权限",
+									Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(getApplicationContext(), "录音时间太短",
+									Toast.LENGTH_SHORT).show();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+						Toast.makeText(ShouYe.this, "发送失败，请检测服务器是否连接",
+								Toast.LENGTH_SHORT).show();
+					}
+				}
+				return true;
+			default:
+				recordingContainer.setVisibility(View.INVISIBLE);
+				if (voiceRecorder != null)
+					voiceRecorder.discardRecording();
+				return false;
+			}
+		}
+	}
+
 
 	class Holder {
 		TextView mTvg1;
@@ -540,8 +708,7 @@ public class ShouYe extends BaseActivity {
 
 				break;
 			case R.id.mRlsure:
-				startActivity(new Intent(getApplicationContext(),
-						TiChuZiXun.class));
+				sendFileAndLvyin("");
 				break;
 			default:
 				break;
@@ -549,11 +716,111 @@ public class ShouYe extends BaseActivity {
 		}
 	};
 
-	//七牛的
-	private void initgetQiNiu()
-	{}
+	
 
+	//发送文件到七牛
+	public void sendFileAndLvyin(final String filenames){		
+		Map<String, Object> params = new HashMap<String, Object>();
+		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.QiNiu, "get", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+							JSONObject jsonObj = new JSONObject(json);
+							String uptoken = jsonObj.getString("uptoken");
+						    String key = jsonObj.getString("key");
+                            sendFiletoQiNiu(file_path,uptoken, key);
+							}else{
+			                       Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
+										}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+	}
+	private void sendFiletoQiNiu(String file,String uptoken,String key) {
+		UploadManager uploadManager = new UploadManager();
+		try{
+		uploadManager.put(file, key, uptoken,
+		new UpCompletionHandler() {
+		    @Override
+			public void complete(String key, ResponseInfo info, JSONObject res) {
+				// TODO Auto-generated method stub
+		        Log.e("qiniu---", key + ",\r\n " + info + ",\r\n " + res);
+		        try {
+					String keyvalue = res.getString("key");
+					initTiJiao(keyvalue);
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+//   /storage/2A94-E4F0/DCIM/Camera/1/IMG_20351008_174652.jpg
+//   /storage/2A94-E4F0/Android/data/com.rvidda.cn/ljppff1#rvidda/ljppff/voice/null20160104T164855.amr
+			}
+		}, new UploadOptions(null, "audio/amr", true,  new UpProgressHandler(){
+            public void progress(String key, double percent){
+                Log.i("qiniu", key + ": " + percent);
+            }
+        },null));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	private void initTiJiao(String key)
+	{
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		params.put("subject[messages_attributes][body]",key);
+		params.put("subject[messages_attributes][type]","VoiceMessage");
+		params.put("subject[label_ids]",getsendBiaoqian());
+		params.put("subject[title]","lj");
+		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.TiJiaoZiX, "post", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+							JSONObject jsonObj = new JSONObject(json);
+							startActivity(new Intent(getApplicationContext(),
+									TiChuZiXun.class));
+							}else{
+                       Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
+							}
+/*						             startActivity(new Intent(getApplicationContext(), ShouYe.class));
+								 AppManager.getAppManager().finishActivity();
+*/
+							
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
+	}
 	
 	
+	private String getsendBiaoqian()
+	{
+		List<Integer> listss =new ArrayList<Integer>();
+	  for(int i=0;i<list.size();i++){
+		  if(list.get(i).getFlag()){
+			  listss.add(list.get(i).getId());
+		  }
+	  }
+	  String str ="[";
+	  for(int i=0;i<listss.size();i++){
+		  if(i<=listss.size()-2){
+			str =str +listss.get(i)+",";  
+		  }else{
+				str =str +listss.get(i)+"]";   
+		  }
+	  }
+	  return str;
+	
+	}
+
 	
 }

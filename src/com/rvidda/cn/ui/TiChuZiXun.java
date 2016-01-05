@@ -1,7 +1,6 @@
 package com.rvidda.cn.ui;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +26,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -44,7 +43,6 @@ import android.widget.Toast;
 import com.easemob.EMError;
 import com.easemob.chat.EMConversation;
 import com.easemob.util.VoiceRecorder;
-import com.fanxin.app.adapter.ExpressionPagerAdapter;
 import com.fanxin.app.adapter.MessageAdapter;
 import com.fanxin.app.adapter.VoicePlayClickListener;
 import com.fanxin.app.fx.ChatActivity;
@@ -57,8 +55,6 @@ import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.storage.UploadOptions;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
-import com.rvidda.cn.domain.Items;
-import com.rvidda.cn.ui.ShouYe.Myadapter;
 import com.rvidda.cn.view.popWindow1;
 import com.rvidda.cn.view.popWindow1.onSearchBarItemClickListener;
 import com.rvidda.cn.view.popWindow2;
@@ -215,7 +211,6 @@ public class TiChuZiXun extends BaseActivity implements
 					edittext_layout
 							.setBackgroundResource(R.drawable.input_bar_bg_normal);
 				}
-
 			}
 		});
 		mEditTextContent.setOnClickListener(new OnClickListener() {
