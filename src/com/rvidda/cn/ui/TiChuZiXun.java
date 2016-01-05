@@ -180,7 +180,6 @@ public class TiChuZiXun extends BaseActivity implements
 		iv_emoticons_checked = (ImageView) findViewById(R.id.iv_emoticons_checked);
 		loadmorePB = (ProgressBar) findViewById(R.id.pb_load_more);
 		btnMore = (Button) findViewById(R.id.btn_more);
-		iv_emoticons_normal.setVisibility(View.VISIBLE);
 		iv_emoticons_checked.setVisibility(View.INVISIBLE);
 		more = findViewById(R.id.more);
 		edittext_layout.setBackgroundResource(R.drawable.input_bar_bg_normal);
@@ -226,7 +225,6 @@ public class TiChuZiXun extends BaseActivity implements
 				edittext_layout
 						.setBackgroundResource(R.drawable.input_bar_bg_active);
 				more.setVisibility(View.GONE);
-				iv_emoticons_normal.setVisibility(View.VISIBLE);
 				iv_emoticons_checked.setVisibility(View.INVISIBLE);
 				emojiIconContainer.setVisibility(View.GONE);
 				btnContainer.setVisibility(View.GONE);
@@ -409,21 +407,32 @@ public class TiChuZiXun extends BaseActivity implements
 				});
 	}
 	private void sendFiletoQiNiu(String file,String uptoken,String key) {
-      
+      String file1=file;
 		UploadManager uploadManager = new UploadManager();
+		try{
 		uploadManager.put(file, key, uptoken,
 		new UpCompletionHandler() {
 		    @Override
 			public void complete(String key, ResponseInfo info, JSONObject res) {
 				// TODO Auto-generated method stub
 		        Log.e("qiniu---", key + ",\r\n " + info + ",\r\n " + res);
-
+		        try {
+					String keyvalue = res.getString("key");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+//   /storage/2A94-E4F0/DCIM/Camera/1/IMG_20351008_174652.jpg
+//   /storage/2A94-E4F0/Android/data/com.rvidda.cn/ljppff1#rvidda/ljppff/voice/null20160104T164855.amr
 			}
 		}, new UploadOptions(null, "audio/amr", true,  new UpProgressHandler(){
             public void progress(String key, double percent){
                 Log.i("qiniu", key + ": " + percent);
             }
         },null));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	private void initView() {

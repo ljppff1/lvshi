@@ -48,7 +48,7 @@
         android:label="@string/app_name"
        >
         <activity
-            android:name="com.rvidda.cn.ui.ShouYe"
+            android:name="com.rvidda.cn.ui.TiChuZiXun"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,7 +60,6 @@
         
         <activity android:name="com.rvidda.cn.ui.ShenQingQiliao"></activity>
         <activity android:name="com.rvidda.cn.ui.Chengshi"></activity>
-                <activity android:name="com.rvidda.cn.ui.TiChuZiXun"></activity>
                 <activity android:name="com.rvidda.cn.ui.UserSetting"></activity>
        
                 <!-- 登陆 -->

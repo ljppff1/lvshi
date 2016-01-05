@@ -119,6 +119,44 @@ public class ShouYe extends BaseActivity {
 					}
 				});
 	}
+	private void inisendBiaoqian()
+	{
+		List<Integer> listss =new ArrayList<Integer>();
+	  for(int i=0;i<list.size();i++){
+		  if(list.get(i).getFlag()){
+			  listss.add(list.get(i).getId());
+		  }
+	  }
+	  String str ="[";
+	  for(int i=0;i<listss.size();i++){
+		  if(i<=listss.size()-1){
+			str =str +listss.get(i)+"]";  
+		  }else{
+				str =str +listss.get(i)+",";   
+		  }
+	  }
+	  
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("subject.title", "");
+		params.put("subject.label_ids", str);
+		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.HOST+"/subjects/"+"id", "put", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+							JSONObject jsonObj = new JSONObject(json);
+
+							}else{
+			                       Toast.makeText(getApplicationContext(), R.string.zx1, 0).show();
+										}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+	}
+	
 	
 	private void initData() {
 		for (int i = 0; i < listd1.length; i++) {
