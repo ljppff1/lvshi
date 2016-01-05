@@ -14,6 +14,10 @@
          <string name="log3">请输入六位验证码</string>
          <string name="log4">点击登陆，即表示同意《用户协议》</string>
          <string name="log5">登陆</string>
+         <string name="log6">访问出错，请检查网络连接</string>
+         <string name="log7">请先获取验证码</string>
+         <string name="log8">请输入正确的验证码</string>
+         
          
 <string name="sqtk1">律师发函资料明细</string>
 <string name="sqtk2">服务信息</string>

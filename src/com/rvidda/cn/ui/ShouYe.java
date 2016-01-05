@@ -3,7 +3,9 @@ package com.rvidda.cn.ui;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +16,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -32,12 +35,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONArray;
+import com.easemob.EMCallBack;
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMGroupManager;
+import com.fanxin.app.DemoApplication;
 import com.lidroid.xutils.http.RequestParams;
 import com.rvidda.cn.AppManager;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
 import com.rvidda.cn.domain.Items;
+import com.rvidda.cn.http.ContantsUtil;
+import com.rvidda.cn.utils.Content;
 import com.rvidda.cn.utils.Media;
+import com.rvidda.cn.utils.PreferenceUtils;
 
 public class ShouYe extends BaseActivity {
 
@@ -50,7 +61,7 @@ public class ShouYe extends BaseActivity {
 	private LinearLayout mLLshow3;
 	private long exitTime1 = 0;
 	private boolean flagl = true;;
-	private boolean flagan = false;;
+	private boolean flagan = false;//是否按下
 
 	private String[] listd1 = { "婚姻", "交通", "税务", "债务", "合同", "房屋", "劳动协议",
 			"知识产权", "其它", "婚姻", "更多" };
@@ -63,12 +74,52 @@ public class ShouYe extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_shouye);
 		media = new Media();
-		initData();
-		// createFileK();
+		login();
 		initView();
 
+		initgetBiaoqian();
+	   //	initData();
+		// createFileK();
 	}
 
+
+	private void initgetBiaoqian()
+	{
+	
+		Map<String, Object> params = new HashMap<String, Object>();
+		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.LABELS, "get", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+							JSONObject jsonObj = new JSONObject(json);
+							org.json.JSONArray ja =jsonObj.getJSONArray("labels");
+							for(int i=0;i<ja.length();i++){
+							JSONObject jb =	(JSONObject) ja.get(i);
+						    org.json.JSONArray cd =	jb.getJSONArray("children");
+						    for(int j=0;j<cd.length();j++){
+						    	JSONObject jj =cd.getJSONObject(j);
+								Items items = new Items();
+								items.setItems(jj.getString("name"));
+								items.setId(jj.getInt("id"));
+								items.setFlag(false);
+								list.add(items);
+						    }
+							}
+							adapter = new Myadapter();
+							mGv1.setAdapter(adapter);
+
+							}else{
+			                       Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
+										}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+	}
+	
 	private void initData() {
 		for (int i = 0; i < listd1.length; i++) {
 			Items items = new Items();
@@ -76,12 +127,8 @@ public class ShouYe extends BaseActivity {
 			items.setFlag(false);
 			list.add(items);
 		}
-		initgetBiaoqian();
 		
 	}
-
-	private void initgetBiaoqian()
-	{}
 
 	
 	private void createFileK() {
@@ -117,7 +164,65 @@ public class ShouYe extends BaseActivity {
 		}
 
 	}
+	private void login() {
+		EMChatManager.getInstance().login("ljppff", "aaaaaa", new EMCallBack() {
+			@Override
+			public void onSuccess() {
+				// 登陆成功，保存用户名密码
+				DemoApplication.getInstance().setUserName("ljppff");
+				DemoApplication.getInstance().setPassword("aaaaaa");
+				runOnUiThread(new Runnable() {
+					public void run() {
+						// dialog.setMessage(getString(R.string.list_is_for));
+					}
+				});
+				try {
+					// ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
+					// ** manually load all local groups and
+					// conversations in case we are auto login
+					// 更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
+					boolean updatenick = EMChatManager.getInstance()
+							.updateCurrentUserNick("刘俊");
+					if (!updatenick) {
+						Log.e("LoginActivity", "update current user nick fail");
+					}
+					EMGroupManager.getInstance().loadAllGroups();
+					EMChatManager.getInstance().loadAllConversations();
+					// 处理好友和群组
+					/*
+					 * runOnUiThread(new Runnable() { public void run() {
+					 * processContactsAndGroups(json); } });
+					 */
+				} catch (Exception e) {
+					e.printStackTrace();
+					// 取好友或者群聊失败，不让进入主页面
+					runOnUiThread(new Runnable() {
+						public void run() {
+						}
+					});
+					return;
+				}
+			}
 
+			@Override
+			public void onProgress(int progress, String status) {
+			}
+
+			@Override
+			public void onError(final int code, final String message) {
+
+				runOnUiThread(new Runnable() {
+					public void run() {
+						// dialog.dismiss();
+						Toast.makeText(getApplicationContext(),
+								getString(R.string.Login_failed) + message,
+								Toast.LENGTH_SHORT).show();
+					}
+				});
+			}
+		});
+
+	}
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 
@@ -135,15 +240,20 @@ public class ShouYe extends BaseActivity {
 
 			}
 		});
-		adapter = new Myadapter();
-		mGv1.setAdapter(adapter);
 
 		mIvshow1 = (ImageView) this.findViewById(R.id.mIvshow1);
 		mIvshow2 = (ImageView) this.findViewById(R.id.mIvshow2);
 		mLLshow3 = (LinearLayout) this.findViewById(R.id.mLLshow3);
 		mRlsure = (RelativeLayout) this.findViewById(R.id.mRlsure);
 		mRlsure.setVisibility(View.GONE);
-		mRlsure.setOnClickListener(listener);
+		mRlsure.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(getApplicationContext(),
+						TiChuZiXun.class));				
+			}
+		});
 		mIvtalk = (ImageView) this.findViewById(R.id.mIvtalk);
 		mIvtalk.setVisibility(View.VISIBLE);
 		anim = (AnimationDrawable) mIvtalk.getBackground();
@@ -163,11 +273,9 @@ public class ShouYe extends BaseActivity {
 				handler.postDelayed(new Runnable() {
 					@Override
 					public void run() {
-						if (flagl) {
-							mRlsure.setVisibility(View.VISIBLE);
+						if (flagl&&flagan) {
 							mIvshow1.setVisibility(View.GONE);
 							mIvshow2.setVisibility(View.GONE);
-							mIvtalk.setVisibility(View.GONE);
 							mLLshow3.setVisibility(View.VISIBLE);
 							flagl = false;
 						} else {
@@ -183,10 +291,12 @@ public class ShouYe extends BaseActivity {
 					
 					@Override
 					public void run() {
+						if(flagan){
 						Toast toast = Toast.makeText(
 								getApplicationContext(), "录音时间还剩10s", 0);
 						toast.setGravity(Gravity.CENTER, 0, 0);
 						toast.show();
+						}
 						
 					}
 				}, 10000);
@@ -194,6 +304,7 @@ public class ShouYe extends BaseActivity {
 					
 					@Override
 					public void run() {
+						if(flagan){
 						Toast toast = Toast.makeText(
 								getApplicationContext(), "录音完成", 0);
 						toast.setGravity(Gravity.CENTER, 0, 0);
@@ -209,7 +320,7 @@ public class ShouYe extends BaseActivity {
 
 							// startActivity(new Intent(ShouYe.this, Zixun.class));
 						}
-						
+						}
 					}
 				}, 20000);
 
@@ -239,7 +350,6 @@ public class ShouYe extends BaseActivity {
 					if (y1 - y2 > 50) {
 						startActivity(new Intent(getApplicationContext(),
 								ZiXunLieBiao.class));
-
 					}
 				}
 				return true;
@@ -261,27 +371,24 @@ public class ShouYe extends BaseActivity {
 					y1 = event.getY();
 					break;
 				case MotionEvent.ACTION_UP:
+					flagan=false;
 					x2 = event.getX();
 					y2 = event.getY();
 					if (y1 - y2 > 50) {
-						if (flagan) {
 							mIvshow1.setVisibility(View.VISIBLE);
 							mIvshow2.setVisibility(View.VISIBLE);
 							mLLshow3.setVisibility(View.GONE);
-							flagan = false;
-						} else {
-							startActivity(new Intent(getApplicationContext(),
-									ZiXunLieBiao.class));
-						}
+							mRlsure.setVisibility(View.GONE);
 					}
+					//抬起，如果大于2s是true，
 					if (System.currentTimeMillis() - exitTime1 < 2000) {
 						flagl = false;
 					} else {
 						flagl = true;
+						mRlsure.setVisibility(View.VISIBLE);
+						mIvtalk.setVisibility(View.GONE);
 					}
-					
-
-					
+				
 					if (Flag) {
 						media.stopRecord();
 						Flag = false;
@@ -395,7 +502,6 @@ public class ShouYe extends BaseActivity {
 
 				break;
 			case R.id.mRlsure:
-				initgetBiaoqian();
 				startActivity(new Intent(getApplicationContext(),
 						TiChuZiXun.class));
 				break;

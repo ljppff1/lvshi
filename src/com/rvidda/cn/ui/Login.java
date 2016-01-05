@@ -24,10 +24,12 @@ import android.os.CountDownTimer;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +57,9 @@ public class Login extends BaseActivity {
 	private TextView mTvcode;
 	private CountDownTimer timer;
 	private PreferenceUtils pp;
+	private EditText mEtCode;
+	private EditText mEtTell;
+	private int id=0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +89,9 @@ public class Login extends BaseActivity {
 		mRll1 = (RelativeLayout) this.findViewById(R.id.mRll1);
 		mRll1.setOnClickListener(listener);
 		mTvcode = (TextView) this.findViewById(R.id.mTvcode);
-
+		mEtCode =(EditText)this.findViewById(R.id.mEtCode);
+		mEtTell =(EditText)this.findViewById(R.id.mEtTell);
+		
 		mTvde = (TextView) this.findViewById(R.id.mTvde);
 
 		String url_2_text = "点击登陆，即表示同意";
@@ -116,15 +123,21 @@ public class Login extends BaseActivity {
 	{
 	
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("user[mobile]","13652435378" + "");
+		params.put("user[mobile]",mEtTell.getEditableText().toString());
 		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.UPDATE_CHECK_URL, "post", params,
 				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+
 					@Override
 					public void callback(String json) {
 						try {
+							//{"user":{"id":15,"mobile":"13652435378","email":null,"mobile_confirm":false,
+							//"auth_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNSwibW9iaWxlIjoiMTM2NTI0MzUzNzgiLCJzdWIiOiJhdXRoIiwiZXhwIjowfQ.uBycfl1hPZ31PQA5BXbsrYhcE4qUIe5D9_z6JHeKz74",
+							//"avatar":null,"avatar_url":"http:\/\/7u2gfi.com1.z0.glb.clouddn.com\/Fhab9G1MW-m0MPH0mqVk3QAmUvDa",
+							//"auth_code":"857068","hx_user":"hx_15","hx_password":"password_15"}}
+							
+							if(!json.equals("0")){
+							
 							JSONObject jsonObj = new JSONObject(json);
-							if (com.rvidda.cn.http.CheckUtil.checkStatusOk(jsonObj
-									.getInt("status"))) {
 								 JSONObject user = jsonObj.getJSONObject("user");
 								 String auth_token = user.getString("auth_token"); 
 								 String mobile = user.getString("mobile"); 
@@ -134,55 +147,48 @@ public class Login extends BaseActivity {
 								 String hx_user = user.getString("hx_user"); 
 								 String email = user.getString("email"); 
 								 String hx_password = user.getString("hx_password"); 
-								 int id = user.getInt("id"); 
+								  id = user.getInt("id"); 
 								 boolean mobile_confirm = user.getBoolean("mobile_confirm");
 					             pp.put(Content.TOKEN, auth_token);
 					             pp.put(Content.UserID, id);
 					             pp.put(Content.Avator_Url, avatar_url);
-					             
-					             startActivity(new Intent(getApplicationContext(), ShouYe.class));
-								 AppManager.getAppManager().finishActivity();
+					             pp.put(Content.Hx_User, hx_user);
+					             pp.put(Content.Hx_Pd, hx_password);
+					             mEtCode.setText(auth_code);
+							}else{
+			                       Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
+										}
 
-							}
+/*					             startActivity(new Intent(getApplicationContext(), ShouYe.class));
+								 AppManager.getAppManager().finishActivity();
+*/
+							
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
 					}
 				});
-
 	}
 		private void initLogin()
 		{
 			
 			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("user[mobile]","13652435378" + "");
-			com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.UPDATE_CHECK_URL, "get", params,
+			params.put("user[auth_code]",mEtCode.getEditableText().toString());
+			com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.HOST + "/users/"+id+"/confirm_code", "put", params,
 					new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
 						@Override
 						public void callback(String json) {
 							try {
+								if(!json.equals("0")){
 								JSONObject jsonObj = new JSONObject(json);
-								if (com.rvidda.cn.http.CheckUtil.checkStatusOk(jsonObj
-										.getInt("status"))) {
-									 JSONObject user = jsonObj.getJSONObject("user");
-									 String auth_token = user.getString("auth_token"); 
-									 String mobile = user.getString("mobile"); 
-									 String avatar = user.getString("avatar"); 
-									 String avatar_url = user.getString("avatar_url"); 
-									 String auth_code = user.getString("auth_code"); 
-									 String hx_user = user.getString("hx_user"); 
-									 String email = user.getString("email"); 
-									 String hx_password = user.getString("hx_password"); 
-									 int id = user.getInt("id"); 
-									 boolean mobile_confirm = user.getBoolean("mobile_confirm");
-						             pp.put(Content.TOKEN, auth_token);
-						             pp.put(Content.UserID, id);
-						             pp.put(Content.Avator_Url, avatar_url);
-						             
-						             startActivity(new Intent(getApplicationContext(), ShouYe.class));
-									 AppManager.getAppManager().finishActivity();
-
+						             login();
+								}else{
+                           Toast.makeText(getApplicationContext(), R.string.log8, 0).show();
 								}
+/*						             startActivity(new Intent(getApplicationContext(), ShouYe.class));
+									 AppManager.getAppManager().finishActivity();
+*/
+								
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}
@@ -211,11 +217,22 @@ public class Login extends BaseActivity {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.mRlLogin:
-				login();
+				if(mEtCode.getEditableText().toString().length()!=6){
+					Toast.makeText(getApplicationContext(), R.string.log3, 0).show();
+				}else{
+					if(id!=0){
+					initLogin();
+					}else{
+						Toast.makeText(getApplicationContext(), R.string.log7, 0).show();
+					}
+					
+				}
+				//login();
 
 				break;
 			case R.id.mRll1:
-				//mRll1.setClickable(false);
+				if(!TextUtils.isEmpty(mEtTell.getEditableText().toString())){
+				mRll1.setClickable(false);
 				// 开启倒计时的线程
 				timer = new CountDownTimer(60000, 1000) {
 					@Override
@@ -232,6 +249,9 @@ public class Login extends BaseActivity {
 					}
 				}.start();
 				initSendCode();
+				}else{
+					Toast.makeText(getApplicationContext(),R.string.log1,Toast.LENGTH_SHORT).show();
+				}
 				break;
 
 			default:
@@ -243,20 +263,6 @@ public class Login extends BaseActivity {
 	private ProgressDialog dialog;
 
 	private void login() {
-		/*
-		 * dialog.setMessage("正在登录...");
-		 * dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); dialog.show();
-		 */
-
-		/*
-		 * new Thread(new Runnable() {
-		 * 
-		 * @Override public void run() { try {
-		 * EMChatManager.getInstance().createAccountOnServer("ljppff4",
-		 * "aaaaaa"); } catch (EaseMobException e) { // TODO Auto-generated
-		 * catch block e.printStackTrace(); } } }).start();
-		 */
-
 		EMChatManager.getInstance().login("ljppff", "aaaaaa", new EMCallBack() {
 			@Override
 			public void onSuccess() {
@@ -285,7 +291,7 @@ public class Login extends BaseActivity {
 					 * runOnUiThread(new Runnable() { public void run() {
 					 * processContactsAndGroups(json); } });
 					 */startActivity(new Intent(Login.this, ShouYe.class));
-
+                    AppManager.getAppManager().finishActivity();
 				} catch (Exception e) {
 					e.printStackTrace();
 					// 取好友或者群聊失败，不让进入主页面

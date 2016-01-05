@@ -14,6 +14,10 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.rvidda.cn.http.ContantsUtil;
+import com.rvidda.cn.ui.ShouYe;
+import com.rvidda.cn.utils.Content;
+import com.rvidda.cn.utils.PreferenceUtils;
 
 public class BaseActivity extends Activity {
 	private boolean allowFullScreen = true;
@@ -33,6 +37,7 @@ public class BaseActivity extends Activity {
 						| WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		allowFullScreen = true;
 		AppManager.getAppManager().addActivity(this);
+	     ContantsUtil.TOKEN =PreferenceUtils.getInstance(getApplicationContext()).getString(Content.TOKEN, "");
 
 		mTintManager = new SystemBarTintManager(this);
 		mTintManager.setStatusBarTintEnabled(true);

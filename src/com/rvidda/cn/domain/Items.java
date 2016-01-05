@@ -19,6 +19,15 @@ public class Items {
 	}
 
 	private String items;
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	private int id;
 	private Boolean flag;
 
 }

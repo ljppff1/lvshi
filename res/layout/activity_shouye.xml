@@ -23,14 +23,19 @@
         android:src="@drawable/wenzi"
         />
     
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/mRlbb"
+        >
     <ImageView 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@anim/anim1"
         android:id="@+id/mIvtalk"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/p96"
+                android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         />
     
     <RelativeLayout 
@@ -38,9 +43,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/queding"
         android:id="@+id/mRlsure"
-                android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/p96"
+                android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         >
                         <TextView
                     style="@style/t_r_30"
@@ -48,12 +52,11 @@
                     android:layout_height="wrap_content"
                   android:layout_centerInParent="true"
                    android:text="@string/tczx6" />
-        
-        
+    </RelativeLayout>
     </RelativeLayout>
     
       <LinearLayout 
-          android:layout_above="@id/mIvtalk"
+          android:layout_above="@id/mRlbb"
           android:id="@+id/mLLshow3"
       android:layout_width="fill_parent"
       android:visibility="gone"
