@@ -51,7 +51,7 @@ public class popWindow2 extends BasePopupWindow {
 			@Override
 			public void onClick(View arg0) {
 				if (mOnSearchBarItemClickListener != null) {
-					mOnSearchBarItemClickListener.onSearchButtonClick1("asd",
+					mOnSearchBarItemClickListener.onSearchButtonClick1(mEtp2.getEditableText().toString(),
 							"d");
 					dismiss();
 				}

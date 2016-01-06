@@ -109,12 +109,20 @@ public class Media {
 			} else {
 				myPlayer.pause();
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
+    public boolean isplay(){
+    	if(myPlayer!=null){
+    	if (myPlayer.isPlaying()) {
+    		return true;
+    	}else{
+    		return false;
+    	}}else{
+    		return false;
+    	}
+    }
 	// 停止播放
 	public void stopPlay() {
 		if (myPlayer.isPlaying()) {

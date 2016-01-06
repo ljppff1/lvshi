@@ -195,7 +195,7 @@ public class HttpServiceUtil {
                 httprequest.addHeader("dean_usession", sessionId);
             }
 */            httprequest.addHeader("Accept", "application/json"); 
-             httprequest.addHeader("Content-Type", "application/json"); 
+            // httprequest.addHeader("Content-Type", "application/json"); 
             httprequest.addHeader("Auth-Token", ContantsUtil.TOKEN);
             
             httprequest.setEntity(new UrlEncodedFormEntity(nameValue, "utf-8"));

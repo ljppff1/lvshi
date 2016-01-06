@@ -1,6 +1,7 @@
 package com.rvidda.cn.ui;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,8 +54,14 @@ import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UpProgressHandler;
 import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.storage.UploadOptions;
+import com.rvidda.cn.AppManager;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
+import com.rvidda.cn.adapter.ZXAdapter;
+import com.rvidda.cn.domain.Items;
+import com.rvidda.cn.domain.ZXXiaoXi;
+import com.rvidda.cn.http.ContantsUtil;
+import com.rvidda.cn.utils.Media;
 import com.rvidda.cn.view.popWindow1;
 import com.rvidda.cn.view.popWindow1.onSearchBarItemClickListener;
 import com.rvidda.cn.view.popWindow2;
@@ -102,6 +109,7 @@ public class TiChuZiXun extends BaseActivity implements
 	private boolean haveMoreData = true;
 	private Button btnMore;
 	public String playMsgId;
+	private String sendBiaoQianString;
 
 	String myUserNick = "";
 	String myUserAvatar = "";
@@ -122,7 +130,7 @@ public class TiChuZiXun extends BaseActivity implements
 	};
 
 	
-	
+	private String Title;
 	private TextView mTvde;
 	private RelativeLayout mRlLogin;
 	private RelativeLayout mRll1;
@@ -135,15 +143,39 @@ public class TiChuZiXun extends BaseActivity implements
 	private LinearLayout mLLpp1;
 	private popWindow2 pop2;
 	private WakeLock wakeLock;
-
+	private String ID;
+	private String SELECT;
+	private String[] strarray;
+	private ListView list;
+	private Media media;
+	private ArrayList<ZXXiaoXi> listzxxx;
+	private ZXAdapter zxxiaoxi;
+	private ImageView mBtn_back;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tichuzixun);
-         
+		media =new Media();
+        getData();
 		initHuanXinView();
 		initView();
 		setUpView();
+
+	}
+
+	private void getData() {
+		ID =getIntent().getExtras().getString("ID");
+		SELECT =getIntent().getExtras().getString("SELECT");
+	    strarray = SELECT.split(",");
+	    String FILE_pro = getIntent().getExtras().getString("FILE");
+		listzxxx =new ArrayList<ZXXiaoXi>();
+
+		ZXXiaoXi zxxx =new ZXXiaoXi();
+		zxxx.setMtype("V");
+		zxxx.setMfilelocal(FILE_pro);
+		zxxx.setMtext("");
+		listzxxx.add(zxxx);
 
 	}
 
@@ -165,9 +197,11 @@ public class TiChuZiXun extends BaseActivity implements
 		listView = (ListView) findViewById(R.id.list);
 		mEditTextContent = (PasteEditText) findViewById(R.id.et_sendmessage);
 		buttonSetModeKeyboard = findViewById(R.id.btn_set_mode_keyboard);
+		buttonSetModeKeyboard.setOnClickListener(listener);
 		edittext_layout = (RelativeLayout) findViewById(R.id.edittext_layout);
 		buttonSetModeVoice = findViewById(R.id.btn_set_mode_voice);
 		buttonSend = findViewById(R.id.btn_send);
+		buttonSend.setOnClickListener(listener);
 		buttonPressToSpeak = findViewById(R.id.btn_press_to_speak);
 		expressionViewpager = (ViewPager) findViewById(R.id.vPager);
 		emojiIconContainer = (LinearLayout) findViewById(R.id.ll_face_container);
@@ -235,7 +269,7 @@ public class TiChuZiXun extends BaseActivity implements
 					btnMore.setVisibility(View.GONE);
 					buttonSend.setVisibility(View.VISIBLE);
 				} else {
-					btnMore.setVisibility(View.VISIBLE);
+					btnMore.setVisibility(View.GONE);
 					buttonSend.setVisibility(View.GONE);
 				}
 			}
@@ -401,8 +435,7 @@ public class TiChuZiXun extends BaseActivity implements
 					}
 				});
 	}
-	private void sendFiletoQiNiu(String file,String uptoken,String key) {
-      String file1=file;
+	private void sendFiletoQiNiu(final String file,String uptoken,String key) {
 		UploadManager uploadManager = new UploadManager();
 		try{
 		uploadManager.put(file, key, uptoken,
@@ -413,6 +446,14 @@ public class TiChuZiXun extends BaseActivity implements
 		        Log.e("qiniu---", key + ",\r\n " + info + ",\r\n " + res);
 		        try {
 					String keyvalue = res.getString("key");
+					
+					ZXXiaoXi zxxx =new ZXXiaoXi();
+					zxxx.setMtype("V");
+					zxxx.setMfilelocal(file);
+					zxxx.setMtext("");
+					listzxxx.add(zxxx);
+                    zxxiaoxi.notifyDataSetChanged();
+					initTJxx(key, "VoiceMessage");
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -430,7 +471,40 @@ public class TiChuZiXun extends BaseActivity implements
 		}
 	}
 
+	private void initTJxx(String key,String type)
+	{
+		Map<String, Object> params = new HashMap<String, Object>();
+	//VoiceMessage   TextMessage	
+		params.put("message[body]",key);
+		params.put("message[type]",type);
+		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.HOST+"/subjects/"+ID+"/messages", "post", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+							JSONObject jsonObj = new JSONObject(json);
+							
+							}else{
+                         Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
+
+							}
+							
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
+	}
+
+	
 	private void initView() {
+		mBtn_back =(ImageView)this.findViewById(R.id.mBtn_back);
+		mBtn_back.setOnClickListener(listener);
+		list =(ListView)this.findViewById(R.id.list);
+		zxxiaoxi =new ZXAdapter(getApplicationContext(), listzxxx,media);
+		list.setAdapter(zxxiaoxi);
 		mLLpp1 = (LinearLayout) this.findViewById(R.id.mLLpp1);
 		mRlw1 = (RelativeLayout) this.findViewById(R.id.mRlw1);
 		mRlw2 = (RelativeLayout) this.findViewById(R.id.mRlw2);
@@ -440,7 +514,7 @@ public class TiChuZiXun extends BaseActivity implements
 		mRlw3.setOnClickListener(listener);
 
 		pop1 = new popWindow1(TiChuZiXun.this, LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT);
+				LayoutParams.WRAP_CONTENT,strarray);
 		pop1.setOnSearchBarItemClickListener(this);
 		pop2 = new popWindow2(TiChuZiXun.this, LayoutParams.MATCH_PARENT,
 				LayoutParams.WRAP_CONTENT);
@@ -453,6 +527,30 @@ public class TiChuZiXun extends BaseActivity implements
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.mBtn_back:
+				AppManager.getAppManager().finishActivity();
+				break;
+			case R.id.btn_set_mode_keyboard:
+			edittext_layout.setVisibility(View.VISIBLE);
+			buttonSetModeVoice.setVisibility(View.VISIBLE);
+			// mEditTextContent.setVisibility(View.VISIBLE);
+			mEditTextContent.requestFocus();
+			// buttonSend.setVisibility(View.VISIBLE);
+			buttonPressToSpeak.setVisibility(View.GONE);
+				buttonSend.setVisibility(View.VISIBLE);
+				buttonSetModeKeyboard.setVisibility(View.GONE);
+          break;
+			case R.id.btn_send:
+				if(!TextUtils.isEmpty(mEditTextContent.getEditableText().toString())){
+					ZXXiaoXi zxxx =new ZXXiaoXi();
+					zxxx.setMtype("T");
+					zxxx.setMfilelocal("");
+					zxxx.setMtext(mEditTextContent.getEditableText().toString());
+					listzxxx.add(zxxx);
+                    zxxiaoxi.notifyDataSetChanged();
+					initTJxx(mEditTextContent.getEditableText().toString(), "TextMessage");
+				}
+				break;
 			case R.id.mRlw1:
 				pop1.showAsDropDown(mLLpp1);
 				break;
@@ -469,15 +567,41 @@ public class TiChuZiXun extends BaseActivity implements
 		}
 	};
 
+	//修改咨询见容
+	private void initChangeZX(String title,String content){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("subject[title]", title);
+		params.put("subject[label_ids]", content);
+		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.HOST+"subjects/"+ID, "put", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+							JSONObject jsonObj = new JSONObject(json);
+
+							}else{
+			                       Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
+										}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
+	}
+	
 	@Override
 	public void onSearchButtonClick(String string, String searchType) {
-		// TODO Auto-generated method stub
-
+       sendBiaoQianString =string;
+	    strarray = searchType.split(",");
+        initChangeZX(Title, sendBiaoQianString);
 	}
 
 	@Override
 	public void onSearchButtonClick1(String string, String searchType) {
-		// TODO Auto-generated method stub
+      Title =string;
+      initChangeZX(Title, sendBiaoQianString);
 
 	}
 

@@ -1,7 +1,12 @@
 package com.rvidda.cn.view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rvidda.cn.R;
 import com.rvidda.cn.domain.Items;
@@ -34,34 +40,28 @@ public class popWindow1 extends BasePopupWindow {
 	private Myadapter adapter;
 
 	private RelativeLayout mRlw1;
-
+    String[] mStr;
 	private GridView mGv1;
 
-	public popWindow1(Context context, int width, int height) {
+	public popWindow1(Context context, int width, int height,String[] str) {
 		super(LayoutInflater.from(context).inflate(R.layout.pop_1, null),
 				width, height);
 		this.mContext = context;
+		this.mStr =str;
 	}
 
 	@Override
 	public void initViews() {
-		list = new ArrayList<Items>();
-		list.clear();
-		for (int i = 0; i < listdp1.length; i++) {
-			Items items = new Items();
-			items.setItems(listdp1[i]);
-			items.setFlag(false);
-			list.add(items);
-		}
-
+		list=new ArrayList<Items>();
+        list.clear();
 		mRlw1 = (RelativeLayout) findViewById(R.id.mRlpopw1);
 		mRlw1.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				if (mOnSearchBarItemClickListener != null) {
-					mOnSearchBarItemClickListener.onSearchButtonClick("asd",
-							"d");
+					mOnSearchBarItemClickListener.onSearchButtonClick(getsendBiaoqian(),
+							getsendBiaoqian1());
 					dismiss();
 				}
 
@@ -76,10 +76,92 @@ public class popWindow1 extends BasePopupWindow {
 
 			}
 		});
-		adapter = new Myadapter();
+/*		adapter = new Myadapter();
 		mGv1.setAdapter(adapter);
-
+*/
+		initgetBiaoqian();
 	}
+	private String getsendBiaoqian1()
+	{
+		List<Integer> listss =new ArrayList<Integer>();
+	  for(int i=0;i<list.size();i++){
+		  if(list.get(i).getFlag()){
+			  listss.add(list.get(i).getId());
+		  }
+	  }
+	  String str ="";
+	  for(int i=0;i<listss.size();i++){
+		  if(i<=listss.size()-2){
+			str =str +listss.get(i)+",";  
+		  }else{
+			  str =str +listss.get(i);
+		  }
+	  }
+	  return str;
+	}
+
+	private String getsendBiaoqian()
+	{
+		List<Integer> listss =new ArrayList<Integer>();
+	  for(int i=0;i<list.size();i++){
+		  if(list.get(i).getFlag()){
+			  listss.add(list.get(i).getId());
+		  }
+	  }
+	  String str ="[";
+	  for(int i=0;i<listss.size();i++){
+		  if(i<=listss.size()-2){
+			str =str +listss.get(i)+",";  
+		  }else{
+				str =str +listss.get(i)+"]";   
+		  }
+	  }
+	  return str;
+	}
+	private void initgetBiaoqian()
+	{
+	
+		Map<String, Object> params = new HashMap<String, Object>();
+		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.LABELS, "get", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+							JSONObject jsonObj = new JSONObject(json);
+							org.json.JSONArray ja =jsonObj.getJSONArray("labels");
+							for(int i=0;i<ja.length();i++){
+							JSONObject jb =	(JSONObject) ja.get(i);
+						    org.json.JSONArray cd =	jb.getJSONArray("children");
+						    for(int j=0;j<cd.length();j++){
+						    	JSONObject jj =cd.getJSONObject(j);
+								Items items = new Items();
+								items.setItems(jj.getString("name"));
+								items.setId(jj.getInt("id"));
+								for(int k=0;k<mStr.length;k++){
+									if(String.valueOf(jj.getInt("id")).equals(mStr[k])){
+								items.setFlag(true);
+								break ;
+									}else{
+										items.setFlag(false);
+									}
+								}
+								list.add(items);
+						    }
+							}
+							adapter = new Myadapter();
+							mGv1.setAdapter(adapter);
+
+							}else{
+			                       Toast.makeText(mContext, R.string.log6, 0).show();
+										}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+	}
+
 
 	class Holder {
 		TextView mTvg1;

@@ -784,10 +784,19 @@ public class ShouYe extends BaseActivity {
 						try {
 							if(!json.equals("0")){
 							JSONObject jsonObj = new JSONObject(json);
-							startActivity(new Intent(getApplicationContext(),
-									TiChuZiXun.class));
+							Intent intent =new Intent(getApplicationContext(),TiChuZiXun.class);
+							intent.putExtra("ID", 18+"");
+							intent.putExtra("SELECT",getsendBiaoqian1());
+							intent.putExtra("FILE", file_path);
+							startActivity(intent);
 							}else{
                        Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
+						Intent intent =new Intent(getApplicationContext(),TiChuZiXun.class);
+						intent.putExtra("ID", 18+"");
+						intent.putExtra("SELECT",getsendBiaoqian1());
+						intent.putExtra("FILE", file_path);
+						startActivity(intent);
+
 							}
 /*						             startActivity(new Intent(getApplicationContext(), ShouYe.class));
 								 AppManager.getAppManager().finishActivity();
@@ -819,7 +828,24 @@ public class ShouYe extends BaseActivity {
 		  }
 	  }
 	  return str;
-	
+	}
+	private String getsendBiaoqian1()
+	{
+		List<Integer> listss =new ArrayList<Integer>();
+	  for(int i=0;i<list.size();i++){
+		  if(list.get(i).getFlag()){
+			  listss.add(list.get(i).getId());
+		  }
+	  }
+	  String str ="";
+	  for(int i=0;i<listss.size();i++){
+		  if(i<=listss.size()-2){
+			str =str +listss.get(i)+",";  
+		  }else{
+			  str =str +listss.get(i);
+		  }
+	  }
+	  return str;
 	}
 
 	
