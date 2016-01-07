@@ -89,6 +89,14 @@ public class UserSetting extends BaseActivity {
 		mBtn_setting.setOnClickListener(listener);
 		
 	}
+	@Override
+	protected void onResume() {
+		String city = pp.getString(Content.City, "");
+		mtv1.setText(city);
+		String cityId =pp.getString(Content.Cityid, "");
+		String choice =pp.getString(Content.Citychoice, "0");
+		super.onResume();
+	}
 	//用户设置
 	public void getZXLiaobiao(){		
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -120,10 +128,10 @@ public class UserSetting extends BaseActivity {
 							
 							JSONObject area = user.getJSONObject("area");
 							String city = area.getString("city");
-							pp.put(Content.City, city);
-
+							String id = area.getString("id");
+                            pp.put(Content.City, city);
+                            pp.put(Content.Cityid, id);
 							mtv1.setText(city);
-
 							}else{
 			                       Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
 										}
@@ -140,7 +148,9 @@ public class UserSetting extends BaseActivity {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.mRllocal:
-				startActivity(new Intent(getApplicationContext(), Chengshi.class));
+			Intent intent =	new Intent(getApplicationContext(), Chengshi.class);
+			intent.putExtra("WHAT", "user");
+				startActivity(intent);
 				break;
 			case R.id.mRlw1:
 				startActivity(new Intent(UserSetting.this, ShenQingQiliao.class));

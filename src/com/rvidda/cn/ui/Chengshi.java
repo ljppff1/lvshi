@@ -29,11 +29,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
+import com.rvidda.cn.AppManager;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
 import com.rvidda.cn.domain.City;
 import com.rvidda.cn.domain.Province;
 import com.rvidda.cn.http.ContantsUtil;
+import com.rvidda.cn.utils.Content;
+import com.rvidda.cn.utils.PreferenceUtils;
 import com.rvidda.cn.view.MyExpandableListView;
 import com.rvidda.cn.view.MyGridView;
 
@@ -48,11 +51,15 @@ public class Chengshi extends BaseActivity {
 	private ExpandableGridAdapter adapter1;
 	private List<City> list_remen =new ArrayList<City>();
 	private List<Province> list_province =new ArrayList<Province>();
+	private PreferenceUtils pp;
+	private String WHAT;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chengshi);
+		WHAT =getIntent().getExtras().getString("WHAT");
+	     pp =PreferenceUtils.getInstance(Chengshi.this);
 		 list_remen =new ArrayList<City>();
 		 list_province =new ArrayList<Province>();
 		initgetData();
@@ -79,6 +86,7 @@ public class Chengshi extends BaseActivity {
 								City cc =new City();
 								cc.setId(((JSONObject)jr.get(i)).getString("id"));
 								cc.setName(((JSONObject)jr.get(i)).getString("name"));
+								list_remen.add(cc);
 							}
 							org.json.JSONArray jp =jsonObj.getJSONArray("provinces");
 	                        for(int i=0;i<jp.length();i++){
@@ -117,11 +125,40 @@ public class Chengshi extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				Toast.makeText(Chengshi.this, "当前选中的是:" + list_remen.get(position).getName(),
+						  Toast.LENGTH_SHORT).show();
+				if(WHAT.equals("user")){
+					if(pp.getString(Content.City, "cc").equals(list_remen.get(position).getName())){
+						  pp.put(Content.Citychoice, "0");
+					}else{
+					  pp.put(Content.Citychoice, "1");
+					}
+					pp.put(Content.City, list_remen.get(position).getName());
+					pp.put(Content.Cityid, list_remen.get(position).getId());
+
+				}else{
+					if(pp.getString(Content.City, "cc").equals(list_remen.get(position).getName())){
+						  pp.put(Content.Citychoice, "0");
+					}else{
+					  pp.put(Content.Citychoice, "1");
+					}
+				pp.put(Content.City_c1, list_remen.get(position).getName());
+				pp.put(Content.City_id1, list_remen.get(position).getId());
+				}
+              AppManager.getAppManager().finishActivity();
 			}
 		});
 		adapter = new Myadapterlist();
 		mGv1.setAdapter(adapter);
+        mGv1.setOnItemClickListener(new OnItemClickListener() {
 
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		expandableGridView = (com.rvidda.cn.view.MyExpandableListView) this
 				.findViewById(R.id.list);
 		expandableGridView.setOnGroupClickListener(new OnGroupClickListener() {
@@ -361,7 +398,32 @@ public class Chengshi extends BaseActivity {
 			/*
 			 * Toast.makeText(context, "当前选中的是:" + child_array.get(position),
 			 * Toast.LENGTH_SHORT).show();
-			 */}
+			 */
+			
+			Toast.makeText(Chengshi.this, "当前选中的是:" + list_province.get(groupPosition).getList_city().get(position).getName(),
+					  Toast.LENGTH_SHORT).show();
+			if(WHAT.equals("user")){
+				if(pp.getString(Content.City, "cc").equals(list_province.get(groupPosition).getList_city().get(position).getName())){
+					  pp.put(Content.Citychoice, "0");
+				}else{
+				  pp.put(Content.Citychoice, "1");
+				}
+
+				pp.put(Content.City, list_province.get(groupPosition).getList_city().get(position).getName());
+				pp.put(Content.Cityid,  list_province.get(groupPosition).getList_city().get(position).getId());
+			}else{
+				if(pp.getString(Content.City_c1, "cc").equals(list_province.get(groupPosition).getList_city().get(position).getName())){
+					  pp.put(Content.Citychoice, "0");
+				}else{
+				  pp.put(Content.Citychoice, "1");
+				}
+				pp.put(Content.City_c1, list_province.get(groupPosition).getList_city().get(position).getName());
+				pp.put(Content.City_id1,  list_province.get(groupPosition).getList_city().get(position).getId());
+			}
+
+            AppManager.getAppManager().finishActivity();
+
+		}
 	}
   private int groupPosition ;
 	class Holder {
