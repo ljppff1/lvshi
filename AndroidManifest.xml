@@ -62,7 +62,8 @@
         <activity android:name="com.rvidda.cn.ui.ShenQingQiliao"></activity>
         <activity android:name="com.rvidda.cn.ui.Chengshi"></activity>
                 <activity android:name="com.rvidda.cn.ui.UserSetting"></activity>
-       
+                <activity android:name="com.rvidda.cn.ui.UserSetting1"></activity>
+                
                 <!-- 登陆 -->
         <activity
             android:name="com.fanxin.app.fx.LoginActivity"

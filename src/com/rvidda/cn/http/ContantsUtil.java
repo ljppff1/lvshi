@@ -48,7 +48,14 @@ public class ContantsUtil {
     public final static String QiNiu = HOST1 + "/uptoken";
     //提交咨询
     public final static String TiJiaoZiX = HOST + "/subjects";
-
+    //咨询列表
+    public final static String ZXLiaoBiao = HOST + "/subjects";
+    //个人设置
+    public final static String PersonMe =HOST+"/me";
+    //提交申请
+    public final static String TJlawyer =HOST+"/lawyers";
+    //城市
+    public final static String Area =HOST+"/areas";
     
     
     

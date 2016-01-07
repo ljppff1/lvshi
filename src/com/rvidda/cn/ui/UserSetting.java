@@ -2,6 +2,12 @@ package com.rvidda.cn.ui;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,28 +22,116 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UpProgressHandler;
+import com.qiniu.android.storage.UploadManager;
+import com.qiniu.android.storage.UploadOptions;
+import com.rvidda.cn.AppManager;
+import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
+import com.rvidda.cn.domain.ZXList;
+import com.rvidda.cn.http.ContantsUtil;
+import com.rvidda.cn.utils.Content;
+import com.rvidda.cn.utils.PreferenceUtils;
 import com.rvidda.cn.view.CircleImageView;
 
-public class UserSetting extends Activity {
+public class UserSetting extends BaseActivity {
 	private CircleImageView photo_view;
+	private PreferenceUtils pp;
+	private ImageView mBtn_back;
+	private DisplayImageOptions options;
+	private TextView mtv1;
+	private TextView mtv3;
+	private RelativeLayout mRlw1;
+	private ImageView mBtn_setting;
+	private RelativeLayout mRllocal;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
+	     pp =PreferenceUtils.getInstance(UserSetting.this);
 
 		initView();
-
+		getZXLiaobiao();
 	}
 
 	private void initView() {
+		options = new DisplayImageOptions.Builder()
+		.showStubImage(R.drawable.content_bg)
+		.showImageForEmptyUri(R.drawable.content_bg)
+		.showImageOnLoading(R.drawable.content_bg)
+		.showImageOnFail(R.drawable.content_bg).cacheInMemory(true)
+		.cacheOnDisc(true).build();
+		mtv1 =(TextView)this.findViewById(R.id.mtv1);
+		mtv3 =(TextView)this.findViewById(R.id.mtv3);
+		mRlw1 =(RelativeLayout)this.findViewById(R.id.mRlw1);
+		mRlw1.setOnClickListener(listener);
+		mRllocal =(RelativeLayout)this.findViewById(R.id.mRllocal);
+		mRllocal.setOnClickListener(listener);
 		photo_view = (com.rvidda.cn.view.CircleImageView) this
 				.findViewById(R.id.photo);
 		photo_view.setOnClickListener(listener);
+		mBtn_back =(ImageView)this.findViewById(R.id.mBtn_back);
+		mBtn_back.setOnClickListener(listener);
+		mBtn_setting =(ImageView)this.findViewById(R.id.mBtn_setting);
+		mBtn_setting.setOnClickListener(listener);
+		
+	}
+	//用户设置
+	public void getZXLiaobiao(){		
+		Map<String, Object> params = new HashMap<String, Object>();
+		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.PersonMe, "get", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+/**
+ * {"user":{"id":15,"name":null,"avatar":null,
+ * "avatar_url":"http://7u2gfi.com1.z0.glb.clouddn.com/Fhab9G1MW-m0MPH0mqVk3QAmUvDa",
+ * "mobile":"13652435378",
+ * "email":"","is_lawyer":0,"hx_user":"hx_15","hx_password":"password_15"}}
+ */
+							JSONObject jsonObj = new JSONObject(json);
+							JSONObject user = jsonObj.getJSONObject("user");
+							String avatar_url = user.getString("avatar_url");
+							String mobile = user.getString("mobile");
+							String is_lawyer = user.getInt("is_lawyer")+"";
 
+							pp.put(Content.Avator_Url, avatar_url);
+							pp.put(Content.Mobile, mobile);
+							pp.put(Content.Is_Lawyer, is_lawyer);
+							ImageLoader.getInstance().displayImage(avatar_url,photo_view , options);		
+							if(mobile.length()>7){
+							mtv3.setText(mobile.substring(0, 3)+"****"+mobile.substring(7));
+							}
+							
+							JSONObject area = user.getJSONObject("area");
+							String city = area.getString("city");
+							pp.put(Content.City, city);
+
+							mtv1.setText(city);
+
+							}else{
+			                       Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
+										}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
 	}
 
 	android.view.View.OnClickListener listener = new View.OnClickListener() {
@@ -45,8 +139,20 @@ public class UserSetting extends Activity {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.mRllocal:
+				startActivity(new Intent(getApplicationContext(), Chengshi.class));
+				break;
+			case R.id.mRlw1:
+				startActivity(new Intent(UserSetting.this, ShenQingQiliao.class));
+				break;
 			case R.id.photo:
 				takephoto();
+				break;
+			case R.id.mBtn_back:
+				AppManager.getAppManager().finishActivity();
+				break;
+			case R.id.mBtn_setting:
+				startActivity(new Intent(UserSetting.this, UserSetting1.class));
 				break;
 
 			default:
@@ -148,6 +254,11 @@ public class UserSetting extends Activity {
 					}
 				}
 				photo_view.setImageBitmap(photo);
+				String path1 = com.rvidda.cn.utils.ImageTools.savePhotoToSDCard(photo, Environment.getExternalStorageDirectory().getAbsolutePath(), String.valueOf(System.currentTimeMillis()));
+				if(!TextUtils.isEmpty(path1)){
+					sendFileAndLvyin(path1);
+				}
+
 				break;
 
 			default:
@@ -169,5 +280,81 @@ public class UserSetting extends Activity {
 		intent.putExtra("return-data", true);
 		startActivityForResult(intent, requestCode);
 	}
+
+	//发送文件到七牛
+	public void sendFileAndLvyin(final String filenames){		
+		Map<String, Object> params = new HashMap<String, Object>();
+		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.QiNiu, "get", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+							JSONObject jsonObj = new JSONObject(json);
+							String uptoken = jsonObj.getString("uptoken");
+						    String key = jsonObj.getString("key");
+                            sendFiletoQiNiu(filenames,uptoken, key);
+							}else{
+			                       Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
+										}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+	}
+	private void sendFiletoQiNiu(String file,String uptoken,String key) {
+		UploadManager uploadManager = new UploadManager();
+		try{
+		uploadManager.put(file, key, uptoken,
+		new UpCompletionHandler() {
+		    @Override
+			public void complete(String key, ResponseInfo info, JSONObject res) {
+				// TODO Auto-generated method stub
+		        Log.e("qiniu---", key + ",\r\n " + info + ",\r\n " + res);
+		        try {
+					String keyvalue = res.getString("key");
+					initTiJiao(keyvalue);					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+//   /storage/2A94-E4F0/DCIM/Camera/1/IMG_20351008_174652.jpg
+//   /storage/2A94-E4F0/Android/data/com.rvidda.cn/ljppff1#rvidda/ljppff/voice/null20160104T164855.amr
+			}
+		}, new UploadOptions(null, "", true,  new UpProgressHandler(){
+            public void progress(String key, double percent){
+                Log.i("qiniu", key + ": " + percent);
+            }
+        },null));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void initTiJiao(String filepath)
+	{
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("user[avatar]",filepath);
+		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.PersonMe, "put", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+/*
+ */
+							JSONObject jsonObj = new JSONObject(json);
+							}else{
+                       Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
+
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+	}
+
 
 }

@@ -572,16 +572,16 @@ public class TiChuZiXun extends BaseActivity implements
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("subject[title]", title);
 		params.put("subject[label_ids]", content);
-		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.HOST+"subjects/"+ID, "put", params,
+		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.HOST+"/subjects/"+ID, "put", params,
 				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
 					@Override
 					public void callback(String json) {
 						try {
 							if(!json.equals("0")){
 							JSONObject jsonObj = new JSONObject(json);
-
+                            
 							}else{
-			                       Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
+			                       Toast.makeText(getApplicationContext(), R.string.log10, 0).show();
 										}
 						} catch (JSONException e) {
 							e.printStackTrace();

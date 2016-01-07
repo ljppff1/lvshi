@@ -69,6 +69,7 @@
                   android:layout_marginRight="@dimen/p60"
                   android:layout_width="wrap_content"
                   android:layout_height="fill_parent"
+                  android:id="@+id/mRllocal"
                   android:layout_toLeftOf="@id/mBtn_setting"
                   >
                 <TextView

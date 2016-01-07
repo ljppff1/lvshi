@@ -54,7 +54,8 @@
             android:orientation="vertical"
           >
                         <RelativeLayout
-                android:id="@+id/mRlw1"                
+                android:id="@+id/mRlw1"
+                android:visibility="gone"                
                 android:layout_width="fill_parent"
                android:paddingTop="@dimen/p20"
                android:paddingBottom="@dimen/p20"
@@ -87,6 +88,7 @@
                                            <ImageView 
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
+                            android:visibility="gone"
                             android:src="@drawable/longline"
                             />
                         <RelativeLayout

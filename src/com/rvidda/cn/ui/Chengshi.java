@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -23,9 +26,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONArray;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
+import com.rvidda.cn.domain.City;
+import com.rvidda.cn.domain.Province;
+import com.rvidda.cn.http.ContantsUtil;
 import com.rvidda.cn.view.MyExpandableListView;
 import com.rvidda.cn.view.MyGridView;
 
@@ -43,9 +51,61 @@ public class Chengshi extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chengshi);
-
+		initgetData();
 		initView();
 
+	}
+	
+
+	private List<City> list_remen =new ArrayList<City>();
+	private List<Province> list_province =new ArrayList<Province>();
+	private void initgetData()
+	{
+		Map<String, Object> params = new HashMap<String, Object>();
+		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.Area, "get", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+								list_remen.clear();
+								list_province.clear();
+							JSONObject jsonObj1 = new JSONObject(json);
+							JSONObject jsonObj = jsonObj1.getJSONObject("data");
+							org.json.JSONArray jr =jsonObj.getJSONArray("popular_cities");
+							for(int i=0;i<jr.length();i++){
+								City cc =new City();
+								cc.setId(((JSONObject)jr.get(i)).getString("id"));
+								cc.setName(((JSONObject)jr.get(i)).getString("name"));
+							}
+							org.json.JSONArray jp =jsonObj.getJSONArray("provinces");
+	                        for(int i=0;i<jp.length();i++){
+	                        Province pp =new Province();
+	                        pp.setId(((JSONObject)jp.get(i)).getString("id"));
+	                        pp.setName(((JSONObject)jp.get(i)).getString("name"));
+	                        List<City> cccc =new ArrayList<City>();
+	                        JSONObject jso = (JSONObject)jp.get(i);
+	                       org.json.JSONArray cities = jso.getJSONArray("cities");
+	                        org.json.JSONArray jcc =((JSONObject)jp.get(i)).getJSONArray("cities");
+	                        for(int j=0;j<jcc.length();j++)	{
+	                        	City cc =new City();
+	                        	cc.setId(((JSONObject)jcc.get(i)).getInt("id")+"");
+	                        	cc.setName(((JSONObject)jcc.get(i)).getString("name"));
+	                        	cccc.add(cc);
+	                        }
+	                        pp.setList_city(cccc);
+	                        list_province.add(pp);
+	                        
+	                        }
+							}else{
+                       Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
+
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
 	}
 
 	private void initView() {

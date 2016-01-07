@@ -94,6 +94,7 @@
                <EditText
                    android:background="@null"
                     style="@style/t_d_30_3"
+                    android:id="@+id/mEt1"
                     android:inputType="text"
                     android:layout_width="fill_parent"
                     android:layout_centerVertical="true"
@@ -193,6 +194,7 @@
                <EditText
                    android:background="@null"
                     style="@style/t_d_30_3"
+                                        android:id="@+id/mEt2"
                     android:inputType="textEmailAddress"
                     android:layout_width="fill_parent"
                     android:layout_centerVertical="true"
@@ -292,6 +294,8 @@
                               <EditText
                    android:background="@null"
                     style="@style/t_d_30_3"
+                                        android:id="@+id/mEt3"
+                    
                     android:inputType="text"
                     android:layout_width="fill_parent"
                     android:layout_centerVertical="true"
@@ -343,6 +347,8 @@
                               <EditText
                    android:background="@null"
                     style="@style/t_d_30_3"
+                                        android:id="@+id/mEt4"
+                    
                     android:inputType="text"
                     android:layout_width="fill_parent"
                     android:layout_centerVertical="true"

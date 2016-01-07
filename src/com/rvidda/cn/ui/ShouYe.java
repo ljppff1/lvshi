@@ -773,8 +773,8 @@ public class ShouYe extends BaseActivity {
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
 		
-		params.put("subject[messages_attributes][body]",key);
-		params.put("subject[messages_attributes][type]","VoiceMessage");
+		params.put("subject[messages_attributes]{}[body]",key);
+		params.put("subject[messages_attributes]{}[type]","VoiceMessage");
 		params.put("subject[label_ids]",getsendBiaoqian());
 		params.put("subject[title]","lj");
 		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.TiJiaoZiX, "post", params,
@@ -783,19 +783,20 @@ public class ShouYe extends BaseActivity {
 					public void callback(String json) {
 						try {
 							if(!json.equals("0")){
+/**
+ * {"subject":{"id":177,"title":"lj","created_at":"2016-01-06 10:02:24",
+ * "updated_at":"2016-01-06 10:02:24","user_businesses":[],"lawyers":[],"messages":[],"labels":[]}}
+ */
 							JSONObject jsonObj = new JSONObject(json);
+							JSONObject subject = jsonObj.getJSONObject("subject");
+						   Integer id = subject.getInt("id");
 							Intent intent =new Intent(getApplicationContext(),TiChuZiXun.class);
-							intent.putExtra("ID", 18+"");
+							intent.putExtra("ID", id+"");
 							intent.putExtra("SELECT",getsendBiaoqian1());
 							intent.putExtra("FILE", file_path);
 							startActivity(intent);
 							}else{
                        Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
-						Intent intent =new Intent(getApplicationContext(),TiChuZiXun.class);
-						intent.putExtra("ID", 18+"");
-						intent.putExtra("SELECT",getsendBiaoqian1());
-						intent.putExtra("FILE", file_path);
-						startActivity(intent);
 
 							}
 /*						             startActivity(new Intent(getApplicationContext(), ShouYe.class));

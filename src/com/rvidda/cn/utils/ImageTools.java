@@ -325,7 +325,7 @@ public final class ImageTools {
 	 * @param photoName
 	 * @param path
 	 */
-	public static void savePhotoToSDCard(Bitmap photoBitmap, String path,
+	public static String savePhotoToSDCard(Bitmap photoBitmap, String path,
 			String photoName) {
 		if (checkSDCardAvailable()) {
 			File dir = new File(path);
@@ -341,7 +341,7 @@ public final class ImageTools {
 					if (photoBitmap.compress(Bitmap.CompressFormat.PNG, 100,
 							fileOutputStream)) {
 						fileOutputStream.flush();
-						// fileOutputStream.close();
+			return photoFile.getAbsolutePath();
 					}
 				}
 			} catch (FileNotFoundException e) {
@@ -358,6 +358,7 @@ public final class ImageTools {
 				}
 			}
 		}
+		return "";
 	}
 
 	/**
