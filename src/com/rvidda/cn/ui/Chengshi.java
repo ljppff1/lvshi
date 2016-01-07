@@ -46,19 +46,21 @@ public class Chengshi extends BaseActivity {
 	private int sign = -1;
 	private ArrayList<Map<String, Object>> list;
 	private ExpandableGridAdapter adapter1;
+	private List<City> list_remen =new ArrayList<City>();
+	private List<Province> list_province =new ArrayList<Province>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chengshi);
+		 list_remen =new ArrayList<City>();
+		 list_province =new ArrayList<Province>();
 		initgetData();
 		initView();
 
 	}
 	
 
-	private List<City> list_remen =new ArrayList<City>();
-	private List<Province> list_province =new ArrayList<Province>();
 	private void initgetData()
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -95,7 +97,8 @@ public class Chengshi extends BaseActivity {
 	                        }
 	                        pp.setList_city(cccc);
 	                        list_province.add(pp);
-	                        
+	                        adapter.notifyDataSetChanged();
+	                        adapter1.notifyDataSetChanged();
 	                        }
 							}else{
                        Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
@@ -201,6 +204,9 @@ public class Chengshi extends BaseActivity {
 			} else {
 				holder = (Holderlist) convertView.getTag();
 			}
+			
+			holder.mTvg1.setText(list_remen.get(position).getName());
+			
 			return convertView;
 
 		}
@@ -208,7 +214,7 @@ public class Chengshi extends BaseActivity {
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return listd1.length;
+			return list_remen.size();
 		}
 
 		@Override
@@ -245,7 +251,7 @@ public class Chengshi extends BaseActivity {
 		 */
 		@Override
 		public int getGroupCount() {
-			return list.size();
+			return list_province.size();
 		}
 
 		/**
@@ -263,7 +269,7 @@ public class Chengshi extends BaseActivity {
 		 */
 		@Override
 		public Object getGroup(int groupPosition) {
-			return list.get(1);
+			return list_province.get(1).getName();
 		}
 
 		/**
@@ -316,7 +322,7 @@ public class Chengshi extends BaseActivity {
 			} else {
 				mIvll1.setImageResource(R.drawable.zhangkai);
 			}
-			group_title.setText(listw1.get(groupPosition));
+			group_title.setText(list_province.get(groupPosition).getName());
 			return convertView;
 		}
 
@@ -330,7 +336,7 @@ public class Chengshi extends BaseActivity {
 					R.layout.item_grid_child_layout, null);
 			gridview = (com.rvidda.cn.view.MyGridView) convertView
 					.findViewById(R.id.gridview);
-
+			groupPosition =groupPosition;
 			// int size = child_text_array[groupPosition].length;
 			/*
 			 * child_array = new ArrayList<String>(); for (int i = 0; i < size;
@@ -357,7 +363,7 @@ public class Chengshi extends BaseActivity {
 			 * Toast.LENGTH_SHORT).show();
 			 */}
 	}
-
+  private int groupPosition ;
 	class Holder {
 		TextView mTvg1;
 		ImageView mIv2, mIv3, mIv1;
@@ -379,7 +385,7 @@ public class Chengshi extends BaseActivity {
 			} else {
 				holder = (Holder) convertView.getTag();
 			}
-			holder.mTvg1.setText("长沙" + position);
+			holder.mTvg1.setText(list_province.get(groupPosition).getList_city().get(position).getName());
 
 			return convertView;
 
@@ -388,7 +394,7 @@ public class Chengshi extends BaseActivity {
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return 14;
+			return list_province.get(groupPosition).getList_city().size();
 		}
 
 		@Override
