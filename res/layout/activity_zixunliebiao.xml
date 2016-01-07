@@ -57,6 +57,16 @@
         android:scrollingCache="false" />
 
 
+                    <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mIvadd"
+                    android:src="@drawable/tianjia"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true" 
+                    android:layout_marginRight="@dimen/dp15"                   
+                    android:layout_marginBottom="@dimen/dp15"
+                    />
                 
                 
                 </RelativeLayout>

@@ -125,8 +125,7 @@ public class Chengshi extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Toast.makeText(Chengshi.this, "当前选中的是:" + list_remen.get(position).getName(),
-						  Toast.LENGTH_SHORT).show();
+			//	Toast.makeText(Chengshi.this, "当前选中的是:" + list_remen.get(position).getName(),Toast.LENGTH_SHORT).show();
 				if(WHAT.equals("user")){
 					if(pp.getString(Content.City, "cc").equals(list_remen.get(position).getName())){
 						  pp.put(Content.Citychoice, "0");
@@ -400,8 +399,7 @@ public class Chengshi extends BaseActivity {
 			 * Toast.LENGTH_SHORT).show();
 			 */
 			
-			Toast.makeText(Chengshi.this, "当前选中的是:" + list_province.get(groupPosition).getList_city().get(position).getName(),
-					  Toast.LENGTH_SHORT).show();
+		//	Toast.makeText(Chengshi.this, "当前选中的是:" + list_province.get(groupPosition).getList_city().get(position).getName(),Toast.LENGTH_SHORT).show();
 			if(WHAT.equals("user")){
 				if(pp.getString(Content.City, "cc").equals(list_province.get(groupPosition).getList_city().get(position).getName())){
 					  pp.put(Content.Citychoice, "0");

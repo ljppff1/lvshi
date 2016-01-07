@@ -43,6 +43,7 @@ public class ZiXunLieBiao extends BaseActivity {
 
 	private ZixunLieBiaoAdapter adapter;
 	private ImageView mIvPeople;
+	private ImageView mIvadd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,8 @@ public class ZiXunLieBiao extends BaseActivity {
 	}
 
 	private void initView() {
+		mIvadd =(ImageView)this.findViewById(R.id.mIvadd);
+		mIvadd.setOnClickListener(listener);
 		mIvPeople =(ImageView)this.findViewById(R.id.mIvPeople);
 		mIvPeople.setOnClickListener(listener);
 		listView = (com.dian.diabetes.widget.listview.PullRefListView) this
@@ -208,6 +211,14 @@ public class ZiXunLieBiao extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.mIvadd:
+				Intent intent =new Intent(getApplicationContext(),TiChuZiXun.class);
+				intent.putExtra("ID", "");
+				intent.putExtra("SELECT","");
+				intent.putExtra("FILE", "");
+				startActivity(intent);
+
+				break;
 			case R.id.mRlLogin:
 				startActivity(new Intent(ZiXunLieBiao.this, ShouYe.class));
 				break;

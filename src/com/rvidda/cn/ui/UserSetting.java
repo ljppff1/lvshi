@@ -75,6 +75,9 @@ public class UserSetting extends BaseActivity {
 		.showImageOnFail(R.drawable.content_bg).cacheInMemory(true)
 		.cacheOnDisc(true).build();
 		mtv1 =(TextView)this.findViewById(R.id.mtv1);
+		String city = pp.getString(Content.City, "");
+		mtv1.setText(city);
+
 		mtv3 =(TextView)this.findViewById(R.id.mtv3);
 		mRlw1 =(RelativeLayout)this.findViewById(R.id.mRlw1);
 		mRlw1.setOnClickListener(listener);

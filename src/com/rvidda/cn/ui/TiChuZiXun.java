@@ -61,7 +61,9 @@ import com.rvidda.cn.adapter.ZXAdapter;
 import com.rvidda.cn.domain.Items;
 import com.rvidda.cn.domain.ZXXiaoXi;
 import com.rvidda.cn.http.ContantsUtil;
+import com.rvidda.cn.utils.Content;
 import com.rvidda.cn.utils.Media;
+import com.rvidda.cn.utils.PreferenceUtils;
 import com.rvidda.cn.view.popWindow1;
 import com.rvidda.cn.view.popWindow1.onSearchBarItemClickListener;
 import com.rvidda.cn.view.popWindow2;
@@ -151,11 +153,14 @@ public class TiChuZiXun extends BaseActivity implements
 	private ArrayList<ZXXiaoXi> listzxxx;
 	private ZXAdapter zxxiaoxi;
 	private ImageView mBtn_back;
+	private PreferenceUtils pp;
+	private TextView mTvdd;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tichuzixun);
+	     pp =PreferenceUtils.getInstance(TiChuZiXun.this);
 		media =new Media();
         getData();
 		initHuanXinView();
@@ -164,19 +169,34 @@ public class TiChuZiXun extends BaseActivity implements
 
 	}
 
+	@Override
+	protected void onResume() {
+		
+		String choice = pp.getString(Content.Citychoice, "0");
+		if(choice.equals("1")){
+			mTvdd.setText(pp.getString(Content.City_c1, ""));
+		}
+
+		super.onResume();
+	}
 	private void getData() {
+		
+		listzxxx =new ArrayList<ZXXiaoXi>();
+
 		ID =getIntent().getExtras().getString("ID");
 		SELECT =getIntent().getExtras().getString("SELECT");
 	    strarray = SELECT.split(",");
+
+		if(!TextUtils.isEmpty(ID)){
 	    String FILE_pro = getIntent().getExtras().getString("FILE");
-		listzxxx =new ArrayList<ZXXiaoXi>();
 
 		ZXXiaoXi zxxx =new ZXXiaoXi();
 		zxxx.setMtype("V");
 		zxxx.setMfilelocal(FILE_pro);
 		zxxx.setMtext("");
 		listzxxx.add(zxxx);
-
+		}else{
+		}
 	}
 
 	private void setUpView() {
@@ -453,7 +473,12 @@ public class TiChuZiXun extends BaseActivity implements
 					zxxx.setMtext("");
 					listzxxx.add(zxxx);
                     zxxiaoxi.notifyDataSetChanged();
+                    if(!TextUtils.isEmpty(ID)){
 					initTJxx(key, "VoiceMessage");
+                    }else{
+                    initTiJiao(key, "VoiceMessage");
+                    }
+
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -497,9 +522,50 @@ public class TiChuZiXun extends BaseActivity implements
 				});
 
 	}
+   
+	private void initTiJiao(String key,String type)
+	{
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		params.put("subject[messages_attributes]{}[body]",key);
+		params.put("subject[messages_attributes]{}[type]",type);
+		params.put("subject[label_ids]",sendBiaoQianString);
+		params.put("subject[title]",Title);
+		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.TiJiaoZiX, "post", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+/**
+ * {"subject":{"id":177,"title":"lj","created_at":"2016-01-06 10:02:24",
+ * "updated_at":"2016-01-06 10:02:24","user_businesses":[],"lawyers":[],"messages":[],"labels":[]}}
+ */
+							JSONObject jsonObj = new JSONObject(json);
+							JSONObject subject = jsonObj.getJSONObject("subject");
+						   Integer id = subject.getInt("id");
+						   ID =id+"";
+							}else{
+                       Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
+
+							}
+/*						             startActivity(new Intent(getApplicationContext(), ShouYe.class));
+								 AppManager.getAppManager().finishActivity();
+*/
+							
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
+	}
 
 	
 	private void initView() {
+		mTvdd =(TextView)this.findViewById(R.id.mTvdd);
+	     String citypp = pp.getString(Content.City, "深圳");
+	     mTvdd.setText(citypp);
 		mBtn_back =(ImageView)this.findViewById(R.id.mBtn_back);
 		mBtn_back.setOnClickListener(listener);
 		list =(ListView)this.findViewById(R.id.list);
@@ -548,7 +614,11 @@ public class TiChuZiXun extends BaseActivity implements
 					zxxx.setMtext(mEditTextContent.getEditableText().toString());
 					listzxxx.add(zxxx);
                     zxxiaoxi.notifyDataSetChanged();
+                    if(!TextUtils.isEmpty(ID)){
 					initTJxx(mEditTextContent.getEditableText().toString(), "TextMessage");
+                    }else{
+                    initTiJiao(mEditTextContent.getEditableText().toString(), "TextMessage");
+                    }
 				}
 				break;
 			case R.id.mRlw1:
@@ -558,7 +628,10 @@ public class TiChuZiXun extends BaseActivity implements
 				pop2.showAsDropDown(mLLpp1);
 				break;
 			case R.id.mRlw3:
-				startActivity(new Intent(TiChuZiXun.this, Chengshi.class));
+				Intent intent =	new Intent(getApplicationContext(), Chengshi.class);
+				intent.putExtra("WHAT", "b");
+					startActivity(intent);
+
 				break;
 
 			default:
@@ -581,15 +654,16 @@ public class TiChuZiXun extends BaseActivity implements
 							JSONObject jsonObj = new JSONObject(json);
                             
 							}else{
-			                       Toast.makeText(getApplicationContext(), R.string.log10, 0).show();
-										}
+			                Toast.makeText(getApplicationContext(), R.string.log10, 0).show();
+								}
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
 					}
 				});
-
 	}
+	
+	
 	
 	@Override
 	public void onSearchButtonClick(String string, String searchType) {
