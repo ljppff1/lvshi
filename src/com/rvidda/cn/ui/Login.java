@@ -91,7 +91,7 @@ public class Login extends BaseActivity {
 		mTvcode = (TextView) this.findViewById(R.id.mTvcode);
 		mEtCode =(EditText)this.findViewById(R.id.mEtCode);
 		mEtTell =(EditText)this.findViewById(R.id.mEtTell);
-		
+		mEtTell.setText(pp.getString(Content.Mobile, ""));
 		mTvde = (TextView) this.findViewById(R.id.mTvde);
 
 		String url_2_text = "点击登陆，即表示同意";
@@ -149,7 +149,9 @@ public class Login extends BaseActivity {
 								 String hx_password = user.getString("hx_password"); 
 								  id = user.getInt("id"); 
 								 boolean mobile_confirm = user.getBoolean("mobile_confirm");
+								// pp.clearPreference();
 					             pp.put(Content.TOKEN, auth_token);
+					             pp.put(Content.Mobile, mobile);
 					             pp.put(Content.UserID, id);
 					             pp.put(Content.Avator_Url, avatar_url);
 					             pp.put(Content.Hx_User, hx_user);
@@ -290,7 +292,12 @@ public class Login extends BaseActivity {
 					/*
 					 * runOnUiThread(new Runnable() { public void run() {
 					 * processContactsAndGroups(json); } });
-					 */startActivity(new Intent(Login.this, ShouYe.class));
+					 */
+                    if(pp.getString(Content.IS_PUTONG_User, "1").equals("1")){
+					startActivity(new Intent(Login.this, ShouYe.class));
+                    }else{
+                   	startActivity(new Intent(Login.this, LvShiShouYe.class));
+                    }
                     AppManager.getAppManager().finishActivity();
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -54,15 +54,17 @@ public class UserSetting extends BaseActivity {
 	private TextView mtv1;
 	private TextView mtv3;
 	private RelativeLayout mRlw1;
-	private ImageView mBtn_setting;
+	private ImageView mBtn_setting,IV5,IV4,IV3,IV2,IV1;
 	private RelativeLayout mRllocal;
+	private RelativeLayout mRlw3;
+	private RelativeLayout mRlLw4,mRlLw3,mRlLw2,mRlLw1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
 	     pp =PreferenceUtils.getInstance(UserSetting.this);
-
+ 
 		initView();
 		getZXLiaobiao();
 	}
@@ -79,8 +81,50 @@ public class UserSetting extends BaseActivity {
 		mtv1.setText(city);
 
 		mtv3 =(TextView)this.findViewById(R.id.mtv3);
+		mRlw3 =(RelativeLayout)this.findViewById(R.id.mRlw3);
+		mRlw3.setOnClickListener(listener);
 		mRlw1 =(RelativeLayout)this.findViewById(R.id.mRlw1);
 		mRlw1.setOnClickListener(listener);
+		mRlLw4 =(RelativeLayout)this.findViewById(R.id.mRlLw4);
+		mRlLw3 =(RelativeLayout)this.findViewById(R.id.mRlLw3);
+		mRlLw2 =(RelativeLayout)this.findViewById(R.id.mRlLw2);
+		mRlLw1 =(RelativeLayout)this.findViewById(R.id.mRlLw1);
+		IV4 =(ImageView)this.findViewById(R.id.IV4);
+		IV5 =(ImageView)this.findViewById(R.id.IV5);
+		IV3 =(ImageView)this.findViewById(R.id.IV3);
+		IV2 =(ImageView)this.findViewById(R.id.IV2);
+		IV1 =(ImageView)this.findViewById(R.id.IV1);
+		if(!pp.getString(Content.IS_PUTONG_User, "1").equals("1")){
+			mRlLw4.setVisibility(View.VISIBLE);
+			mRlLw3.setVisibility(View.VISIBLE);
+			mRlLw2.setVisibility(View.VISIBLE);
+			mRlLw1.setVisibility(View.VISIBLE);
+			IV4.setVisibility(View.VISIBLE);
+			IV3.setVisibility(View.VISIBLE);
+			IV2.setVisibility(View.VISIBLE);
+			IV1.setVisibility(View.VISIBLE);
+			mRlw1.setVisibility(View.GONE);
+		}else{
+			mRlLw4.setVisibility(View.GONE);
+			mRlLw3.setVisibility(View.GONE);
+			mRlLw2.setVisibility(View.GONE);
+			mRlLw1.setVisibility(View.GONE);
+			IV4.setVisibility(View.GONE);
+			IV3.setVisibility(View.GONE);
+			IV2.setVisibility(View.GONE);
+			IV1.setVisibility(View.GONE);
+			mRlw1.setVisibility(View.VISIBLE);
+		}
+
+		if(pp.getString(Content.Is_Lawyer, "0").equals("1")){
+			mRlw1.setVisibility(View.GONE);
+         IV5.setVisibility(View.GONE);
+		}else{			
+			mRlw1.setVisibility(View.VISIBLE);
+	         IV5.setVisibility(View.VISIBLE);
+		}
+			
+		mRlLw1.setOnClickListener(listener);
 		mRllocal =(RelativeLayout)this.findViewById(R.id.mRllocal);
 		mRllocal.setOnClickListener(listener);
 		photo_view = (com.rvidda.cn.view.CircleImageView) this
@@ -120,7 +164,12 @@ public class UserSetting extends BaseActivity {
 							String avatar_url = user.getString("avatar_url");
 							String mobile = user.getString("mobile");
 							String is_lawyer = user.getInt("is_lawyer")+"";
-
+                           if(is_lawyer.equals("1")){
+                        	   mRlLw1.setVisibility(View.VISIBLE);
+                        	   IV1.setVisibility(View.VISIBLE);
+                        	   IV5.setVisibility(View.GONE);
+                        	   mRlw1.setVisibility(View.GONE);
+                           }
 							pp.put(Content.Avator_Url, avatar_url);
 							pp.put(Content.Mobile, mobile);
 							pp.put(Content.Is_Lawyer, is_lawyer);
@@ -144,12 +193,23 @@ public class UserSetting extends BaseActivity {
 					}
 				});
 	}
+	//登出
+	private void logout() {
+		pp.clearPreference();
+		AppManager.getAppManager().finishAllActivitybutthis();
+		startActivity(new Intent(getApplicationContext(), Login.class));
+		AppManager.getAppManager().finishActivity();
+	}
 
 	android.view.View.OnClickListener listener = new View.OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.mRlLw1:
+				//切换身份
+				changeBody();
+				break;
 			case R.id.mRllocal:
 			Intent intent =	new Intent(getApplicationContext(), Chengshi.class);
 			intent.putExtra("WHAT", "user");
@@ -167,11 +227,46 @@ public class UserSetting extends BaseActivity {
 			case R.id.mBtn_setting:
 				startActivity(new Intent(UserSetting.this, UserSetting1.class));
 				break;
+			case R.id.mRlw3:
+				logout();
+				break;
 
 			default:
 				break;
 			}
 		}
+
+
+		private void changeBody() {
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					UserSetting.this);
+			builder.setTitle("选择身份");
+			// 指定下拉列表的显示数据
+			final String[] cities = { "普通用户", "律师身份" };
+			// 设置一个下拉的列表选择项
+			builder.setItems(cities, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if (which == 0) {
+						if(!pp.getString(Content.IS_PUTONG_User, "1").equals("1")){
+							pp.put(Content.IS_PUTONG_User, "1");
+							AppManager.getAppManager().finishAllActivitybutthis();
+							startActivity(new Intent(getApplicationContext(), ShouYe.class));
+							AppManager.getAppManager().finishActivity();
+						}
+					} else {
+						if(!pp.getString(Content.IS_PUTONG_User, "1").equals("0")){
+							pp.put(Content.IS_PUTONG_User, "0");
+							AppManager.getAppManager().finishAllActivitybutthis();
+							startActivity(new Intent(getApplicationContext(), LvShiShouYe.class));
+							AppManager.getAppManager().finishActivity();
+						}
+					}
+				}
+			});			
+			builder.show();
+		}
+
 
 		private void takephoto() {
 			AlertDialog.Builder builder = new AlertDialog.Builder(

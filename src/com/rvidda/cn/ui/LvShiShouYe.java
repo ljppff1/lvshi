@@ -1,9 +1,15 @@
 package com.rvidda.cn.ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -13,16 +19,22 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONArray;
 import com.dian.diabetes.widget.listview.PullRefListView;
 import com.dian.diabetes.widget.listview.PullRefListView.IXListViewListener;
 import com.jauker.widget.BadgeView;
+import com.rvidda.cn.AppManager;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
 import com.rvidda.cn.adapter.LvShiShouYeAdapter1;
+import com.rvidda.cn.domain.Items;
 import com.rvidda.cn.domain.LSSYList;
+import com.rvidda.cn.ui.ShouYe.Myadapter;
 import com.rvidda.cn.utils.DateUtil;
 
 public class LvShiShouYe extends BaseActivity {
@@ -38,15 +50,61 @@ public class LvShiShouYe extends BaseActivity {
 	private PullRefListView listView;
 	private long curentTime;
 	private LvShiShouYeAdapter1 adapter;
+	private ImageView mBtn_back;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lvshishouye);
 		initView();
-
+		initgetziliao();
 	}
 
+	private void initgetziliao()
+	{
+	
+		Map<String, Object> params = new HashMap<String, Object>();
+		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.WeiDaliebiao, "get", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+							JSONObject jsonObj = new JSONObject(json);
+                            org.json.JSONArray jsub =jsonObj.getJSONArray("subjects");
+                            for(int i=0;i<jsub.length();i++){
+                            	LSSYList zx =new LSSYList();
+                            	zx.setName(((JSONObject)jsub.get(i)).getString("title"));
+                            	zx.setUserid(((JSONObject)jsub.get(i)).getJSONObject("user").getString("id"));
+                            	zx.setPhoto(((JSONObject)jsub.get(i)).getJSONObject("user").getString("avatar_url"));
+                            	str.clear();
+                            	org.json.JSONArray labels = ((JSONObject)jsub.get(i)).getJSONArray("labels");
+                            	for(int j=0;j<labels.length();j++){
+                            		str.add(((JSONObject)labels.get(j)).getString("name"));
+                            	}
+                            	zx.setBiaoqian(str);
+                            	pageList.add(zx);
+                            }
+								data.clear();
+							    data.addAll(pageList);
+								listView.setPullLoadEnable(false);
+							
+							onLoad();
+
+							
+							}else{
+			                       Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
+										}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+	}
+	
+	
+
+	
 	private void initView() {
 		mVnum = (View) this.findViewById(R.id.mVnum);
 		BadgeView badgeView = new com.jauker.widget.BadgeView(LvShiShouYe.this);
@@ -55,7 +113,9 @@ public class LvShiShouYe extends BaseActivity {
 		badgeView.setGravity(Gravity.TOP | Gravity.RIGHT);
 		badgeView.setTextSize(10);
 		badgeView.setBadgeCount(6);
-
+		mBtn_back =(ImageView)this.findViewById(R.id.mBtn_back);
+		mBtn_back.setOnClickListener(listener);
+		
 		listView = (com.dian.diabetes.widget.listview.PullRefListView) this
 				.findViewById(R.id.news_list);
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -66,7 +126,7 @@ public class LvShiShouYe extends BaseActivity {
 					return;
 				}
 				if (position == data.size() + 1) {
-					loadData(false);
+					initgetziliao();
 				}
 			}
 		});
@@ -75,12 +135,12 @@ public class LvShiShouYe extends BaseActivity {
 			@Override
 			public void onRefresh() {
 				curentTime = System.currentTimeMillis();
-				loadData(true);
+				initgetziliao();
 			}
 
 			@Override
 			public void onLoadMore() {
-				loadData(false);
+				initgetziliao();
 			}
 		});
 
@@ -88,7 +148,6 @@ public class LvShiShouYe extends BaseActivity {
 		listView.setPullLoadEnable(false);
 		listView.setAdapter(adapter);
 		listView.onListRefresh();
-		loadData(true);
 
 	}
 
@@ -155,6 +214,10 @@ public class LvShiShouYe extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.mBtn_back:
+				startActivity(new Intent(getApplicationContext(), UserSetting.class));
+				
+				break;
 			case R.id.mRlLogin:
 
 				break;

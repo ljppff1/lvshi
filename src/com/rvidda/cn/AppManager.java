@@ -148,6 +148,18 @@ public class AppManager {
 		}
 	}
 
+	public void finishAllActivitybutthis() {
+		if (activityStack != null) {
+			for (int i = 0, size = activityStack.size(); i < size-1; i++) {
+				if (null != activityStack.get(i)) {
+					activityStack.get(i).finish();
+				}
+			}
+			activityStack.clear();
+			activityStack = null;
+		}
+	}
+
 	/**
 	 * �˳�Ӧ�ó���
 	 */

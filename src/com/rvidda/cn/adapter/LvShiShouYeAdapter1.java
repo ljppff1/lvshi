@@ -16,8 +16,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rvidda.cn.R;
 import com.rvidda.cn.domain.LSSYList;
+import com.rvidda.cn.view.CircleImageView;
 import com.rvidda.cn.view.FlowLayout;
 
 public class LvShiShouYeAdapter1 extends BaseAdapter {
@@ -84,18 +86,9 @@ public class LvShiShouYeAdapter1 extends BaseAdapter {
 		convertView = LayoutInflater.from(context).inflate(
 				R.layout.item_lvshishouye_layout, null);
 
-		/*
-		 * ViewHolder holder = null; if(convertView==null){ convertView =
-		 * LayoutInflater.from(context)
-		 * .inflate(R.layout.item_lvshishouye_layout, null); holder = new
-		 * ViewHolder(); holder.mPn1 =(CircleImageView)
-		 * convertView.findViewById(R.id.mPn1); holder.mtv1 =(TextView)
-		 * convertView.findViewById(R.id.mtv1); holder.mtv2 =(TextView)
-		 * convertView.findViewById(R.id.mtv2); holder.mtv3 =(TextView)
-		 * convertView.findViewById(R.id.mtv3); convertView.setTag(holder);
-		 * 
-		 * }else{ holder =(ViewHolder)convertView.getTag(); }
-		 */
+		com.rvidda.cn.view.CircleImageView mPn1 =(CircleImageView) convertView.findViewById(R.id.mPn1);
+		ImageLoader.getInstance().displayImage(data.get(position).getPhoto(), mPn1, options);		
+
 		FlowLayout mFFF = (com.rvidda.cn.view.FlowLayout) convertView
 				.findViewById(R.id.mFFF);
 		for (int i = 0; i < data.get(position).getBiaoqian().size(); i++) {

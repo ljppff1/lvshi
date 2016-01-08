@@ -13,6 +13,7 @@ public class Content {
     public static final String City_c1 ="City_c1";
     public static final String City_id1 ="City_cid1";
     public static final String Citychoice ="Citychoice";
+    public static final String IS_PUTONG_User ="IS_PUTONG_User";
     
     
 }

@@ -37,6 +37,15 @@ public class LSSYList {
 	}
 
 	private String name;
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+
+	private String userid;
 	private String wenti;
 	private String photo;
 	private List<String> biaoqian;

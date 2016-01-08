@@ -9,6 +9,11 @@
         <string name="setting1">我要做律师</string>
         <string name="setting2">付款账单</string>
         <string name="setting3">退出登录</string>
+<string name="settingl1">切换身份</string>
+<string name="settingl2">关注的法律类型</string>
+<string name="settingl3">银行卡</string>
+<string name="settingl4">收款账单</string>
+
         <string name="log1">请输入您的手机号码</string>
          <string name="log2">获取验证码</string>
          <string name="log3">请输入六位验证码</string>
