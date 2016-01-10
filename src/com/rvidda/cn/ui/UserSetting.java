@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.LinearLayout.LayoutParams;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -45,8 +46,11 @@ import com.rvidda.cn.http.ContantsUtil;
 import com.rvidda.cn.utils.Content;
 import com.rvidda.cn.utils.PreferenceUtils;
 import com.rvidda.cn.view.CircleImageView;
+import com.rvidda.cn.view.popWindow2;
+import com.rvidda.cn.view.popWindow3;
+import com.rvidda.cn.view.popWindow3.onSearchBarItemClickListener;
 
-public class UserSetting extends BaseActivity {
+public class UserSetting extends BaseActivity implements onSearchBarItemClickListener {
 	private CircleImageView photo_view;
 	private PreferenceUtils pp;
 	private ImageView mBtn_back;
@@ -58,6 +62,9 @@ public class UserSetting extends BaseActivity {
 	private RelativeLayout mRllocal;
 	private RelativeLayout mRlw3;
 	private RelativeLayout mRlLw4,mRlLw3,mRlLw2,mRlLw1;
+	private ImageView mIvedit;
+	private TextView mtv2;
+	private popWindow3 pop3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +77,10 @@ public class UserSetting extends BaseActivity {
 	}
 
 	private void initView() {
+		pop3 = new popWindow3(UserSetting.this, LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT);
+		pop3.setOnSearchBar1ItemClickListener(this);
+
 		options = new DisplayImageOptions.Builder()
 		.showStubImage(R.drawable.content_bg)
 		.showImageForEmptyUri(R.drawable.content_bg)
@@ -79,7 +90,8 @@ public class UserSetting extends BaseActivity {
 		mtv1 =(TextView)this.findViewById(R.id.mtv1);
 		String city = pp.getString(Content.City, "");
 		mtv1.setText(city);
-
+		mIvedit =(ImageView)this.findViewById(R.id.mIvedit);
+		mIvedit.setOnClickListener(listener);
 		mtv3 =(TextView)this.findViewById(R.id.mtv3);
 		mRlw3 =(RelativeLayout)this.findViewById(R.id.mRlw3);
 		mRlw3.setOnClickListener(listener);
@@ -94,6 +106,7 @@ public class UserSetting extends BaseActivity {
 		IV3 =(ImageView)this.findViewById(R.id.IV3);
 		IV2 =(ImageView)this.findViewById(R.id.IV2);
 		IV1 =(ImageView)this.findViewById(R.id.IV1);
+		mtv2 =(TextView)this.findViewById(R.id.mtv2);
 		if(!pp.getString(Content.IS_PUTONG_User, "1").equals("1")){
 			mRlLw4.setVisibility(View.VISIBLE);
 			mRlLw3.setVisibility(View.VISIBLE);
@@ -163,6 +176,10 @@ public class UserSetting extends BaseActivity {
 							JSONObject user = jsonObj.getJSONObject("user");
 							String avatar_url = user.getString("avatar_url");
 							String mobile = user.getString("mobile");
+							String name =user.getString("name");
+							if(!TextUtils.isEmpty(name)){
+								mtv2.setText(name);
+							}
 							String is_lawyer = user.getInt("is_lawyer")+"";
                            if(is_lawyer.equals("1")){
                         	   mRlLw1.setVisibility(View.VISIBLE);
@@ -206,6 +223,9 @@ public class UserSetting extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.mIvedit:
+				pop3.showAsDropDown(mtv2);
+				break;
 			case R.id.mRlLw1:
 				//切换身份
 				changeBody();
@@ -462,6 +482,36 @@ public class UserSetting extends BaseActivity {
 						}
 					}
 				});
+	}
+	private void initTiJiao1(String name)
+	{
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("user[name]",name);
+		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.PersonMe, "put", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+/*
+ */
+							JSONObject jsonObj = new JSONObject(json);
+							}else{
+                       Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
+
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+	}
+
+	@Override
+	public void onSearchButtonClick1(String string, String searchType) {
+		mtv2.setText(string);
+		initTiJiao1(string);
+		
 	}
 
 

@@ -58,7 +58,6 @@ import com.rvidda.cn.AppManager;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
 import com.rvidda.cn.adapter.ZXAdapter;
-import com.rvidda.cn.domain.Items;
 import com.rvidda.cn.domain.ZXXiaoXi;
 import com.rvidda.cn.http.ContantsUtil;
 import com.rvidda.cn.utils.Content;
@@ -204,7 +203,7 @@ public class TiChuZiXun extends BaseActivity implements
 		manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
+       
 		wakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE))
 				.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "demo");
 		
@@ -622,10 +621,18 @@ public class TiChuZiXun extends BaseActivity implements
 				}
 				break;
 			case R.id.mRlw1:
+				if(!TextUtils.isEmpty(ID)){
 				pop1.showAsDropDown(mLLpp1);
+				}else{
+					Toast.makeText(getApplicationContext(), R.string.log15, 0).show();
+				}
 				break;
 			case R.id.mRlw2:
+				if(!TextUtils.isEmpty(ID)){
 				pop2.showAsDropDown(mLLpp1);
+				}else{
+					Toast.makeText(getApplicationContext(), R.string.log15, 0).show();
+				}
 				break;
 			case R.id.mRlw3:
 				Intent intent =	new Intent(getApplicationContext(), Chengshi.class);

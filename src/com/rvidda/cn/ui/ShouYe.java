@@ -61,6 +61,7 @@ import com.rvidda.cn.R;
 import com.rvidda.cn.domain.Items;
 import com.rvidda.cn.http.ContantsUtil;
 import com.rvidda.cn.utils.Content;
+import com.rvidda.cn.utils.LoadingDialog;
 import com.rvidda.cn.utils.Media;
 import com.rvidda.cn.utils.PreferenceUtils;
 
@@ -98,6 +99,7 @@ public class ShouYe extends BaseActivity {
 	private ImageView micImage;
 	private View recordingContainer;
 	private TextView recordingHint;
+	private LoadingDialog dialog;
 
 	@Override
 	protected void onResume() {
@@ -116,11 +118,11 @@ public class ShouYe extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_shouye);
+		dialog =new LoadingDialog(ShouYe.this, "数据提交，请稍后");
 		media = new Media();
 		initHuanXin();
-		login();
+		//login();
 		initView();
-
 		initgetBiaoqian();
 	   //	initData();
 		// createFileK();
@@ -708,6 +710,7 @@ public class ShouYe extends BaseActivity {
 
 				break;
 			case R.id.mRlsure:
+				dialog.show();
 				sendFileAndLvyin("");
 				break;
 			default:
@@ -732,9 +735,15 @@ public class ShouYe extends BaseActivity {
 						    String key = jsonObj.getString("key");
                             sendFiletoQiNiu(file_path,uptoken, key);
 							}else{
+								if (dialog.isShowing()) {
+									dialog.cancel();
+								}
 			                       Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
 										}
 						} catch (JSONException e) {
+							if (dialog.isShowing()) {
+								dialog.cancel();
+							}
 							e.printStackTrace();
 						}
 					}
@@ -754,8 +763,9 @@ public class ShouYe extends BaseActivity {
 					initTiJiao(keyvalue);
 					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					if (dialog.isShowing()) {
+						dialog.cancel();
+					}					e.printStackTrace();
 				}
 //   /storage/2A94-E4F0/DCIM/Camera/1/IMG_20351008_174652.jpg
 //   /storage/2A94-E4F0/Android/data/com.rvidda.cn/ljppff1#rvidda/ljppff/voice/null20160104T164855.amr
@@ -796,19 +806,25 @@ public class ShouYe extends BaseActivity {
 							intent.putExtra("FILE", file_path);
 							startActivity(intent);
 							}else{
+								if (dialog.isShowing()) {
+									dialog.cancel();
+								}
                        Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
 
 							}
-/*						             startActivity(new Intent(getApplicationContext(), ShouYe.class));
-								 AppManager.getAppManager().finishActivity();
-*/
 							
+							if(dialog.isShowing()){
+								dialog.cancel();
+							}
+
 						} catch (JSONException e) {
 							e.printStackTrace();
+							if (dialog.isShowing()) {
+								dialog.cancel();
+							}
 						}
 					}
 				});
-
 	}
 	
 	

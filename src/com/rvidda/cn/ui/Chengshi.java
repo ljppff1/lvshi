@@ -149,15 +149,6 @@ public class Chengshi extends BaseActivity {
 		});
 		adapter = new Myadapterlist();
 		mGv1.setAdapter(adapter);
-        mGv1.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
 		expandableGridView = (com.rvidda.cn.view.MyExpandableListView) this
 				.findViewById(R.id.list);
 		expandableGridView.setOnGroupClickListener(new OnGroupClickListener() {

@@ -2,6 +2,7 @@ package com.fanxin.app.fx;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -118,6 +119,9 @@ public class MainActivity extends BaseActivity {
 			startActivity(new Intent(this, LoginActivity.class));
 			return;
 		}
+		Hashtable<String, EMConversation> conversations = EMChatManager
+				.getInstance().getAllConversations();
+
 		setContentView(R.layout.activity_mian_temp);
 		initView();
 
@@ -128,6 +132,7 @@ public class MainActivity extends BaseActivity {
 				&& !isAccountRemovedDialogShow) {
 			showAccountRemovedDialog();
 		}
+		
 		iv_add = (ImageView) this.findViewById(R.id.iv_add);
 		iv_search = (ImageView) this.findViewById(R.id.iv_search);
 		iv_add.setOnClickListener(new OnClickListener() {

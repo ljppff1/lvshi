@@ -58,7 +58,9 @@ public class ContantsUtil {
     public final static String Area =HOST+"/areas";
     //未答列表
     public final static String WeiDaliebiao =HOST+"/workroom/pending_subjects";
+    //已答列表
+    public final static String YiDaliebiao =HOST+"/workroom/doing_subjects";
     
-    
+   
     
 } 

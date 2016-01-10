@@ -28,9 +28,12 @@
                   <string name="log12">请填写邮箱</string>
                   <string name="log13">请填写执业证号</string>
                   <string name="log14">请提交证书文件</string>
+                  <string name="log15">请先发送一条咨询后再修改</string>
                   
          <string name="zx1">修改标签出错</string>
+         <string name="zx2">修改姓名不能为空</string>
          
+<string name="zxlook">xxxx人</string>
          
 <string name="sqtk1">律师发函资料明细</string>
 <string name="sqtk2">服务信息</string>
@@ -116,6 +119,7 @@
 <string name="tczx5">修改咨询类型</string>
 <string name="tczx6">确定</string>
 <string name="tczx7">请输入咨询标题</string>
+<string name="tczx71">请输入您的姓名</string>
 <string name="tczx8">取消</string>
 
 <string name="zxlb1">咨询列表</string>

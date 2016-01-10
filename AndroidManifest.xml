@@ -55,7 +55,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+        <activity android:name="com.rvidda.cn.ui.ZiXunLook"></activity>
         <activity android:name="com.rvidda.cn.ui.ShouYe"></activity>
         <activity android:name="com.rvidda.cn.ui.LvShiShouYe"></activity>
         <activity android:name="com.rvidda.cn.ui.TiChuZiXun"></activity>
@@ -407,8 +407,8 @@
         <!-- 设置环信应用的appkey  ljppff1#rvidda   fanxin888#fanxin  -->
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="ljppff1#rvidda" />
-        <!-- 声明sdk所需的service -->
+            android:value="appdev#lvda" />
+        <!-- 声明sdk所需的service ljppff1#rvidda-->
         <service android:name="com.easemob.chat.EMChatService" />
 
         <!-- 百度地图所需的service -->

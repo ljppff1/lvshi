@@ -1,8 +1,10 @@
 package com.fanxin.app.adapter;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -110,6 +112,19 @@ public class MessageAdapter extends BaseAdapter {
 		activity = (Activity) context;
 		this.conversation = EMChatManager.getInstance().getConversation(
 				username);
+	    List<EMMessage>	 me=conversation.getAllMessages();
+	    List<EMMessage>	 child =new ArrayList<EMMessage>();
+	    for(int i=0;i<me.size();i++){
+	    	try {
+				me.get(i).getStringAttribute("SUBJECT");
+				if(me.get(i).getStringAttribute("SUBJECT").equals("2")){
+					child.add(me.get(i));	
+				}
+			} catch (EaseMobException e) {
+				e.printStackTrace();
+			}
+	    }
+	    
 		avatarLoader = new LoadUserAvatar(context, "/sdcard/fanxin/");
 	}
 

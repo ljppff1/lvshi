@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background"
+ >
+
+  <RelativeLayout 
+                android:layout_width="fill_parent"
+                android:id="@+id/mRltt1"
+               style="@style/page_title1"
+               android:paddingLeft="@dimen/p40"
+               android:paddingRight="@dimen/p40"
+                >
+                        <ImageView
+            android:id="@+id/mBtn_back"
+            android:src="@drawable/fanhui2"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+         
+            />
+               
+                <TextView
+                    style="@style/t_bl_30"
+                    android:id="@+id/mtv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                 android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                   android:text="@string/zxlook" />
+                     
+            </RelativeLayout>
+      <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/mRltt2"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical"
+               android:layout_marginLeft="@dimen/p40"
+               android:layout_marginRight="@dimen/p40"
+                >
+                <ImageView 
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/as11"
+                    />
+                <ImageView 
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/as12"
+                    />
+                </LinearLayout>
+                <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+           android:layout_above="@id/mRltt2"
+           android:layout_below="@id/mRltt1"
+            android:cacheColorHint="#00000000"
+            android:divider="@null"
+            
+            android:dividerHeight="5dp"
+            android:listSelector="#00000000"
+            android:scrollbarStyle="outsideOverlay"
+            android:transcriptMode="normal" />
+</RelativeLayout>

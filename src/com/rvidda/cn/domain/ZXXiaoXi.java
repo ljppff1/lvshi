@@ -22,6 +22,13 @@ public class ZXXiaoXi {
 	private String mtype;
      private String mtext;
      private String mfilelocal;
+     public String getKeyId() {
+		return keyId;
+	}
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+	private String keyId;
      
      
 }

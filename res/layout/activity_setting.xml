@@ -15,8 +15,7 @@
         
         <LinearLayout 
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="200dp"
             android:orientation="vertical"
             >
             <RelativeLayout 
@@ -133,10 +132,11 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:gravity="center_vertical"
-                   android:text="@string/address" />
+                   android:text="xxx" />
                 
                    <ImageView
             android:layout_toRightOf="@id/mtv2"
+            android:id="@+id/mIvedit"
            android:background="@drawable/edit"
             android:layout_width="wrap_content"
             android:layout_marginLeft="@dimen/dp5"

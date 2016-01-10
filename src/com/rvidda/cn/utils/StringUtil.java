@@ -9,7 +9,6 @@ import java.util.Date;
 public class StringUtil {
 
 	/**
-	 * �?��是否为空
 	 * 
 	 * @param str
 	 * @return

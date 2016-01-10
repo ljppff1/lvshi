@@ -2,6 +2,8 @@ package com.rvidda.cn.domain;
 
 import java.util.List;
 
+import android.text.Spannable;
+
 public class LSSYList {
 
 	public String getName() {
@@ -44,10 +46,57 @@ public class LSSYList {
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
+    public String getHx_user() {
+		return hx_user;
+	}
 
+	public void setHx_user(String hx_user) {
+		this.hx_user = hx_user;
+	}
+
+	private String hx_user;
+    public String getSubject_lawyer_id() {
+		return subject_lawyer_id;
+	}
+
+	public void setSubject_lawyer_id(String subject_lawyer_id) {
+		this.subject_lawyer_id = subject_lawyer_id;
+	}
+
+	private String subject_lawyer_id;
 	private String userid;
 	private String wenti;
 	private String photo;
 	private List<String> biaoqian;
+    public Spannable getSp() {
+		return sp;
+	}
 
+	public void setSp(Spannable sp) {
+		this.sp = sp;
+	}
+
+	private Spannable sp;
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	private String body;
+	private String number;
+	
+	
+	
+	
 }

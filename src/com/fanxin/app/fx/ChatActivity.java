@@ -203,6 +203,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 			micImage.setImageDrawable(micImages[msg.what]);
 		}
 	};
+	private String SUBJECT;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -213,6 +214,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 				"nick");
 		myUserAvatar = LocalUserInfo.getInstance(ChatActivity.this)
 				.getUserInfo("avatar");
+		SUBJECT =getIntent().getExtras().getString("SUBJECT");
 		initView();
 		setUpView();
 		iamge_path = this.getIntent().getStringExtra("iamge_path");
@@ -240,10 +242,11 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		btnContainer = (LinearLayout) findViewById(R.id.ll_btn_container);
 		iv_emoticons_normal = (ImageView) findViewById(R.id.iv_emoticons_normal);
 		iv_emoticons_checked = (ImageView) findViewById(R.id.iv_emoticons_checked);
+		iv_emoticons_checked.setVisibility(View.GONE);
 		loadmorePB = (ProgressBar) findViewById(R.id.pb_load_more);
 		btnMore = (Button) findViewById(R.id.btn_more);
 		iv_emoticons_normal.setVisibility(View.VISIBLE);
-		iv_emoticons_checked.setVisibility(View.INVISIBLE);
+		iv_emoticons_checked.setVisibility(View.GONE);
 		more = findViewById(R.id.more);
 		edittext_layout.setBackgroundResource(R.drawable.input_bar_bg_normal);
 
@@ -298,7 +301,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 						.setBackgroundResource(R.drawable.input_bar_bg_active);
 				more.setVisibility(View.GONE);
 				iv_emoticons_normal.setVisibility(View.VISIBLE);
-				iv_emoticons_checked.setVisibility(View.INVISIBLE);
+				iv_emoticons_checked.setVisibility(View.GONE);
 				emojiIconContainer.setVisibility(View.GONE);
 				btnContainer.setVisibility(View.GONE);
 			}
@@ -363,6 +366,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 				toChatUsername);
 		// 把此会话的未读数置为0
 		conversation.resetUnreadMsgCount();
+		Log.e("conversation----", conversation.toString());
+		Log.e("toChatUsername----", toChatUsername.toString());
 		adapter = new MessageAdapter(this, toChatUsername, chatType);
 		// 显示消息
 		listView.setAdapter(adapter);
@@ -373,14 +378,13 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		}
 
 		listView.setOnTouchListener(new OnTouchListener() {
-
 			@SuppressLint("ClickableViewAccessibility")
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				hideKeyboard();
 				more.setVisibility(View.GONE);
 				iv_emoticons_normal.setVisibility(View.VISIBLE);
-				iv_emoticons_checked.setVisibility(View.INVISIBLE);
+				iv_emoticons_checked.setVisibility(View.GONE);
 				emojiIconContainer.setVisibility(View.GONE);
 				btnContainer.setVisibility(View.GONE);
 				return false;
@@ -632,13 +636,13 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		} else if (id == R.id.iv_emoticons_normal) { // 点击显示表情框
 			more.setVisibility(View.VISIBLE);
 			iv_emoticons_normal.setVisibility(View.INVISIBLE);
-			iv_emoticons_checked.setVisibility(View.VISIBLE);
+			iv_emoticons_checked.setVisibility(View.GONE);
 			btnContainer.setVisibility(View.GONE);
 			emojiIconContainer.setVisibility(View.VISIBLE);
 			hideKeyboard();
 		} else if (id == R.id.iv_emoticons_checked) { // 点击隐藏表情框
 			iv_emoticons_normal.setVisibility(View.VISIBLE);
-			iv_emoticons_checked.setVisibility(View.INVISIBLE);
+			iv_emoticons_checked.setVisibility(View.GONE);
 			btnContainer.setVisibility(View.VISIBLE);
 			emojiIconContainer.setVisibility(View.GONE);
 			more.setVisibility(View.GONE);
@@ -736,10 +740,12 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 			message.addBody(txtBody);
 			// 设置要发给谁,用户username或者群聊groupid
 			message.setReceipt(toChatUsername);
-			// message.setAttribute("toUserNick", toUserNick);
-			// message.setAttribute("toUserAvatar", toUserAvatar);
+			message.setAttribute("toUserNick", toUserNick);
+			 message.setAttribute("toUserAvatar", toUserAvatar);
 			message.setAttribute("useravatar", myUserAvatar);
 			message.setAttribute("usernick", myUserNick);
+			message.setAttribute("SUBJECT", SUBJECT);
+			
 			// 把messgage加到conversation中
 			conversation.addMessage(message);
 			// 通知adapter有消息变动，adapter会根据加入的这条message显示消息和调用sdk的发送方法
@@ -777,6 +783,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 			// message.setAttribute("toUserAvatar", toUserAvatar);
 			// message.setAttribute("useravatar", myUserAvatar);
 			message.setAttribute("usernick", myUserNick);
+			message.setAttribute("SUBJECT", SUBJECT);
+
 			int len = Integer.parseInt(length);
 			VoiceMessageBody body = new VoiceMessageBody(new File(filePath),
 					len);
@@ -813,6 +821,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		// message.setAttribute("toUserAvatar", toUserAvatar);
 		// message.setAttribute("useravatar", myUserAvatar);
 		message.setAttribute("usernick", myUserNick);
+		message.setAttribute("SUBJECT", SUBJECT);
 		if (is_share) {
 			message.setAttribute("isShare", "yes");
 		}
@@ -1018,7 +1027,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		btnMore.setVisibility(View.VISIBLE);
 		buttonPressToSpeak.setVisibility(View.VISIBLE);
 		iv_emoticons_normal.setVisibility(View.VISIBLE);
-		iv_emoticons_checked.setVisibility(View.INVISIBLE);
+		iv_emoticons_checked.setVisibility(View.GONE);
 		btnContainer.setVisibility(View.VISIBLE);
 		emojiIconContainer.setVisibility(View.GONE);
 
@@ -1074,7 +1083,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 				emojiIconContainer.setVisibility(View.GONE);
 				btnContainer.setVisibility(View.VISIBLE);
 				iv_emoticons_normal.setVisibility(View.VISIBLE);
-				iv_emoticons_checked.setVisibility(View.INVISIBLE);
+				iv_emoticons_checked.setVisibility(View.GONE);
 			} else {
 				more.setVisibility(View.GONE);
 			}
@@ -1093,7 +1102,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		if (more.getVisibility() == View.VISIBLE) {
 			more.setVisibility(View.GONE);
 			iv_emoticons_normal.setVisibility(View.VISIBLE);
-			iv_emoticons_checked.setVisibility(View.INVISIBLE);
+			iv_emoticons_checked.setVisibility(View.GONE);
 		}
 
 	}
@@ -1634,7 +1643,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		if (more.getVisibility() == View.VISIBLE) {
 			more.setVisibility(View.GONE);
 			iv_emoticons_normal.setVisibility(View.VISIBLE);
-			iv_emoticons_checked.setVisibility(View.INVISIBLE);
+			iv_emoticons_checked.setVisibility(View.GONE);
 		} else {
 			// if(type==3){
 			// startActivity(new
