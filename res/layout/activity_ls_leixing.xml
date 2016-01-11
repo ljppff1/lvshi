@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background"
+ >
+
+         <RelativeLayout 
+                android:layout_width="fill_parent"
+                android:id="@+id/mRltt1"
+               style="@style/page_title1"
+               android:paddingLeft="@dimen/p40"
+               android:paddingRight="@dimen/p40"
+                >
+                        <ImageView
+            android:id="@+id/mBtn_back"
+            android:src="@drawable/fanhui2"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            />
+                <TextView
+                    style="@style/t_bl_30"
+                    android:id="@+id/mtv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                 android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                   android:text="@string/cs4" />
+            </RelativeLayout>
+            
+               <RelativeLayout 
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="@dimen/p65"
+                  android:id="@+id/mRLL2"
+                  android:layout_alignParentBottom="true"
+                  android:layout_marginRight="@dimen/p65"
+                  android:layout_marginTop="@dimen/p60"
+                  android:layout_marginBottom="@dimen/p56"
+                  android:background="@drawable/queding"
+                  >
+                                  <TextView
+                    style="@style/t_r_36"
+                    android:id="@+id/mtv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                  android:layout_centerInParent="true"
+                   android:text="@string/tczx6" />
+          
+              </RelativeLayout>
+         
+         
+                   <LinearLayout 
+                       android:layout_above="@id/mRLL2"
+                       android:layout_below="@id/mRltt1"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="@dimen/p40"
+              android:layout_marginRight="@dimen/p40"
+              >
+              
+      <GridView 
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/mGvpop1"
+      android:layout_marginTop="@dimen/p40"
+      android:layout_marginLeft="@dimen/p30"
+      android:layout_marginRight="@dimen/p30"
+      
+      android:verticalSpacing="@dimen/p36"
+      android:horizontalSpacing="@dimen/p30"
+      android:numColumns="4"
+      ></GridView>
+      </LinearLayout>
+    
+         
+         
+         
+         
+</RelativeLayout>

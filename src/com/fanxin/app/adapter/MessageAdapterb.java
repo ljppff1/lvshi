@@ -556,9 +556,8 @@ public class MessageAdapterb extends BaseAdapter {
 						.getMsgTime())));
 				timestamp.setVisibility(View.VISIBLE);
 			} else {
+				if (DateUtils.isCloseEnough(message.getMsgTime(), conversation.getMessage(position - 1).getMsgTime())) {
 				// 两条消息时间离得如果稍长，显示时间
-				if (DateUtils.isCloseEnough(message.getMsgTime(), conversation
-						.getMessage(position - 1).getMsgTime())) {
 					timestamp.setVisibility(View.GONE);
 				} else {
 					timestamp.setText(DateUtils.getTimestampString(new Date(

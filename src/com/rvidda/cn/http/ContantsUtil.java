@@ -42,6 +42,10 @@ public class ContantsUtil {
     
     //标签
     public final static String LABELS = HOST + "/labels";
+    //律师关注标签
+    public final static String LABELS_GZ = HOST + "/lawyer_labels";
+    //律师修改标签
+    public final static String LABELS_XG = HOST + "/lawyer_labels/batch";
     //更改标签
     public final static String LABELS1 = HOST + "/labels";
     //七牛

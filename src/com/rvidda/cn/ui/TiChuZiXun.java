@@ -120,6 +120,8 @@ public class TiChuZiXun extends BaseActivity implements
 	String iamge_path = null;
 	// 设置按钮
 	private ImageView iv_setting;
+	private String LENGTH;
+
 	private ImageView iv_setting_group;
 	@SuppressLint("HandlerLeak")
 	private Handler micImageHandler = new Handler() {
@@ -341,6 +343,7 @@ public class TiChuZiXun extends BaseActivity implements
 	 * 
 	 */
 	class PressToSpeakListen implements View.OnTouchListener {
+
 		@SuppressLint({ "ClickableViewAccessibility", "Wakelock" })
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
@@ -403,6 +406,7 @@ public class TiChuZiXun extends BaseActivity implements
 					// stop recording and send voice file
 					try {
 						int length = voiceRecorder.stopRecoding();
+						LENGTH= length+"";
 						if (length > 0) {
 /*							sendVoice(voiceRecorder.getVoiceFilePath(),
 									voiceRecorder
@@ -501,6 +505,12 @@ public class TiChuZiXun extends BaseActivity implements
 	//VoiceMessage   TextMessage	
 		params.put("message[body]",key);
 		params.put("message[type]",type);
+		if(type.equals("VoiceMessage")){
+			params.put("message[echo]", System.currentTimeMillis()+"_"+LENGTH);
+		}else{
+			params.put("message[echo]", System.currentTimeMillis());
+		}
+		
 		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.HOST+"/subjects/"+ID+"/messages", "post", params,
 				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
 					@Override
@@ -524,13 +534,29 @@ public class TiChuZiXun extends BaseActivity implements
    
 	private void initTiJiao(String key,String type)
 	{
-		Map<String, Object> params = new HashMap<String, Object>();
-		
-		params.put("subject[messages_attributes]{}[body]",key);
-		params.put("subject[messages_attributes]{}[type]",type);
-		params.put("subject[label_ids]",sendBiaoQianString);
-		params.put("subject[title]",Title);
-		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.TiJiaoZiX, "post", params,
+       try{		
+	    JSONObject obj = new JSONObject();
+		obj.put("body",key);
+	    obj.put("type",type);
+		if(type.equals("VoiceMessage")){
+			obj.put("echo", System.currentTimeMillis()+"_"+LENGTH);
+		}else{
+			obj.put("echo", System.currentTimeMillis());
+		}
+
+      org.json.JSONArray ja =new org.json.JSONArray();
+      ja.put(obj);
+       JSONObject j2 =new JSONObject();
+       j2.put("title", Title);
+       j2.put("messages_attributes", ja);
+       
+       JSONObject jf =new JSONObject();
+       jf.put("subject", j2);
+       
+      	Map<String, Object> params = new HashMap<String, Object>();
+		params.put("json", jf.toString());
+
+		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.TiJiaoZiX, "post1", params,
 				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
 					@Override
 					public void callback(String json) {
@@ -557,6 +583,9 @@ public class TiChuZiXun extends BaseActivity implements
 						}
 					}
 				});
+       }catch(Exception e){
+    	   
+       }
 
 	}
 
@@ -649,10 +678,22 @@ public class TiChuZiXun extends BaseActivity implements
 
 	//修改咨询见容
 	private void initChangeZX(String title,String content){
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("subject[title]", title);
-		params.put("subject[label_ids]", content);
-		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.HOST+"/subjects/"+ID, "put", params,
+	try{
+       org.json.JSONArray ja1 =new org.json.JSONArray();
+		String[] str =content.split(",");
+   		for(int i=0;i<str.length;i++){
+   		 ja1.put(str[i]);
+   		}
+       JSONObject j2 =new JSONObject();
+       j2.put("title", title);
+       j2.put("label_ids", ja1);       
+       JSONObject jf =new JSONObject();
+       jf.put("subject", j2);
+       
+      	Map<String, Object> params = new HashMap<String, Object>();
+		params.put("json", jf.toString());
+
+		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.HOST+"/subjects/"+ID, "put1", params,
 				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
 					@Override
 					public void callback(String json) {
@@ -668,6 +709,11 @@ public class TiChuZiXun extends BaseActivity implements
 						}
 					}
 				});
+	}catch (JSONException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+	
 	}
 	
 	

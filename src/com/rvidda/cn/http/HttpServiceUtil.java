@@ -29,6 +29,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
@@ -162,6 +163,58 @@ public class HttpServiceUtil {
         Log.e("data", builder.toString());
         return builder.toString();
     }
+    /**
+     * 处理�?{}/{}之类的请求，使用时用参数用linkedhashmap，参数按顺序传�?
+     * 
+     * @param url
+     * @param params
+     * @return
+     */
+    private static String oget1(String url, Map<String, Object> params) {
+        HttpClient client = new DefaultHttpClient();
+        StringBuilder builder = new StringBuilder();
+        HttpPut httprequest = new HttpPut(url);
+        HttpParams httpparams = client.getParams();
+        HttpConnectionParams.setConnectionTimeout(httpparams, REQUEST_MAX_TIME);
+        HttpConnectionParams.setSoTimeout(httpparams, RESPONSE_MAX_TIME);
+        List<NameValuePair> nameValue = new ArrayList<NameValuePair>();
+        String value="";
+        if (params != null) {
+            Set keySet = params.keySet();
+            Iterator iterator = keySet.iterator();
+            while (iterator.hasNext()) {
+                String key = (String) iterator.next();
+                 value = params.get(key) + "";
+                Log.e("msg", "onHttpserverUtil===>>>key=" + key + ",==>value=" + value);
+                if (!key.equals("dean_usession")) {
+                    nameValue.add(new BasicNameValuePair(key, value));
+                }
+            }
+        }
+        try {
+/*            if (!CheckUtil.isNull(sessionId)) {
+                httprequest.addHeader("dean_usession", sessionId);
+            }
+*/          httprequest.addHeader("Accept", "application/json");
+            httprequest.addHeader("Auth-Token", ContantsUtil.TOKEN);
+            httprequest.addHeader("Content-Type", "application/json"); 
+            httprequest.setEntity(new StringEntity(value));
+            HttpResponse response = client.execute(httprequest);
+            int status = response.getStatusLine().getStatusCode();
+            if (status == 200) {
+                String strResult = EntityUtils.toString(response.getEntity(), "GBK");
+                builder.append(strResult);
+            } else {
+                String strResult1 = EntityUtils.toString(response.getEntity(), "GBK");
+                builder.append("");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            builder.append("");
+        }
+        Log.e("data", builder.toString());
+        return builder.toString();
+    }
 
     /**
      * 请求HTTP服务
@@ -199,6 +252,68 @@ public class HttpServiceUtil {
             httprequest.addHeader("Auth-Token", ContantsUtil.TOKEN);
             
             httprequest.setEntity(new UrlEncodedFormEntity(nameValue, "utf-8"));
+            HttpResponse response = client.execute(httprequest);
+            int status = response.getStatusLine().getStatusCode();
+            if (status == 201) {
+                String strResult = EntityUtils.toString(response.getEntity(), "GBK");
+                builder.append(strResult);
+            } else {
+                String strResult = EntityUtils.toString(response.getEntity(), "GBK");
+                builder.append("");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            builder.append("");
+        }
+        Log.e("data", builder.toString());
+        return builder.toString();
+    }
+    /**
+     * 请求HTTP服务
+     * 
+     * @param url 请求的URL地址
+     * @param params 请求是附带的参数
+     * @return
+     */
+    public static String post1(String url, Map<String, Object> params) {
+    	
+    	
+    	
+    	
+        HttpClient client = new DefaultHttpClient();
+        StringBuilder builder = new StringBuilder();
+        HttpPost httprequest = new HttpPost(url);      
+       
+        HttpParams httpparams = client.getParams();
+       
+        HttpConnectionParams.setConnectionTimeout(httpparams, REQUEST_MAX_TIME);
+        HttpConnectionParams.setSoTimeout(httpparams, RESPONSE_MAX_TIME);
+        List<NameValuePair> nameValue = new ArrayList<NameValuePair>();
+       String value="";
+        if (params != null) {
+            Set keySet = params.keySet();
+            Iterator iterator = keySet.iterator();
+            while (iterator.hasNext()) {
+                String key = (String) iterator.next();
+                 value = params.get(key) + "";
+                Log.e("msg", "onHttpserverUtil===>>>key=" + key + ",==>value=" + value);
+                if (!key.equals("dean_usession")) {
+                    nameValue.add(new BasicNameValuePair(key, value));
+                }
+            }
+        }
+        
+        
+        try {
+/*            if (!CheckUtil.isNull(sessionId)) {
+                httprequest.addHeader("dean_usession", sessionId);
+            }
+*/            httprequest.addHeader("Accept", "application/json"); 
+            httprequest.addHeader("Content-Type", "application/json"); 
+            httprequest.addHeader("Auth-Token", ContantsUtil.TOKEN);
+             httprequest.setEntity(new StringEntity(value));
+            
+       //     httprequest.setEntity(new UrlEncodedFormEntity(nameValue, "utf-8"));
             HttpResponse response = client.execute(httprequest);
             int status = response.getStatusLine().getStatusCode();
             if (status == 201) {
@@ -262,8 +377,12 @@ public class HttpServiceUtil {
                 String rs;
                 if ("post".equals(method)) {
                     rs = post(url, params);
+                }else if ("post1".equals(method)) {
+                    rs = post1(url, params);
                 } else if ("put".equals(method)) {
                     rs = oget(url, params);
+                } else if ("put1".equals(method)) {
+                    rs = oget1(url, params);
                 } else if ("url".equals(method)) {
                     rs = urlMethod(url, params);
                 } else {

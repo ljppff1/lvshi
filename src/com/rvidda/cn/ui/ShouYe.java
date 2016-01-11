@@ -100,6 +100,7 @@ public class ShouYe extends BaseActivity {
 	private View recordingContainer;
 	private TextView recordingHint;
 	private LoadingDialog dialog;
+	private String LENGTH;
 
 	@Override
 	protected void onResume() {
@@ -485,6 +486,7 @@ public class ShouYe extends BaseActivity {
 	 */
 	class PressToSpeakListen implements View.OnTouchListener {
 
+
 		@SuppressLint({ "ClickableViewAccessibility", "Wakelock" })
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
@@ -584,6 +586,8 @@ public class ShouYe extends BaseActivity {
 					// stop recording and send voice file
 					try {
 						int length = voiceRecorder.stopRecoding();
+						 LENGTH = length +"";
+					//	Toast.makeText(getApplicationContext(), length+"", 1).show();
 						if (length > 0) {
 /*							sendVoice(voiceRecorder.getVoiceFilePath(),
 									voiceRecorder
@@ -781,11 +785,83 @@ public class ShouYe extends BaseActivity {
 	}
 	private void initTiJiao(String key)
 	{
+	    try {
+		    JSONObject obj = new JSONObject();
+			obj.put("body",key);
+		    obj.put("type", "VoiceMessage");
+		    obj.put("echo", System.currentTimeMillis()+"_"+LENGTH);
+          org.json.JSONArray ja =new org.json.JSONArray();
+          ja.put(obj);
+           org.json.JSONArray ja1 =new org.json.JSONArray();
+	   		for(int i=0;i<list.size();i++){
+		   		 ja1.put(list.get(i).getId());
+		   		}
+
+           JSONObject j2 =new JSONObject();
+           j2.put("title", "lj");
+           j2.put("label_ids", ja1);
+           j2.put("messages_attributes", ja);
+           
+           JSONObject jf =new JSONObject();
+           jf.put("subject", j2);
+           
+          	Map<String, Object> params = new HashMap<String, Object>();
+    		params.put("json", jf.toString());
+    		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.TiJiaoZiX, "post1", params,
+    				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+    					@Override
+    					public void callback(String json) {
+    						try {
+    							if(!json.equals("0")){
+    /**
+     * {"subject":{"id":177,"title":"lj","created_at":"2016-01-06 10:02:24",
+     * "updated_at":"2016-01-06 10:02:24","user_businesses":[],"lawyers":[],"messages":[],"labels":[]}}
+     */
+    							JSONObject jsonObj = new JSONObject(json);
+    							JSONObject subject = jsonObj.getJSONObject("subject");
+    						   Integer id = subject.getInt("id");
+    							Intent intent =new Intent(getApplicationContext(),TiChuZiXun.class);
+    							intent.putExtra("ID", id+"");
+    							intent.putExtra("SELECT",getsendBiaoqian1());
+    							intent.putExtra("FILE", file_path);
+    							startActivity(intent);
+    							}else{
+    								if (dialog.isShowing()) {
+    									dialog.cancel();
+    								}
+                           Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
+
+    							}
+    							
+    							if(dialog.isShowing()){
+    								dialog.cancel();
+    							}
+
+    						} catch (JSONException e) {
+    							e.printStackTrace();
+    							if (dialog.isShowing()) {
+    								dialog.cancel();
+    							}
+    						}
+    					}
+    				});
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+     
+		/*
 		Map<String, Object> params = new HashMap<String, Object>();
 		
-		params.put("subject[messages_attributes]{}[body]",key);
-		params.put("subject[messages_attributes]{}[type]","VoiceMessage");
-		params.put("subject[label_ids]",getsendBiaoqian());
+		
+		params.put("subject[messages_attributes][body]",key);
+		params.put("subject[messages_attributes][type]","VoiceMessage");
+	//	params.put("subject[label_ids]",getsendBiaoqian());
+		String[] str =getsendBiaoqian().split(",");
+		for(int i=0;i<str.length;i++){
+			params.put("subject[label_ids]["+i+"]",str[i]);
+		}
+
 		params.put("subject[title]","lj");
 		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.TiJiaoZiX, "post", params,
 				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
@@ -793,10 +869,10 @@ public class ShouYe extends BaseActivity {
 					public void callback(String json) {
 						try {
 							if(!json.equals("0")){
-/**
+*//**
  * {"subject":{"id":177,"title":"lj","created_at":"2016-01-06 10:02:24",
  * "updated_at":"2016-01-06 10:02:24","user_businesses":[],"lawyers":[],"messages":[],"labels":[]}}
- */
+ *//*
 							JSONObject jsonObj = new JSONObject(json);
 							JSONObject subject = jsonObj.getJSONObject("subject");
 						   Integer id = subject.getInt("id");
@@ -824,7 +900,7 @@ public class ShouYe extends BaseActivity {
 							}
 						}
 					}
-				});
+				});*/
 	}
 	
 	

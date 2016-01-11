@@ -101,6 +101,7 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 		mRlLw3 =(RelativeLayout)this.findViewById(R.id.mRlLw3);
 		mRlLw2 =(RelativeLayout)this.findViewById(R.id.mRlLw2);
 		mRlLw1 =(RelativeLayout)this.findViewById(R.id.mRlLw1);
+		mRlLw2.setOnClickListener(listener);
 		IV4 =(ImageView)this.findViewById(R.id.IV4);
 		IV5 =(ImageView)this.findViewById(R.id.IV5);
 		IV3 =(ImageView)this.findViewById(R.id.IV3);
@@ -223,6 +224,9 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.mRlLw2:
+				startActivity(new Intent(UserSetting.this, LvShiLeiXing.class));
+				break;
 			case R.id.mIvedit:
 				pop3.showAsDropDown(mtv2);
 				break;

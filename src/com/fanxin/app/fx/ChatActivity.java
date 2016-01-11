@@ -100,6 +100,7 @@ import com.fanxin.app.utils.SmileUtils;
 import com.fanxin.app.widget.ExpandGridView;
 import com.fanxin.app.widget.PasteEditText;
 import com.rvidda.cn.R;
+import com.rvidda.cn.utils.Content;
 
 /**
  * 聊天页面
@@ -368,7 +369,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		conversation.resetUnreadMsgCount();
 		Log.e("conversation----", conversation.toString());
 		Log.e("toChatUsername----", toChatUsername.toString());
-		adapter = new MessageAdapter(this, toChatUsername, chatType);
+		adapter = new MessageAdapter(this, toChatUsername, chatType,SUBJECT);
 		// 显示消息
 		listView.setAdapter(adapter);
 		listView.setOnScrollListener(new ListScrollListener());
@@ -733,19 +734,19 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		if (content.length() > 0) {
 			EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
 			// 如果是群聊，设置chattype,默认是单聊
-			if (chatType == CHATTYPE_GROUP)
+/*			if (chatType == CHATTYPE_GROUP)
 				message.setChatType(ChatType.GroupChat);
-			TextMessageBody txtBody = new TextMessageBody(content);
+*/			TextMessageBody txtBody = new TextMessageBody(content);
 			// 设置消息body
 			message.addBody(txtBody);
 			// 设置要发给谁,用户username或者群聊groupid
-			message.setReceipt(toChatUsername);
-			message.setAttribute("toUserNick", toUserNick);
+		
+/*			message.setAttribute("toUserNick", toUserNick);
 			 message.setAttribute("toUserAvatar", toUserAvatar);
 			message.setAttribute("useravatar", myUserAvatar);
 			message.setAttribute("usernick", myUserNick);
-			message.setAttribute("SUBJECT", SUBJECT);
-			
+*/			message.setAttribute(Content.SUBJECT, SUBJECT);
+            message.setReceipt(toChatUsername);
 			// 把messgage加到conversation中
 			conversation.addMessage(message);
 			// 通知adapter有消息变动，adapter会根据加入的这条message显示消息和调用sdk的发送方法
@@ -775,21 +776,23 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 			final EMMessage message = EMMessage
 					.createSendMessage(EMMessage.Type.VOICE);
 
-			// 如果是群聊，设置chattype,默认是单聊
+/*			// 如果是群聊，设置chattype,默认是单聊
 			if (chatType == CHATTYPE_GROUP)
 				message.setChatType(ChatType.GroupChat);
-			message.setReceipt(toChatUsername);
-			message.setAttribute("toUserNick", toUserNick);
+*/			
+			
+/*			message.setAttribute("toUserNick", toUserNick);
 			// message.setAttribute("toUserAvatar", toUserAvatar);
 			// message.setAttribute("useravatar", myUserAvatar);
 			message.setAttribute("usernick", myUserNick);
-			message.setAttribute("SUBJECT", SUBJECT);
+*/			
 
 			int len = Integer.parseInt(length);
 			VoiceMessageBody body = new VoiceMessageBody(new File(filePath),
 					len);
 			message.addBody(body);
-
+			message.setAttribute(Content.SUBJECT, SUBJECT);
+			message.setReceipt(toChatUsername);
 			conversation.addMessage(message);
 			adapter.refresh();
 			listView.setSelection(listView.getCount() - 1);
@@ -812,19 +815,17 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		// create and add image message in view
 		final EMMessage message = EMMessage
 				.createSendMessage(EMMessage.Type.IMAGE);
-		// 如果是群聊，设置chattype,默认是单聊
-		if (chatType == CHATTYPE_GROUP)
-			message.setChatType(ChatType.GroupChat);
-
-		message.setReceipt(to);
-		message.setAttribute("toUserNick", toUserNick);
+		
+		
+/*		message.setAttribute("toUserNick", toUserNick);
 		// message.setAttribute("toUserAvatar", toUserAvatar);
 		// message.setAttribute("useravatar", myUserAvatar);
 		message.setAttribute("usernick", myUserNick);
-		message.setAttribute("SUBJECT", SUBJECT);
+*/		message.setAttribute(Content.SUBJECT, SUBJECT);
 		if (is_share) {
 			message.setAttribute("isShare", "yes");
 		}
+		message.setReceipt(to);
 		ImageMessageBody body = new ImageMessageBody(new File(filePath));
 		// 默认超过100k的图片会压缩后发给对方，可以设置成发送原图
 		// body.setSendOriginalImage(true);

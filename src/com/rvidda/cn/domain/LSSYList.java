@@ -92,10 +92,26 @@ public class LSSYList {
 	public void setNumber(String number) {
 		this.number = number;
 	}
+    public String getSubject() {
+		return subject;
+	}
 
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	private String subject;
 	private String body;
 	private String number;
-	
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	private String time;
 	
 	
 	

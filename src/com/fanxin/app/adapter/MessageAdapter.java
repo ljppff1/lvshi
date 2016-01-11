@@ -68,6 +68,7 @@ import com.fanxin.app.utils.ImageCache;
 import com.fanxin.app.utils.ImageUtils;
 import com.fanxin.app.utils.SmileUtils;
 import com.rvidda.cn.R;
+import com.rvidda.cn.utils.Content;
 
 @SuppressLint({ "SdCardPath", "InflateParams" })
 public class MessageAdapter extends BaseAdapter {
@@ -105,19 +106,21 @@ public class MessageAdapter extends BaseAdapter {
 
 	private Map<String, Timer> timers = new Hashtable<String, Timer>();
 
-	public MessageAdapter(Context context, String username, int chatType) {
+	private ArrayList<EMMessage> child;
+    private  String subject;
+	public MessageAdapter(Context context, String username, int chatType,String subject) {
 		this.username = username;
+		this.subject =subject;
 		this.context = context;
 		inflater = LayoutInflater.from(context);
 		activity = (Activity) context;
 		this.conversation = EMChatManager.getInstance().getConversation(
 				username);
-	    List<EMMessage>	 me=conversation.getAllMessages();
-	    List<EMMessage>	 child =new ArrayList<EMMessage>();
+/*	    List<EMMessage>	 me=conversation.getAllMessages();
+	   child =new ArrayList<EMMessage>();
 	    for(int i=0;i<me.size();i++){
 	    	try {
-				me.get(i).getStringAttribute("SUBJECT");
-				if(me.get(i).getStringAttribute("SUBJECT").equals("2")){
+				if(me.get(i).getStringAttribute(Content.SUBJECT).equals(subject)){
 					child.add(me.get(i));	
 				}
 			} catch (EaseMobException e) {
@@ -125,6 +128,12 @@ public class MessageAdapter extends BaseAdapter {
 			}
 	    }
 	    
+	    this.conversation =new EMConversation(username);
+	    for(int i=0;i<child.size();i++){
+	    this.conversation.addMessage(child.get(i));
+	    
+	    }
+*/	    
 		avatarLoader = new LoadUserAvatar(context, "/sdcard/fanxin/");
 	}
 
@@ -236,7 +245,17 @@ public class MessageAdapter extends BaseAdapter {
 	@SuppressLint("NewApi")
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		final EMMessage message = getItem(position);
-		ChatType chatType = message.getChatType();
+		
+/*		try{
+       if(message.getStringAttribute(Content.SUBJECT).equals(subject)){
+      	convertView = LayoutInflater.from(context).inflate(
+					R.layout.item_null, null);
+
+    	 return    convertView;
+       }}catch(Exception e){
+       }
+	   
+*/		ChatType chatType = message.getChatType();
 
 		String fromusernick = "0000";
 		String fromuseravatar = "0000";
@@ -557,8 +576,7 @@ public class MessageAdapter extends BaseAdapter {
 				timestamp.setVisibility(View.VISIBLE);
 			} else {
 				// 两条消息时间离得如果稍长，显示时间
-				if (DateUtils.isCloseEnough(message.getMsgTime(), conversation
-						.getMessage(position - 1).getMsgTime())) {
+				if (DateUtils.isCloseEnough(message.getMsgTime(), conversation.getMessage(position - 1).getMsgTime())) {
 					timestamp.setVisibility(View.GONE);
 				} else {
 					timestamp.setText(DateUtils.getTimestampString(new Date(

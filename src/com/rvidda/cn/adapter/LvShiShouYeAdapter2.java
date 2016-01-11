@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
@@ -17,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
+import com.fanxin.app.fx.ChatActivity;
 import com.jauker.widget.BadgeView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -32,6 +35,7 @@ public class LvShiShouYeAdapter2 extends BaseAdapter {
 	private List<LSSYList> data = new ArrayList<LSSYList>();
 	private View mVs1;
 	private TextView mtv3;
+	private RelativeLayout mRlsss1;
 
 	public LvShiShouYeAdapter2(Context context, List<LSSYList> data) {
 		options = new DisplayImageOptions.Builder()
@@ -90,7 +94,7 @@ public class LvShiShouYeAdapter2 extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		convertView = LayoutInflater.from(context).inflate(
 				R.layout.item_lvshishouye_layout1, null);
-
+       
 		com.rvidda.cn.view.CircleImageView mPn1 =(CircleImageView) convertView.findViewById(R.id.mPn1);
 		ImageLoader.getInstance().displayImage(data.get(position).getPhoto(), mPn1, options);		
 		mVs1 =(View)convertView.findViewById(R.id.mVs1);
@@ -100,6 +104,7 @@ public class LvShiShouYeAdapter2 extends BaseAdapter {
 		badgeView1.setTargetView(mVs1);
 		badgeView1.setBackground(1111, Color.RED);
 		badgeView1.setGravity(Gravity.TOP | Gravity.RIGHT);
+		badgeView1.setClickable(false);
 		badgeView1.setTextSize(10);
 		badgeView1.setBadgeCount(Integer.valueOf(data.get(position).getNumber()));
 		}

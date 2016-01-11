@@ -29,6 +29,7 @@
                   <string name="log13">请填写执业证号</string>
                   <string name="log14">请提交证书文件</string>
                   <string name="log15">请先发送一条咨询后再修改</string>
+                  <string name="log16">修改成功</string>
                   
          <string name="zx1">修改标签出错</string>
          <string name="zx2">修改姓名不能为空</string>
@@ -111,6 +112,7 @@
 <string name="cs1">选择城市</string>
 <string name="cs2">已定位城市</string>
 <string name="cs3">热门城市</string>
+<string name="cs4">律师类型</string>
 
 <string name="tczx1">我提出的咨询</string>
 <string name="tczx2">发送</string>

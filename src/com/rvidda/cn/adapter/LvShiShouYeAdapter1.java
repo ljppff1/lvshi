@@ -85,7 +85,13 @@ public class LvShiShouYeAdapter1 extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		convertView = LayoutInflater.from(context).inflate(
 				R.layout.item_lvshishouye_layout, null);
-
+      
+		TextView mtv2 = (TextView)convertView.findViewById(R.id.mtv2);
+		mtv2.setText(data.get(position).getTime());
+		TextView mtv1 = (TextView)convertView.findViewById(R.id.mtv1);
+		mtv1.setText(data.get(position).getName());
+		TextView mtv3 = (TextView)convertView.findViewById(R.id.mtv3);
+		mtv3.setText(data.get(position).getWenti());
 		com.rvidda.cn.view.CircleImageView mPn1 =(CircleImageView) convertView.findViewById(R.id.mPn1);
 		ImageLoader.getInstance().displayImage(data.get(position).getPhoto(), mPn1, options);		
 

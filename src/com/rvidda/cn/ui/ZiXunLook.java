@@ -40,6 +40,7 @@ public class ZiXunLook extends BaseActivity {
 	private ZXAdapter1 zxxiaoxi;
 	private String HXUSER;
 	private String PHOTO;
+	private String SUBJECT;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class ZiXunLook extends BaseActivity {
         HXUSER =getIntent().getStringExtra("HXUSER");
         PHOTO =getIntent().getStringExtra("PHOTO");
         NAME=getIntent().getStringExtra("NAME");
+        SUBJECT =getIntent().getStringExtra("SUBJECT");
 		initView();
 		
 		initgetZiXunLook();
@@ -89,7 +91,12 @@ public class ZiXunLook extends BaseActivity {
 user_businesses":[],"lawyers":[],"messages":[{"id":30,"body":"bbbbbbbbbb","type":"TextMessage","echo":
 null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0.glb.clouddn.com/
 20151229142429599088942-57404430","type":"VoiceMessage","echo":null,"created_at":"2015-12-29 14:24:30"}],"labels"
-:[],"order":{"id":238,"state":"init","uuid":"40SR-N6IF-BRP0","total_price":"0.01"}}}			 */
+:[],"order":{"id":238,"state":"init","uuid":"40SR-N6IF-BRP0","total_price":"0.01"}}}
+
+			 *{"subject":{"id":181,"title":"","created_at":"2016-01-06 13:22:56",
+			 *"updated_at":"2016-01-06 13:22:56","user_businesses":[],"lawyers":[],
+			 *"messages":[{"id":383,"body":"http://7u2gfi.com1.z0.glb.clouddn.com/20160106132248594879667-40107357","type":"ImageMessage","echo":"1452057776000","created_at":"2016-01-06 13:22:56"}],"labels":[]}}
+			 */
 							JSONObject jsonObj = new JSONObject(json);
 							JSONObject subject = jsonObj.getJSONObject("subject");
 							JSONArray messages = subject.getJSONArray("messages");
@@ -103,7 +110,10 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 								 zx.setMtype(((JSONObject)messages.get(i)).getString("type"));
 								 zx.setMtext(((JSONObject)messages.get(i)).getString("body"));
 								 zx.setMfilelocal("");
-								 listzxxx.add(zx);
+								 if (!zx.getMtype().equals("ImageMessage")) {
+									 listzxxx.add(zx);
+								}
+								
 							}
 							zxxiaoxi.notifyDataSetChanged();
 							}else{
@@ -147,7 +157,7 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 							if(!json.equals("0")){
 							JSONObject jsonObj = new JSONObject(json);
 							Intent intent = new Intent();
-							intent.putExtra("SUBJECT", ID);
+							intent.putExtra("SUBJECT", SUBJECT);
 							intent.putExtra("userId", HXUSER);
 							intent.putExtra("userAvatar",PHOTO);
 							intent.putExtra("userNick", NAME);

@@ -56,6 +56,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.rvidda.cn.ui.ZiXunLook"></activity>
+        <activity android:name="com.rvidda.cn.ui.LvShiLeiXing"></activity>
         <activity android:name="com.rvidda.cn.ui.ShouYe"></activity>
         <activity android:name="com.rvidda.cn.ui.LvShiShouYe"></activity>
         <activity android:name="com.rvidda.cn.ui.TiChuZiXun"></activity>

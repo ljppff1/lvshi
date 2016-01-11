@@ -108,12 +108,12 @@ public class popWindow1 extends BasePopupWindow {
 			  listss.add(list.get(i).getId());
 		  }
 	  }
-	  String str ="[";
+	  String str ="";
 	  for(int i=0;i<listss.size();i++){
 		  if(i<=listss.size()-2){
 			str =str +listss.get(i)+",";  
 		  }else{
-				str =str +listss.get(i)+"]";   
+				str =str +listss.get(i)+"";   
 		  }
 	  }
 	  return str;

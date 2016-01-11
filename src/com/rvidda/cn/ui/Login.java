@@ -1,6 +1,8 @@
 package com.rvidda.cn.ui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONException;
@@ -21,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +52,7 @@ public class Login extends BaseActivity {
 	private EditText mEtTell;
 	private int id=0;
 	private LoadingDialog dialog;
+	private ImageView mIvchange;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,7 @@ public class Login extends BaseActivity {
 			EMChatManager.getInstance().loadAllConversations();
 		}*/
 		// 取好友或者群聊失败，不让进入主页面
+     //18525461598    
 		runOnUiThread(new Runnable() {
 			public void run() {
 				DemoApplication.getInstance().logout(null);
@@ -76,7 +81,8 @@ public class Login extends BaseActivity {
 
 	@SuppressLint("ResourceAsColor")
 	private void initView() {
-
+		mIvchange =(ImageView)this.findViewById(R.id.mIvchange);
+		mIvchange.setOnClickListener(listener);
 		mRlLogin = (RelativeLayout) this.findViewById(R.id.mRlLogin);
 		mRlLogin.setOnClickListener(listener);
 		mRll1 = (RelativeLayout) this.findViewById(R.id.mRll1);
@@ -213,6 +219,18 @@ public class Login extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.mIvchange:
+				java.util.Random random=new java.util.Random();// 定义随机类
+				int result=random.nextInt(4);
+				List<String> ddd =new ArrayList<String>();
+				ddd.add("18525461598");
+				ddd.add("13652435378");
+				ddd.add("18566682817");
+				ddd.add("18526461596");
+				ddd.add("18612965346");
+				
+				mEtTell.setText(ddd.get(result));
+				break;
 			case R.id.mRlLogin:
 				/*if(mEtCode.getEditableText().toString().length()!=6){
 					Toast.makeText(getApplicationContext(), R.string.log3, 0).show();

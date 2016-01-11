@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONArray;
 import com.dian.diabetes.widget.listview.PullRefListView;
 import com.dian.diabetes.widget.listview.PullRefListView.IXListViewListener;
+import com.rvidda.cn.AppManager;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
 import com.rvidda.cn.adapter.ZixunLieBiaoAdapter;
@@ -44,6 +45,7 @@ public class ZiXunLieBiao extends BaseActivity {
 	private ZixunLieBiaoAdapter adapter;
 	private ImageView mIvPeople;
 	private ImageView mIvadd;
+	private ImageView mBtn_back;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,8 @@ public class ZiXunLieBiao extends BaseActivity {
 	}
 
 	private void initView() {
+		mBtn_back =(ImageView)this.findViewById(R.id.mBtn_back);
+		mBtn_back.setOnClickListener(listener);
 		mIvadd =(ImageView)this.findViewById(R.id.mIvadd);
 		mIvadd.setOnClickListener(listener);
 		mIvPeople =(ImageView)this.findViewById(R.id.mIvPeople);
@@ -211,6 +215,9 @@ public class ZiXunLieBiao extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.mBtn_back:
+				AppManager.getAppManager().finishActivity();
+				break;
 			case R.id.mIvadd:
 				Intent intent =new Intent(getApplicationContext(),TiChuZiXun.class);
 				intent.putExtra("ID", "");
