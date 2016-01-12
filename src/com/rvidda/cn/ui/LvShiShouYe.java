@@ -45,6 +45,7 @@ import com.rvidda.cn.adapter.LvShiShouYeAdapter2;
 import com.rvidda.cn.domain.LSSYList;
 import com.rvidda.cn.fragment.FragmentListView1;
 import com.rvidda.cn.fragment.FragmentListView2;
+import com.rvidda.cn.utils.Content;
 import com.rvidda.cn.utils.DateUtil;
 
 public class LvShiShouYe extends  FragmentActivity {
@@ -94,9 +95,7 @@ public class LvShiShouYe extends  FragmentActivity {
 		normal_list.addAll(loadConversationsWithRecentChat());
         	for(int j=0;j<normal_list.size();j++){
         		list_message.addAll(normal_list.get(j).getAllMessages());
-        	}
-//[msg{from:hx_14, to:hx_11 body:txt:"图鸡鸡鸡鸡", msg{from:hx_14, to:hx_11 body:txt:"图V5咯", msg{from:hx_14, to:hx_11 body:txt:"国家科技奖了", msg{from:hx_14, to:hx_11 body:txt:"图鸡鸡鸡鸡", msg{from:hx_14, to:hx_11 body:txt:"图V5咯", msg{from:hx_14, to:hx_11 body:txt:"国家科技奖了", msg{from:hx_14, to:hx_11 body:txt:"图鸡鸡鸡鸡", msg{from:hx_14, to:hx_11 body:txt:"图V5咯", msg{from:hx_14, to:hx_11 body:txt:"国家科技奖了", msg{from:hx_14, to:hx_11 body:txt:"图鸡鸡鸡鸡", msg{from:hx_14, to:hx_11 body:txt:"图V5咯", msg{from:hx_14, to:hx_11 body:txt:"国家科技奖了", msg{from:hx_14, to:hx_11 body:txt:"图鸡鸡鸡鸡", msg{from:hx_14, to:hx_11 body:txt:"图V5咯", msg{from:hx_14, to:hx_11 body:txt:"国家科技奖了", msg{from:hx_14, to:hx_11 body:txt:"图鸡鸡鸡鸡", msg{from:hx_14, to:hx_11 body:txt:"图V5咯", msg{from:hx_14, to:hx_11 body:txt:"国家科技奖了"]
-        	
+        	}        	
         //得到所有的第一条的那个信息
         for(int i=0;i<list_message.size();i++){
 				try {
@@ -124,10 +123,10 @@ public class LvShiShouYe extends  FragmentActivity {
     	   try {
              
 			for(int j=0;j<list_map.size();j++){
-				if(list_map.containsKey(list_message_unread.get(i).getStringAttribute("SUBJECT"))){
-				list_map.put(list_message_unread.get(i).getStringAttribute("SUBJECT"), list_map.get(j).getInteger(list_message_unread.get(i).getStringAttribute("SUBJECT"))+1);
+				if(list_map.containsKey(list_message_unread.get(i).getStringAttribute(Content.SUBJECT))){
+				list_map.put(list_message_unread.get(i).getStringAttribute(Content.SUBJECT), list_map.get(j).getInteger(list_message_unread.get(i).getStringAttribute(Content.SUBJECT))+1);
 				}else{
-					list_map.put(list_message_unread.get(i).getStringAttribute("SUBJECT"), 1);
+					list_map.put(list_message_unread.get(i).getStringAttribute(Content.SUBJECT), 1);
 				}
 			}
 		} catch (EaseMobException e) {

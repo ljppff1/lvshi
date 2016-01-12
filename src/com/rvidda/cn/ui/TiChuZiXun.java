@@ -173,10 +173,7 @@ public class TiChuZiXun extends BaseActivity implements
 	@Override
 	protected void onResume() {
 		
-		String choice = pp.getString(Content.Citychoice, "0");
-		if(choice.equals("1")){
-			mTvdd.setText(pp.getString(Content.City_c1, ""));
-		}
+			mTvdd.setText(pp.getString(Content.City_c1, "城市"));
 
 		super.onResume();
 	}
@@ -187,7 +184,7 @@ public class TiChuZiXun extends BaseActivity implements
 		ID =getIntent().getExtras().getString("ID");
 		SELECT =getIntent().getExtras().getString("SELECT");
 	    strarray = SELECT.split(",");
-
+        sendBiaoQianString =SELECT;
 		if(!TextUtils.isEmpty(ID)){
 	    String FILE_pro = getIntent().getExtras().getString("FILE");
 
@@ -592,8 +589,7 @@ public class TiChuZiXun extends BaseActivity implements
 	
 	private void initView() {
 		mTvdd =(TextView)this.findViewById(R.id.mTvdd);
-	     String citypp = pp.getString(Content.City, "深圳");
-	     mTvdd.setText(citypp);
+		mTvdd.setText(pp.getString(Content.City_c1, "城市"));
 		mBtn_back =(ImageView)this.findViewById(R.id.mBtn_back);
 		mBtn_back.setOnClickListener(listener);
 		list =(ListView)this.findViewById(R.id.list);
@@ -680,10 +676,12 @@ public class TiChuZiXun extends BaseActivity implements
 	private void initChangeZX(String title,String content){
 	try{
        org.json.JSONArray ja1 =new org.json.JSONArray();
+       if(!TextUtils.isEmpty(content)){
 		String[] str =content.split(",");
    		for(int i=0;i<str.length;i++){
    		 ja1.put(str[i]);
    		}
+       }
        JSONObject j2 =new JSONObject();
        j2.put("title", title);
        j2.put("label_ids", ja1);       

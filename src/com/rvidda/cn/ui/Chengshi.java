@@ -36,6 +36,7 @@ import com.rvidda.cn.domain.City;
 import com.rvidda.cn.domain.Province;
 import com.rvidda.cn.http.ContantsUtil;
 import com.rvidda.cn.utils.Content;
+import com.rvidda.cn.utils.LoadingDialog;
 import com.rvidda.cn.utils.PreferenceUtils;
 import com.rvidda.cn.view.MyExpandableListView;
 import com.rvidda.cn.view.MyGridView;
@@ -53,17 +54,23 @@ public class Chengshi extends BaseActivity {
 	private List<Province> list_province =new ArrayList<Province>();
 	private PreferenceUtils pp;
 	private String WHAT;
+	private ImageView mBtn_back;
+	private LinearLayout mLLshow;
+	private LoadingDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chengshi);
+	     dialog =new LoadingDialog(Chengshi.this, "正在加载城市，请稍后");
 		WHAT =getIntent().getExtras().getString("WHAT");
 	     pp =PreferenceUtils.getInstance(Chengshi.this);
 		 list_remen =new ArrayList<City>();
 		 list_province =new ArrayList<Province>();
+			initView();
+
+			dialog.show();
 		initgetData();
-		initView();
 
 	}
 	
@@ -107,19 +114,33 @@ public class Chengshi extends BaseActivity {
 	                        list_province.add(pp);
 	                        adapter.notifyDataSetChanged();
 	                        adapter1.notifyDataSetChanged();
+	                        if(dialog.isShowing()){
+	                        	dialog.cancel();
+	                        }
+	                        mLLshow.setVisibility(View.VISIBLE);
 	                        }
 							}else{
                        Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
-
+                       if(dialog.isShowing()){
+                       	dialog.cancel();
+                       }
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();
+	                        if(dialog.isShowing()){
+	                        	dialog.cancel();
+	                        }
+
 						}
 					}
 				});
 	}
 
 	private void initView() {
+		mLLshow =(LinearLayout)this.findViewById(R.id.mLLshow);
+		mLLshow.setVisibility(View.GONE);
+		mBtn_back =(ImageView)this.findViewById(R.id.mBtn_back);
+		mBtn_back.setOnClickListener(listener);
 		mGv1 = (com.rvidda.cn.view.MyGridView) this.findViewById(R.id.mGv1);
 		mGv1.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -127,20 +148,11 @@ public class Chengshi extends BaseActivity {
 					int position, long id) {
 			//	Toast.makeText(Chengshi.this, "当前选中的是:" + list_remen.get(position).getName(),Toast.LENGTH_SHORT).show();
 				if(WHAT.equals("user")){
-					if(pp.getString(Content.City, "cc").equals(list_remen.get(position).getName())){
-						  pp.put(Content.Citychoice, "0");
-					}else{
-					  pp.put(Content.Citychoice, "1");
-					}
+				
 					pp.put(Content.City, list_remen.get(position).getName());
 					pp.put(Content.Cityid, list_remen.get(position).getId());
 
 				}else{
-					if(pp.getString(Content.City, "cc").equals(list_remen.get(position).getName())){
-						  pp.put(Content.Citychoice, "0");
-					}else{
-					  pp.put(Content.Citychoice, "1");
-					}
 				pp.put(Content.City_c1, list_remen.get(position).getName());
 				pp.put(Content.City_id1, list_remen.get(position).getId());
 				}
@@ -392,20 +404,10 @@ public class Chengshi extends BaseActivity {
 			
 		//	Toast.makeText(Chengshi.this, "当前选中的是:" + list_province.get(groupPosition).getList_city().get(position).getName(),Toast.LENGTH_SHORT).show();
 			if(WHAT.equals("user")){
-				if(pp.getString(Content.City, "cc").equals(list_province.get(groupPosition).getList_city().get(position).getName())){
-					  pp.put(Content.Citychoice, "0");
-				}else{
-				  pp.put(Content.Citychoice, "1");
-				}
 
 				pp.put(Content.City, list_province.get(groupPosition).getList_city().get(position).getName());
 				pp.put(Content.Cityid,  list_province.get(groupPosition).getList_city().get(position).getId());
 			}else{
-				if(pp.getString(Content.City_c1, "cc").equals(list_province.get(groupPosition).getList_city().get(position).getName())){
-					  pp.put(Content.Citychoice, "0");
-				}else{
-				  pp.put(Content.Citychoice, "1");
-				}
 				pp.put(Content.City_c1, list_province.get(groupPosition).getList_city().get(position).getName());
 				pp.put(Content.City_id1,  list_province.get(groupPosition).getList_city().get(position).getId());
 			}
@@ -466,6 +468,9 @@ public class Chengshi extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.mBtn_back:
+				AppManager.getAppManager().finishActivity();
+				break;
 			case R.id.mRlLogin:
 				startActivity(new Intent(Chengshi.this, ShouYe.class));
 				break;

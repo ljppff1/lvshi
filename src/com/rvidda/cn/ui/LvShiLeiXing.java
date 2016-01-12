@@ -28,19 +28,22 @@ import com.rvidda.cn.AppManager;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
 import com.rvidda.cn.domain.Items;
+import com.rvidda.cn.utils.LoadingDialog;
 
 public class LvShiLeiXing extends BaseActivity {
 
 	private ImageView mBtn_back;
 	private GridView mGv1;
 	private ArrayList<Items> list;
-    String[] mStr;
 	private RelativeLayout mRLL2;
-
+   private List<Integer> listint =new ArrayList<Integer>();
+private LoadingDialog dialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ls_leixing);
+	     dialog =new LoadingDialog(LvShiLeiXing.this, "加载数据，请稍后");
+
 		initView();
 
 	}
@@ -48,8 +51,6 @@ public class LvShiLeiXing extends BaseActivity {
 	private void initView() {
 		list=new ArrayList<Items>();
         list.clear();
-        String str ="";
-        mStr =str.split(",");
         mRLL2 =(RelativeLayout)this.findViewById(R.id.mRLL2);
         mRLL2.setOnClickListener(listener);
 		mBtn_back =(ImageView)this.findViewById(R.id.mBtn_back);
@@ -62,6 +63,8 @@ public class LvShiLeiXing extends BaseActivity {
 
 			}
 		});
+		dialog.show();
+		mRLL2.setVisibility(View.GONE);
 		initgetguanzhubiaoqian();
 		
 	
@@ -88,8 +91,8 @@ public class LvShiLeiXing extends BaseActivity {
 								Items items = new Items();
 								items.setItems(jj.getString("name"));
 								items.setId(jj.getInt("id"));
-								for(int k=0;k<mStr.length;k++){
-									if(String.valueOf(jj.getInt("id")).equals(mStr[k])){
+								for(int k=0;k<listint.size();k++){
+									if(String.valueOf(jj.getInt("id")).equals(listint.get(k)+"")){
 								items.setFlag(true);
 								break ;
 									}else{
@@ -101,11 +104,24 @@ public class LvShiLeiXing extends BaseActivity {
 							}
 							adapter = new Myadapter();
 							mGv1.setAdapter(adapter);
+							mRLL2.setVisibility(View.VISIBLE);
+
+							if(dialog.isShowing()){
+								dialog.cancel();
+							}
 
 							}else{
 			                       Toast.makeText(LvShiLeiXing.this, R.string.log6, 0).show();
+									if(dialog.isShowing()){
+										dialog.cancel();
+									}
+
 										}
 						} catch (JSONException e) {
+							if(dialog.isShowing()){
+								dialog.cancel();
+							}
+
 							e.printStackTrace();
 						}
 					}
@@ -214,15 +230,24 @@ public class LvShiLeiXing extends BaseActivity {
 							JSONObject jsonObj = new JSONObject(json);
 							JSONArray lawyer_labels = jsonObj.getJSONArray("lawyer_labels");
 							for(int i=0;i<lawyer_labels.length();i++){
-								mStr[i] =((JSONObject)lawyer_labels.get(i)).getString("label_id");
+								listint.add(((JSONObject)lawyer_labels.get(i)).getInt("label_id"));
 							}
+							initgetBiaoqian();
 							}else{
-			                     //  Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
-										}
+			                     Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
+									if(dialog.isShowing()){
+										dialog.cancel();
+									}
+		
+							}
 						} catch (JSONException e) {
+							if(dialog.isShowing()){
+								dialog.cancel();
+							}
+
 							e.printStackTrace();
 						}
-						initgetBiaoqian();
+					
 					}
 				});
 	}
@@ -232,6 +257,7 @@ public class LvShiLeiXing extends BaseActivity {
 			try{
 	       org.json.JSONArray ja1 =new org.json.JSONArray();
 	   		for(int i=0;i<list.size();i++){
+	   			if(list.get(i).getFlag())
 	   		 ja1.put(list.get(i).getId());
 	   		}
 	       

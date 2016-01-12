@@ -39,9 +39,11 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical"
+            android:id="@+id/mLLshow"
             >
             <RelativeLayout 
                 android:layout_width="fill_parent"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:background="@drawable/cuxian1"
                 >
@@ -57,7 +59,7 @@
             
                             <RelativeLayout 
                 android:layout_width="fill_parent"
-                
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 >

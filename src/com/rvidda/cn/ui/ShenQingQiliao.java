@@ -39,6 +39,7 @@ import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
 import com.rvidda.cn.http.ContantsUtil;
 import com.rvidda.cn.utils.Content;
+import com.rvidda.cn.utils.LoadingDialog;
 import com.rvidda.cn.utils.PreferenceUtils;
 
 public class ShenQingQiliao extends BaseActivity {
@@ -51,15 +52,28 @@ public class ShenQingQiliao extends BaseActivity {
 	private static final int CHOOSE_PICTURE = 1;
     private String certificate_id;
 	private ImageView mBtn_back;
+	private TextView mTvdd;
+	private LoadingDialog dialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_shenqing);
+	     dialog =new LoadingDialog(ShenQingQiliao.this, "正在提交，请稍后");
+
 		initView();
 
 	}
+	@Override
+	protected void onResume() {
+		mTvdd.setText(pp.getString(Content.City_c1, "城市"));
+
+		super.onResume();
+	}
 
 	private void initView() {
+		mTvdd =(TextView)this.findViewById(R.id.mTvdd);
+		mTvdd.setText(pp.getString(Content.City_c1, "城市"));
+
 		mBtn_back =(ImageView)this.findViewById(R.id.mBtn_back);
 		mBtn_back.setOnClickListener(listener);
 		mEt1 =(EditText)this.findViewById(R.id.mEt1);
@@ -96,11 +110,14 @@ public class ShenQingQiliao extends BaseActivity {
 				}else if(TextUtils.isEmpty(certificate_id)){
 					Toast.makeText(getApplicationContext(), R.string.log14,0).show();
 				}else{
+					dialog.show();
 					initTiJiao();
 				}
 				break;
 			case R.id.mRlwhatn:
-				startActivity(new Intent(ShenQingQiliao.this, Chengshi.class));
+				Intent intent =	new Intent(getApplicationContext(), Chengshi.class);
+				intent.putExtra("WHAT", "b");
+					startActivity(intent);
 				break;
 			default:
 				break;
@@ -279,9 +296,15 @@ public class ShenQingQiliao extends BaseActivity {
  */
 							JSONObject jsonObj = new JSONObject(json);
 							pp.put(Content.Is_Lawyer, 1+"");
+							if(dialog.isShowing()){
+								dialog.cancel();
+							}
 							AppManager.getAppManager().finishActivity();
 							}else{
                        Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
+						if(dialog.isShowing()){
+							dialog.cancel();
+						}
 
 							}
 /*						             startActivity(new Intent(getApplicationContext(), ShouYe.class));
@@ -289,6 +312,10 @@ public class ShenQingQiliao extends BaseActivity {
 */
 							
 						} catch (JSONException e) {
+							if(dialog.isShowing()){
+								dialog.cancel();
+							}
+
 							e.printStackTrace();
 						}
 					}

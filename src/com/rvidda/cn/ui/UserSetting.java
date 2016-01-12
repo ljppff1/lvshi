@@ -88,7 +88,7 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 		.showImageOnFail(R.drawable.content_bg).cacheInMemory(true)
 		.cacheOnDisc(true).build();
 		mtv1 =(TextView)this.findViewById(R.id.mtv1);
-		String city = pp.getString(Content.City, "");
+		String city = pp.getString(Content.City, "城市");
 		mtv1.setText(city);
 		mIvedit =(ImageView)this.findViewById(R.id.mIvedit);
 		mIvedit.setOnClickListener(listener);
@@ -152,10 +152,8 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 	}
 	@Override
 	protected void onResume() {
-		String city = pp.getString(Content.City, "");
+		String city = pp.getString(Content.City, "城市");
 		mtv1.setText(city);
-		String cityId =pp.getString(Content.Cityid, "");
-		String choice =pp.getString(Content.Citychoice, "0");
 		super.onResume();
 	}
 	//用户设置

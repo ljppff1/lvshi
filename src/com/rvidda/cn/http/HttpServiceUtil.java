@@ -198,7 +198,7 @@ public class HttpServiceUtil {
 */          httprequest.addHeader("Accept", "application/json");
             httprequest.addHeader("Auth-Token", ContantsUtil.TOKEN);
             httprequest.addHeader("Content-Type", "application/json"); 
-            httprequest.setEntity(new StringEntity(value));
+            httprequest.setEntity(new StringEntity(value,"utf-8"));
             HttpResponse response = client.execute(httprequest);
             int status = response.getStatusLine().getStatusCode();
             if (status == 200) {
@@ -311,8 +311,7 @@ public class HttpServiceUtil {
 */            httprequest.addHeader("Accept", "application/json"); 
             httprequest.addHeader("Content-Type", "application/json"); 
             httprequest.addHeader("Auth-Token", ContantsUtil.TOKEN);
-             httprequest.setEntity(new StringEntity(value));
-            
+             httprequest.setEntity(new StringEntity(value,"utf-8"));
        //     httprequest.setEntity(new UrlEncodedFormEntity(nameValue, "utf-8"));
             HttpResponse response = client.execute(httprequest);
             int status = response.getStatusLine().getStatusCode();

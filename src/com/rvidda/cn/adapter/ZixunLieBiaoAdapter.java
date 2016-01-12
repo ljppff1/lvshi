@@ -250,6 +250,7 @@ public class ZixunLieBiaoAdapter extends SBaseAdapter {
 	           dol1(aa, zxlist, holder);
 	           dol2(aa, zxlist, holder);
 	           dol3(aa, zxlist, holder);
+	          break;
 		case 4:
 	           do1(aa,  zxlist, holder);
 	           do2(aa,  zxlist, holder);
@@ -259,7 +260,7 @@ public class ZixunLieBiaoAdapter extends SBaseAdapter {
 	           dol2(aa, zxlist, holder);
 	           dol3(aa, zxlist, holder);
 	           dol4(aa, zxlist, holder);
-
+               break;
 		case 5:
 	           do1(aa,  zxlist, holder);
 	           do2(aa,  zxlist, holder);
@@ -271,7 +272,7 @@ public class ZixunLieBiaoAdapter extends SBaseAdapter {
 	           dol3(aa, zxlist, holder);
 	           dol4(aa, zxlist, holder);
 	           dol5(aa, zxlist, holder);
-
+             break;
 		default:
 			break;
 		}
@@ -316,68 +317,83 @@ public class ZixunLieBiaoAdapter extends SBaseAdapter {
 		badgeView1.setTextSize(10);
 		badgeView1.setBadgeCount(Integer.valueOf(zxlist.getNumber().get(4)));
 	}
-	private void dol1(Integer aa,ZXList zxlist,ViewHolder holder){
+	private void dol1(Integer aa,final ZXList zxlist,ViewHolder holder){
 		holder.mRlshow1.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View arg0) {				
 				Intent intent = new Intent();
-				intent.putExtra("userId", "ljppff1");
-				intent.putExtra("userAvatar", "dd");
-				intent.putExtra("userNick", "ljppff");
+				intent.putExtra("SUBJECT", zxlist.getSubject());
+				intent.putExtra("userId", zxlist.getHx_user().get(0));
+				intent.putExtra("userAvatar",zxlist.getPhoto().get(0));
+				intent.putExtra("userNick", zxlist.getName().get(0));
+				intent.putExtra("PHOTO", zxlist.getPhoto().get(0));
 				intent.setClass(context, ChatActivity.class);
-				context.startActivity(intent);
+               context.startActivity(intent);
+				
 			}
 		});
 	}
-	private void dol2(Integer aa,ZXList zxlist,ViewHolder holder){
+	private void dol2(Integer aa,final ZXList zxlist,ViewHolder holder){
 		holder.mRlshow2.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View arg0) {				
 				Intent intent = new Intent();
-				intent.putExtra("userId", "ljppff1");
-				intent.putExtra("userAvatar", "dd");
-				intent.putExtra("userNick", "ljppff");
+				intent.putExtra("SUBJECT", zxlist.getSubject());
+				intent.putExtra("userId", zxlist.getHx_user().get(1));
+				intent.putExtra("userAvatar",zxlist.getPhoto().get(1));
+				intent.putExtra("userNick", zxlist.getName().get(1));
+				intent.putExtra("PHOTO", zxlist.getPhoto().get(1));
 				intent.setClass(context, ChatActivity.class);
-				context.startActivity(intent);
+               context.startActivity(intent);
+				
 			}
 		});
 	}
-	private void dol3(Integer aa,ZXList zxlist,ViewHolder holder){
+	private void dol3(Integer aa,final ZXList zxlist,ViewHolder holder){
 		holder.mRlshow3.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View arg0) {				
 				Intent intent = new Intent();
-				intent.putExtra("userId", "ljppff1");
-				intent.putExtra("userAvatar", "dd");
-				intent.putExtra("userNick", "ljppff");
+				intent.putExtra("SUBJECT", zxlist.getSubject());
+				intent.putExtra("userId", zxlist.getHx_user().get(2));
+				intent.putExtra("userAvatar",zxlist.getPhoto().get(2));
+				intent.putExtra("userNick", zxlist.getName().get(2));
+				intent.putExtra("PHOTO", zxlist.getPhoto().get(2));
 				intent.setClass(context, ChatActivity.class);
-				context.startActivity(intent);
+               context.startActivity(intent);
+				
 			}
 		});
 	}
-	private void dol4(Integer aa,ZXList zxlist,ViewHolder holder){
+	private void dol4(Integer aa,final ZXList zxlist,ViewHolder holder){
 		holder.mRlshow4.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View arg0) {				
 				Intent intent = new Intent();
-				intent.putExtra("userId", "ljppff1");
-				intent.putExtra("userAvatar", "dd");
-				intent.putExtra("userNick", "ljppff");
+				intent.putExtra("SUBJECT",zxlist.getSubject());
+				intent.putExtra("userId", zxlist.getHx_user().get(3));
+				intent.putExtra("userAvatar",zxlist.getPhoto().get(3));
+				intent.putExtra("userNick", zxlist.getName().get(3));
+				intent.putExtra("PHOTO", zxlist.getPhoto().get(3));
 				intent.setClass(context, ChatActivity.class);
-				context.startActivity(intent);
+               context.startActivity(intent);
+				
 			}
 		});
 	}
-	private void dol5(Integer aa,ZXList zxlist,ViewHolder holder){
+	private void dol5(Integer aa,final ZXList zxlist,ViewHolder holder){
 		holder.mRlshow5.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View arg0) {				
 				Intent intent = new Intent();
-				intent.putExtra("userId", "ljppff1");
-				intent.putExtra("userAvatar", "dd");
-				intent.putExtra("userNick", "ljppff");
+				intent.putExtra("SUBJECT",zxlist.getSubject());
+				intent.putExtra("userId", zxlist.getHx_user().get(4));
+				intent.putExtra("userAvatar",zxlist.getPhoto().get(4));
+				intent.putExtra("userNick", zxlist.getName().get(4));
+				intent.putExtra("PHOTO", zxlist.getPhoto().get(4));
 				intent.setClass(context, ChatActivity.class);
-				context.startActivity(intent);
+               context.startActivity(intent);
+				
 			}
 		});
 	}

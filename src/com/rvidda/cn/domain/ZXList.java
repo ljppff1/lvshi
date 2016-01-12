@@ -45,9 +45,34 @@ public class ZXList {
 	}
 
 	private String title;
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+    public List<String> getSubjectlist() {
+		return subjectlist;
+	}
+
+	public void setSubjectlist(List<String> subjectlist) {
+		this.subjectlist = subjectlist;
+	}
+
+	private List<String> subjectlist;
+	private String subject;
 	private String time;
 	private List<String> photo;
 	private List<String> name;
 	private List<String> number;
+    public List<String> getHx_user() {
+		return hx_user;
+	}
 
+	public void setHx_user(List<String> hx_user) {
+		this.hx_user = hx_user;
+	}
+
+	private List<String> hx_user;
 }

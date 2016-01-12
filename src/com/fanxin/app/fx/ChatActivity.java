@@ -45,6 +45,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -99,6 +100,7 @@ import com.fanxin.app.utils.ImageUtils;
 import com.fanxin.app.utils.SmileUtils;
 import com.fanxin.app.widget.ExpandGridView;
 import com.fanxin.app.widget.PasteEditText;
+import com.rvidda.cn.AppManager;
 import com.rvidda.cn.R;
 import com.rvidda.cn.utils.Content;
 
@@ -205,12 +207,16 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		}
 	};
 	private String SUBJECT;
+	private EMConversation dd;
+	private List<EMMessage> me;
+	private ImageView iv_back;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat);
 		// 读取本地自己的头像和昵称
+		AppManager.getAppManager().addActivity(ChatActivity.this);
 		myUserNick = LocalUserInfo.getInstance(ChatActivity.this).getUserInfo(
 				"nick");
 		myUserAvatar = LocalUserInfo.getInstance(ChatActivity.this)
@@ -223,11 +229,35 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 			sendPicture(iamge_path, true);
 		}
 	}
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_BACK){
 
+          //  conversation.clear();
+/*    	    for(int i=0;i<me.size();i++){
+    		    conversation.addMessage(me.get(i));
+    		    }
+*/ 			AppManager.getAppManager().finishActivity();
+        	return true;
+        }else{
+    	return super.onKeyDown(keyCode, event);
+        }
+    }
 	/**
 	 * initView
 	 */
 	protected void initView() {
+		iv_back =(ImageView)this.findViewById(R.id.iv_back);
+		iv_back.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+/*           conversation.clear();
+   	    for(int i=0;i<me.size();i++){
+   		    conversation.addMessage(me.get(i));
+   		    }
+*/   	    AppManager.getAppManager().finishActivity();
+			}
+		});
 		recordingContainer = findViewById(R.id.recording_container);
 		micImage = (ImageView) findViewById(R.id.mic_image);
 		recordingHint = (TextView) findViewById(R.id.recording_hint);
@@ -363,13 +393,34 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 			String groupName = getIntent().getStringExtra("groupName");
 			((TextView) findViewById(R.id.name)).setText(groupName);
 		}
-		conversation = EMChatManager.getInstance().getConversation(
-				toChatUsername);
+	//	conversation = EMChatManager.getInstance().getConversation(	toChatUsername);
+		
+		dd = EMChatManager.getInstance().getConversation(toChatUsername);
+		conversation=EMChatManager.getInstance().getConversation("ljppff_my");
+		conversation.clear();
+	   	 me=dd.getAllMessages();
+	   ArrayList<EMMessage> child = new ArrayList<EMMessage>();
+	    for(int i=0;i<me.size();i++){
+	    	try {
+				if(me.get(i).getStringAttribute(Content.SUBJECT).equals(SUBJECT)){
+					child.add(me.get(i));	
+				}
+			} catch (EaseMobException e) {
+				e.printStackTrace();
+			}
+	    }
+       conversation.clear();	    
+	    for(int i=0;i<child.size();i++){
+	    this.conversation.addMessage(child.get(i));
+	    
+	    }
+		
+		
 		// 把此会话的未读数置为0
-		conversation.resetUnreadMsgCount();
+	//	conversation.resetUnreadMsgCount();
 		Log.e("conversation----", conversation.toString());
 		Log.e("toChatUsername----", toChatUsername.toString());
-		adapter = new MessageAdapter(this, toChatUsername, chatType,SUBJECT);
+		adapter = new MessageAdapter(this, toChatUsername, chatType,SUBJECT,conversation);
 		// 显示消息
 		listView.setAdapter(adapter);
 		listView.setOnScrollListener(new ListScrollListener());

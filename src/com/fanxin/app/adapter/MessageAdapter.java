@@ -105,35 +105,35 @@ public class MessageAdapter extends BaseAdapter {
 	private Context context;
 
 	private Map<String, Timer> timers = new Hashtable<String, Timer>();
-
+    private EMConversation dd;
 	private ArrayList<EMMessage> child;
     private  String subject;
-	public MessageAdapter(Context context, String username, int chatType,String subject) {
+	public MessageAdapter(Context context, String username, int chatType,String subject,EMConversation conversation) {
 		this.username = username;
 		this.subject =subject;
 		this.context = context;
+		this.conversation =conversation;
 		inflater = LayoutInflater.from(context);
 		activity = (Activity) context;
-		this.conversation = EMChatManager.getInstance().getConversation(
-				username);
-/*	    List<EMMessage>	 me=conversation.getAllMessages();
-	   child =new ArrayList<EMMessage>();
-	    for(int i=0;i<me.size();i++){
-	    	try {
-				if(me.get(i).getStringAttribute(Content.SUBJECT).equals(subject)){
-					child.add(me.get(i));	
-				}
-			} catch (EaseMobException e) {
-				e.printStackTrace();
-			}
-	    }
-	    
-	    this.conversation =new EMConversation(username);
-	    for(int i=0;i<child.size();i++){
-	    this.conversation.addMessage(child.get(i));
-	    
-	    }
-*/	    
+//		dd = EMChatManager.getInstance().getConversation(username);
+//		this.conversation =dd;
+//	    List<EMMessage>	 me=conversation.getAllMessages();
+//	   child =new ArrayList<EMMessage>();
+//	    for(int i=0;i<me.size();i++){
+//	    	try {
+//				if(me.get(i).getStringAttribute(Content.SUBJECT).equals(subject)){
+//					child.add(me.get(i));	
+//				}
+//			} catch (EaseMobException e) {
+//				e.printStackTrace();
+//			}
+//	    }
+//       conversation.clear();	    
+//	    for(int i=0;i<child.size();i++){
+//	    this.conversation.addMessage(child.get(i));
+//	    
+//	    }
+
 		avatarLoader = new LoadUserAvatar(context, "/sdcard/fanxin/");
 	}
 
