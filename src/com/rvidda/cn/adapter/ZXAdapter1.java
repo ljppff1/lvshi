@@ -22,10 +22,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rvidda.cn.R;
 import com.rvidda.cn.domain.LSSYList;
 import com.rvidda.cn.domain.ZXXiaoXi;
+import com.rvidda.cn.utils.Content;
 import com.rvidda.cn.utils.DownLoad;
+import com.rvidda.cn.utils.PreferenceUtils;
 import com.rvidda.cn.view.FlowLayout;
 
 public class ZXAdapter1 extends BaseAdapter {
@@ -34,7 +37,11 @@ public class ZXAdapter1 extends BaseAdapter {
 	private Context context;
 	private List<ZXXiaoXi> data = new ArrayList<ZXXiaoXi>();
     private com.rvidda.cn.utils.Media media;
+	private PreferenceUtils pp;
+	private String myUserAvatar;
 	public ZXAdapter1(Context context, List<ZXXiaoXi> data,com.rvidda.cn.utils.Media media) {
+	     pp =PreferenceUtils.getInstance(context);
+		myUserAvatar =pp.getString(Content.Avator_Url, "");
 		options = new DisplayImageOptions.Builder()
 				.showStubImage(R.drawable.content_bg)
 				.showImageForEmptyUri(R.drawable.content_bg)
@@ -92,10 +99,18 @@ public class ZXAdapter1 extends BaseAdapter {
 		if(data.get(position).getMtype().equals("VoiceMessage")){
 		convertView = LayoutInflater.from(context).inflate(
 				R.layout.row_received_voice, null);
+		
+		ImageView iv_userhead = (ImageView)convertView.findViewById(R.id.iv_userhead);
+		ImageLoader.getInstance().displayImage(myUserAvatar, iv_userhead, options);		
+
 		TextView timestamp = (TextView)convertView.findViewById(R.id.timestamp);
-		timestamp.setVisibility(View.GONE);
+		timestamp.setText(data.get(position).getTime());
+        if(TextUtils.isEmpty(data.get(position).getTime())){
+        	timestamp.setVisibility(View.GONE);
+        }
+
 		TextView tv_length = (TextView)convertView.findViewById(R.id.tv_length);
-		tv_length.setVisibility(View.GONE);
+		tv_length.setText(data.get(position).getLength());
 		ImageView iv_unread_voice = ((ImageView) convertView.findViewById(R.id.iv_unread_voice));
 		iv_unread_voice.setVisibility(View.GONE);
 		
@@ -131,7 +146,12 @@ public class ZXAdapter1 extends BaseAdapter {
 			convertView = LayoutInflater.from(context).inflate(
 					R.layout.row_received_message, null);
 			TextView timestamp = (TextView)convertView.findViewById(R.id.timestamp);
-			timestamp.setVisibility(View.GONE);
+			timestamp.setText(data.get(position).getTime());
+            if(TextUtils.isEmpty(data.get(position).getTime())){
+            	timestamp.setVisibility(View.GONE);
+            }
+    		ImageView iv_userhead = (ImageView)convertView.findViewById(R.id.iv_userhead);
+    		ImageLoader.getInstance().displayImage(myUserAvatar, iv_userhead, options);		
 
 			TextView tv = (TextView) convertView
 					.findViewById(R.id.tv_chatcontent);

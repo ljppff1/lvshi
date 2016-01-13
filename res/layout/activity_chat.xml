@@ -283,6 +283,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:visibility="gone"
                         android:gravity="center"
                         android:orientation="vertical" >
 
@@ -305,6 +306,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:visibility="gone"
                             android:gravity="center"
                             android:text="@string/attach_location"
                             android:textColor="#727171" />
@@ -312,6 +314,7 @@
 
                     <LinearLayout
                         android:layout_width="0dp"
+                        android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -338,11 +341,13 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="视频"
+                            android:visibility="gone"
                             android:textColor="#727171" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
+                    
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"

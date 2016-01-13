@@ -1,11 +1,17 @@
 package com.rvidda.cn.ui;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,7 +52,6 @@ import com.easemob.chat.EMConversation;
 import com.easemob.util.VoiceRecorder;
 import com.fanxin.app.adapter.MessageAdapter;
 import com.fanxin.app.adapter.VoicePlayClickListener;
-import com.fanxin.app.fx.ChatActivity;
 import com.fanxin.app.utils.CommonUtils;
 import com.fanxin.app.widget.PasteEditText;
 import com.qiniu.android.http.ResponseInfo;
@@ -57,7 +62,7 @@ import com.qiniu.android.storage.UploadOptions;
 import com.rvidda.cn.AppManager;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
-import com.rvidda.cn.adapter.ZXAdapter;
+import com.rvidda.cn.adapter.ZXAdapter1;
 import com.rvidda.cn.domain.ZXXiaoXi;
 import com.rvidda.cn.http.ContantsUtil;
 import com.rvidda.cn.utils.Content;
@@ -92,7 +97,6 @@ public class TiChuZiXun extends BaseActivity implements
 	private Drawable[] micImages;
 	private int chatType;
 	private EMConversation conversation;
-	public static ChatActivity activityInstance = null;
 	// 给谁发送消息
 	private String toChatUsername;
 	private VoiceRecorder voiceRecorder;
@@ -152,10 +156,11 @@ public class TiChuZiXun extends BaseActivity implements
 	private ListView list;
 	private Media media;
 	private ArrayList<ZXXiaoXi> listzxxx;
-	private ZXAdapter zxxiaoxi;
+	private ZXAdapter1 zxxiaoxi;
 	private ImageView mBtn_back;
 	private PreferenceUtils pp;
 	private TextView mTvdd;
+	private String TYPE;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -183,18 +188,104 @@ public class TiChuZiXun extends BaseActivity implements
 
 		ID =getIntent().getExtras().getString("ID");
 		SELECT =getIntent().getExtras().getString("SELECT");
+		TYPE =getIntent().getExtras().getString("TYPE");
 	    strarray = SELECT.split(",");
+	    
         sendBiaoQianString =SELECT;
 		if(!TextUtils.isEmpty(ID)){
-	    String FILE_pro = getIntent().getExtras().getString("FILE");
-
+			if(TextUtils.isEmpty(TYPE)){
+			    String FILE_pro = getIntent().getExtras().getString("FILE");
+			    String echo = getIntent().getExtras().getString("echo");
+	   String time = echo.substring(0, 13);
+	   String length = echo.substring(14, echo.length());
 		ZXXiaoXi zxxx =new ZXXiaoXi();
-		zxxx.setMtype("V");
+		zxxx.setMtype("VoiceMessage");
 		zxxx.setMfilelocal(FILE_pro);
+		zxxx.setTime(changetime(time));
+		zxxx.setLength(length);
 		zxxx.setMtext("");
 		listzxxx.add(zxxx);
+			}else{
+				initgetZiXunLook();
+			}
 		}else{
+			initTiJiaoFirst("");
 		}
+	}
+	
+	private String changetime(String time){
+		DateFormat formatter = new SimpleDateFormat("MM-dd hh:mm:ss");
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(Long.parseLong(time));
+        return  formatter.format(calendar.getTime());  
+	}
+	/**
+	 *得到咨询信息
+	 */
+	private void initgetZiXunLook()
+	{
+	
+		Map<String, Object> params = new HashMap<String, Object>();
+		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.HOST+"/subjects/"+ID, "get", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+			/**
+{"subject":{"id":14,"title":"33","created_at":"2015-11-16 17:44:20","updated_at":"2015-12-28 21:12:26","
+user_businesses":[],"lawyers":[],"messages":[{"id":30,"body":"bbbbbbbbbb","type":"TextMessage","echo":
+null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0.glb.clouddn.com/
+20151229142429599088942-57404430","type":"VoiceMessage","echo":null,"created_at":"2015-12-29 14:24:30"}],"labels"
+:[],"order":{"id":238,"state":"init","uuid":"40SR-N6IF-BRP0","total_price":"0.01"}}}
+
+			 *{"subject":{"id":181,"title":"","created_at":"2016-01-06 13:22:56",
+			 *"updated_at":"2016-01-06 13:22:56","user_businesses":[],"lawyers":[],
+			 *"messages":[{"id":383,"body":"http://7u2gfi.com1.z0.glb.clouddn.com/20160106132248594879667-40107357","type":"ImageMessage","echo":"1452057776000","created_at":"2016-01-06 13:22:56"}],"labels":[]}}
+			 */
+							JSONObject jsonObj = new JSONObject(json);
+							JSONObject subject = jsonObj.getJSONObject("subject");
+							JSONArray messages = subject.getJSONArray("messages");
+							for(int i=0;i<messages.length();i++){
+							  ZXXiaoXi zx =new ZXXiaoXi();
+								 ((JSONObject)messages.get(i)).getString("body");
+								 ((JSONObject)messages.get(i)).getString("type");
+								 ((JSONObject)messages.get(i)).getString("created_at");
+								 
+							  
+								 zx.setKeyId("");
+								 zx.setMtype(((JSONObject)messages.get(i)).getString("type"));
+								 zx.setMtext(((JSONObject)messages.get(i)).getString("body"));
+								 zx.setMfilelocal("");
+									String echo = ((JSONObject)messages.get(i)).getString("echo");
+								if(echo.length()>=12){
+								 if(((JSONObject)messages.get(i)).getString("type").equals("VoiceMessage")){
+									   String time = echo.substring(0, 13);
+									   String length = echo.substring(14, echo.length());
+									   zx.setLength(length);
+									   zx.setTime(changetime(time));
+								 }else{
+									   String time = echo.substring(0, 13);
+									 zx.setTime(changetime(time));
+								 }
+								}else{
+									zx.setTime("");
+									zx.setLength("");
+								}
+								 if (!zx.getMtype().equals("ImageMessage")) {
+									 listzxxx.add(zx);
+								}
+								
+							}
+							zxxiaoxi.notifyDataSetChanged();
+							}else{
+			                       Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
+										}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
 	}
 
 	private void setUpView() {
@@ -468,9 +559,11 @@ public class TiChuZiXun extends BaseActivity implements
 					String keyvalue = res.getString("key");
 					
 					ZXXiaoXi zxxx =new ZXXiaoXi();
-					zxxx.setMtype("V");
+					zxxx.setMtype("VoiceMessage");
 					zxxx.setMfilelocal(file);
 					zxxx.setMtext("");
+					zxxx.setLength(LENGTH);
+					zxxx.setTime(changetime(System.currentTimeMillis()+""));
 					listzxxx.add(zxxx);
                     zxxiaoxi.notifyDataSetChanged();
                     if(!TextUtils.isEmpty(ID)){
@@ -593,7 +686,7 @@ public class TiChuZiXun extends BaseActivity implements
 		mBtn_back =(ImageView)this.findViewById(R.id.mBtn_back);
 		mBtn_back.setOnClickListener(listener);
 		list =(ListView)this.findViewById(R.id.list);
-		zxxiaoxi =new ZXAdapter(getApplicationContext(), listzxxx,media);
+		zxxiaoxi =new ZXAdapter1(getApplicationContext(), listzxxx,media);
 		list.setAdapter(zxxiaoxi);
 		mLLpp1 = (LinearLayout) this.findViewById(R.id.mLLpp1);
 		mRlw1 = (RelativeLayout) this.findViewById(R.id.mRlw1);
@@ -618,6 +711,7 @@ public class TiChuZiXun extends BaseActivity implements
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.mBtn_back:
+				shouruanjianpan();
 				AppManager.getAppManager().finishActivity();
 				break;
 			case R.id.btn_set_mode_keyboard:
@@ -631,10 +725,12 @@ public class TiChuZiXun extends BaseActivity implements
 				buttonSetModeKeyboard.setVisibility(View.GONE);
           break;
 			case R.id.btn_send:
+				shouruanjianpan();
 				if(!TextUtils.isEmpty(mEditTextContent.getEditableText().toString())){
 					ZXXiaoXi zxxx =new ZXXiaoXi();
-					zxxx.setMtype("T");
+					zxxx.setMtype("TextMessage");
 					zxxx.setMfilelocal("");
+					zxxx.setTime(changetime(System.currentTimeMillis()+""));
 					zxxx.setMtext(mEditTextContent.getEditableText().toString());
 					listzxxx.add(zxxx);
                     zxxiaoxi.notifyDataSetChanged();
@@ -646,6 +742,7 @@ public class TiChuZiXun extends BaseActivity implements
 				}
 				break;
 			case R.id.mRlw1:
+				shouruanjianpan();
 				if(!TextUtils.isEmpty(ID)){
 				pop1.showAsDropDown(mLLpp1);
 				}else{
@@ -653,6 +750,7 @@ public class TiChuZiXun extends BaseActivity implements
 				}
 				break;
 			case R.id.mRlw2:
+				shouruanjianpan();
 				if(!TextUtils.isEmpty(ID)){
 				pop2.showAsDropDown(mLLpp1);
 				}else{
@@ -660,6 +758,7 @@ public class TiChuZiXun extends BaseActivity implements
 				}
 				break;
 			case R.id.mRlw3:
+				shouruanjianpan();
 				Intent intent =	new Intent(getApplicationContext(), Chengshi.class);
 				intent.putExtra("WHAT", "b");
 					startActivity(intent);
@@ -671,6 +770,12 @@ public class TiChuZiXun extends BaseActivity implements
 			}
 		}
 	};
+	private void shouruanjianpan(){
+		InputMethodManager imm = (InputMethodManager) getApplicationContext()
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(mEditTextContent.getWindowToken(), 0);
+
+	}
 
 	//修改咨询见容
 	private void initChangeZX(String title,String content){
@@ -714,7 +819,48 @@ public class TiChuZiXun extends BaseActivity implements
 	
 	}
 	
-	
+	private void initTiJiaoFirst(String key)
+	{
+	    try {
+		    JSONObject obj = new JSONObject();
+			
+
+           JSONObject j2 =new JSONObject();
+           
+           JSONObject jf =new JSONObject();
+           jf.put("subject", j2);
+           
+          	Map<String, Object> params = new HashMap<String, Object>();
+    		params.put("json", jf.toString());
+    		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.TiJiaoZiX, "post1", params,
+    				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+    					@Override
+    					public void callback(String json) {
+    						try {
+    							if(!json.equals("0")){
+    /**
+     * {"subject":{"id":177,"title":"lj","created_at":"2016-01-06 10:02:24",
+     * "updated_at":"2016-01-06 10:02:24","user_businesses":[],"lawyers":[],"messages":[],"labels":[]}}
+     */
+    							JSONObject jsonObj = new JSONObject(json);
+    							JSONObject subject = jsonObj.getJSONObject("subject");
+    						    ID = subject.getInt("id")+"";
+    							}else{
+                           Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
+
+    							}
+    					
+    						} catch (JSONException e) {
+    							e.printStackTrace();
+    						}
+    					}
+    				});
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
 	
 	@Override
 	public void onSearchButtonClick(String string, String searchType) {

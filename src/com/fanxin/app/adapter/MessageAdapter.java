@@ -69,6 +69,7 @@ import com.fanxin.app.utils.ImageUtils;
 import com.fanxin.app.utils.SmileUtils;
 import com.rvidda.cn.R;
 import com.rvidda.cn.utils.Content;
+import com.rvidda.cn.utils.PreferenceUtils;
 
 @SuppressLint({ "SdCardPath", "InflateParams" })
 public class MessageAdapter extends BaseAdapter {
@@ -108,6 +109,14 @@ public class MessageAdapter extends BaseAdapter {
     private EMConversation dd;
 	private ArrayList<EMMessage> child;
     private  String subject;
+
+	private PreferenceUtils pp;
+
+	private String myUserNick;
+
+	private String myUserAvatar;
+
+	private String photo;
 	public MessageAdapter(Context context, String username, int chatType,String subject,EMConversation conversation) {
 		this.username = username;
 		this.subject =subject;
@@ -115,6 +124,10 @@ public class MessageAdapter extends BaseAdapter {
 		this.conversation =conversation;
 		inflater = LayoutInflater.from(context);
 		activity = (Activity) context;
+	     pp =PreferenceUtils.getInstance(context);
+		myUserNick = pp.getString(Content.User_Name, "张三");
+		myUserAvatar =pp.getString(Content.Avator_Url, "");
+       photo =pp.getString(Content.AOther_Url, "");
 //		dd = EMChatManager.getInstance().getConversation(username);
 //		this.conversation =dd;
 //	    List<EMMessage>	 me=conversation.getAllMessages();
@@ -598,7 +611,7 @@ public class MessageAdapter extends BaseAdapter {
 
 				if (avater != null && !avater.equals("")) {
 					Bitmap bitmap = avatarLoader.loadImage(holder.head_iv,
-							avater, new ImageDownloadedCallBack() {
+							photo, new ImageDownloadedCallBack() {
 
 								@Override
 								public void onImageDownloaded(
@@ -628,26 +641,21 @@ public class MessageAdapter extends BaseAdapter {
 								"avatar");
 
 				holder.head_iv.setTag(avater);
-
+				
 				if (avater != null && !avater.equals("")) {
 					Bitmap bitmap = avatarLoader.loadImage(holder.head_iv,
-							avater, new ImageDownloadedCallBack() {
+							myUserAvatar, new ImageDownloadedCallBack() {
 
 								@Override
 								public void onImageDownloaded(
 										ImageView imageView, Bitmap bitmap) {
 									if (imageView.getTag() == avater) {
 										imageView.setImageBitmap(bitmap);
-
 									}
 								}
-
 							});
-
 					if (bitmap != null) {
-
 						holder.head_iv.setImageBitmap(bitmap);
-
 					}
 
 				}

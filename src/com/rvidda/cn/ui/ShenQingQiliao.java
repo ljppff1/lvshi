@@ -59,7 +59,7 @@ public class ShenQingQiliao extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_shenqing);
 	     dialog =new LoadingDialog(ShenQingQiliao.this, "正在提交，请稍后");
-
+	     pp =PreferenceUtils.getInstance(ShenQingQiliao.this);
 		initView();
 
 	}
@@ -71,7 +71,8 @@ public class ShenQingQiliao extends BaseActivity {
 	}
 
 	private void initView() {
-		mTvdd =(TextView)this.findViewById(R.id.mTvdd);
+		mTvdd =(TextView)this.findViewById(R.id.mTvdd1);
+		
 		mTvdd.setText(pp.getString(Content.City_c1, "城市"));
 
 		mBtn_back =(ImageView)this.findViewById(R.id.mBtn_back);

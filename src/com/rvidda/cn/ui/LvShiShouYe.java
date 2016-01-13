@@ -23,6 +23,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.Spannable;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -395,5 +396,21 @@ id":13,"name":"房屋"},{"id":5,"name":"合同"},{"id":9,"name":"劳动争议"}]
 		}
 
 	};
+	
+	private long exitTime;
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		if(event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_BACK){
+			if((System.currentTimeMillis() - exitTime) > 2000){
+				Toast.makeText(getApplicationContext(),"再按一次退出应用", 1).show();
+				exitTime = System.currentTimeMillis();
+				}else{
+				com.rvidda.cn.AppManager.getAppManager().AppExit(getApplicationContext());
+					android.os.Process.killProcess(android.os.Process.myPid());
+				}
+			return true;
+			}
+		return false;
+		}
 
 }

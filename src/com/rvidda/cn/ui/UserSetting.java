@@ -65,6 +65,7 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 	private ImageView mIvedit;
 	private TextView mtv2;
 	private popWindow3 pop3;
+	private TextView mTvchangebody;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,13 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 	}
 
 	private void initView() {
+		mTvchangebody =(TextView)this.findViewById(R.id.mTvchangebody);
+		if(pp.getString(Content.IS_PUTONG_User, "1").equals("1")){
+			mTvchangebody.setText("切换到律师身份解答问题");
+		}else{
+			mTvchangebody.setText("切换身份去提问");
+		}
+
 		pop3 = new popWindow3(UserSetting.this, LayoutParams.MATCH_PARENT,
 				LayoutParams.WRAP_CONTENT);
 		pop3.setOnSearchBar1ItemClickListener(this);
@@ -154,6 +162,8 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 	protected void onResume() {
 		String city = pp.getString(Content.City, "城市");
 		mtv1.setText(city);
+		initTiJiao2(pp.getString(Content.Cityid, "2"));
+
 		super.onResume();
 	}
 	//用户设置
@@ -186,6 +196,8 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
                         	   IV5.setVisibility(View.GONE);
                         	   mRlw1.setVisibility(View.GONE);
                            }
+                           pp.put(Content.User_Name, name);
+                           
 							pp.put(Content.Avator_Url, avatar_url);
 							pp.put(Content.Mobile, mobile);
 							pp.put(Content.Is_Lawyer, is_lawyer);
@@ -260,6 +272,21 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 
 
 		private void changeBody() {
+			if(pp.getString(Content.IS_PUTONG_User, "1").equals("1")){
+				pp.put(Content.IS_PUTONG_User, "0");
+				mTvchangebody.setText("切换身份到律师");
+				//AppManager.getAppManager().finishAllActivitybutthis();
+				startActivity(new Intent(getApplicationContext(), LvShiShouYe.class));
+				AppManager.getAppManager().finishActivity();
+			}else{
+				pp.put(Content.IS_PUTONG_User, "1");
+				mTvchangebody.setText("切换身份到用户");
+				//AppManager.getAppManager().finishAllActivitybutthis();
+				startActivity(new Intent(getApplicationContext(), ShouYe.class));
+				AppManager.getAppManager().finishActivity();
+			}
+			
+/*			
 			AlertDialog.Builder builder = new AlertDialog.Builder(
 					UserSetting.this);
 			builder.setTitle("选择身份");
@@ -287,7 +314,7 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 				}
 			});			
 			builder.show();
-		}
+*/		}
 
 
 		private void takephoto() {
@@ -489,6 +516,29 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user[name]",name);
+		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.PersonMe, "put", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+/*
+ */
+							JSONObject jsonObj = new JSONObject(json);
+							}else{
+                       Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
+
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+	}
+	private void initTiJiao2(String areaid)
+	{
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("user[area_id]",areaid);
 		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.PersonMe, "put", params,
 				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
 					@Override

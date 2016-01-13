@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -185,6 +187,9 @@ public class Login extends BaseActivity {
 							try {
 								if(!json.equals("0")){
 								JSONObject jsonObj = new JSONObject(json);
+								 JSONObject user = jsonObj.getJSONObject("user");
+								 String is_lawyer = user.getString("is_lawyer"); 
+								 pp.put(Content.Is_Lawyer, is_lawyer);
 						             login();
 								}else{
 									if(dialog.isShowing()){
@@ -221,12 +226,15 @@ public class Login extends BaseActivity {
 			switch (v.getId()) {
 			case R.id.mIvchange:
 				java.util.Random random=new java.util.Random();// 定义随机类
-				int result=random.nextInt(4);
+				int result=random.nextInt(7);
 				List<String> ddd =new ArrayList<String>();
 				ddd.add("18525461598");
-				ddd.add("13652435378");
+				ddd.add("18525461598");
+				ddd.add("18566682817");
 				ddd.add("18566682817");
 				ddd.add("18526461596");
+				ddd.add("18612965346");
+				ddd.add("18612965346");
 				ddd.add("18612965346");
 				
 				mEtTell.setText(ddd.get(result));
@@ -237,6 +245,7 @@ public class Login extends BaseActivity {
 				}else{*/
 					if(id!=0){
 						dialog.show();
+						shouruanjianpan();
 						initLogin();
 					}else{
 					Toast.makeText(getApplicationContext(), R.string.log7, 0).show();
@@ -264,6 +273,7 @@ public class Login extends BaseActivity {
 						mTvcode.setText(charSequence);
 					}
 				}.start();
+				shouruanjianpan();
 				initSendCode();
 				}else{
 					Toast.makeText(getApplicationContext(),R.string.log1,Toast.LENGTH_SHORT).show();
@@ -307,6 +317,7 @@ public class Login extends BaseActivity {
                     });
 */
 					handler.sendEmptyMessage(1);
+					
                     if(pp.getString(Content.IS_PUTONG_User, "1").equals("1")){
 					startActivity(new Intent(Login.this, ShouYe.class));
                     }else{
@@ -348,6 +359,13 @@ public class Login extends BaseActivity {
 				});
 			}
 		});
+
+	}
+	private void shouruanjianpan(){
+		InputMethodManager imm = (InputMethodManager) getApplicationContext()
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(mEtCode.getWindowToken(), 0);
+		imm.hideSoftInputFromWindow(mEtTell.getWindowToken(), 0);
 
 	}
 private Handler handler =new Handler(){

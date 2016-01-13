@@ -4,29 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
-import com.fanxin.app.fx.ChatActivity;
 import com.jauker.widget.BadgeView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rvidda.cn.R;
 import com.rvidda.cn.domain.LSSYList;
 import com.rvidda.cn.view.CircleImageView;
-import com.rvidda.cn.view.FlowLayout;
 
 public class LvShiShouYeAdapter2 extends BaseAdapter {
 
@@ -36,6 +29,8 @@ public class LvShiShouYeAdapter2 extends BaseAdapter {
 	private View mVs1;
 	private TextView mtv3;
 	private RelativeLayout mRlsss1;
+	private TextView mtv2;
+	private TextView mtv1;
 
 	public LvShiShouYeAdapter2(Context context, List<LSSYList> data) {
 		options = new DisplayImageOptions.Builder()
@@ -94,7 +89,10 @@ public class LvShiShouYeAdapter2 extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		convertView = LayoutInflater.from(context).inflate(
 				R.layout.item_lvshishouye_layout1, null);
-       
+		mtv1 =(TextView)convertView.findViewById(R.id.mtv1);
+		mtv2 =(TextView)convertView.findViewById(R.id.mtv2);
+		mtv1.setText(data.get(position).getName());
+		mtv2.setText(data.get(position).getTime());
 		com.rvidda.cn.view.CircleImageView mPn1 =(CircleImageView) convertView.findViewById(R.id.mPn1);
 		ImageLoader.getInstance().displayImage(data.get(position).getPhoto(), mPn1, options);		
 		mVs1 =(View)convertView.findViewById(R.id.mVs1);

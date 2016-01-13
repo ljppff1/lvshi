@@ -22,6 +22,20 @@ public class ZXXiaoXi {
 	private String mtype;
      private String mtext;
      private String mfilelocal;
+     public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
+	public String getLength() {
+		return length;
+	}
+	public void setLength(String length) {
+		this.length = length;
+	}
+	private String time;
+     private String length;
      public String getKeyId() {
 		return keyId;
 	}

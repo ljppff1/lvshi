@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -44,6 +45,7 @@ public class popWindow3 extends BasePopupWindow {
 
 			@Override
 			public void onClick(View arg0) {
+				shouruanjianpan();
 				dismiss();
 			}
 		});
@@ -56,6 +58,7 @@ public class popWindow3 extends BasePopupWindow {
 					if(!TextUtils.isEmpty(mEtp2.getEditableText().toString())){
 					mOnSearchBarItemClickListener.onSearchButtonClick1(mEtp2.getEditableText().toString(),
 							"d");
+					shouruanjianpan();
 					dismiss();
 					}else{
 						Toast.makeText(mContext, R.string.zx2, 0).show();
@@ -65,6 +68,13 @@ public class popWindow3 extends BasePopupWindow {
 		});
 
 	}
+	private void shouruanjianpan(){
+		InputMethodManager imm = (InputMethodManager) mContext
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(mEtp2.getWindowToken(), 0);
+
+	}
+
 
 	OnClickListener listener = new OnClickListener() {
 

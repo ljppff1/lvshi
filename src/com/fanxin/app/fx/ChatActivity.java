@@ -102,7 +102,9 @@ import com.fanxin.app.widget.ExpandGridView;
 import com.fanxin.app.widget.PasteEditText;
 import com.rvidda.cn.AppManager;
 import com.rvidda.cn.R;
+import com.rvidda.cn.ui.UserSetting;
 import com.rvidda.cn.utils.Content;
+import com.rvidda.cn.utils.PreferenceUtils;
 
 /**
  * 聊天页面
@@ -210,6 +212,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 	private EMConversation dd;
 	private List<EMMessage> me;
 	private ImageView iv_back;
+	private PreferenceUtils pp;
+	private String photo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -217,10 +221,11 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		setContentView(R.layout.activity_chat);
 		// 读取本地自己的头像和昵称
 		AppManager.getAppManager().addActivity(ChatActivity.this);
-		myUserNick = LocalUserInfo.getInstance(ChatActivity.this).getUserInfo(
-				"nick");
-		myUserAvatar = LocalUserInfo.getInstance(ChatActivity.this)
-				.getUserInfo("avatar");
+	     pp =PreferenceUtils.getInstance(ChatActivity.this);
+		myUserNick = pp.getString(Content.User_Name, "张三");
+		myUserAvatar =pp.getString(Content.Avator_Url, "");
+        photo=getIntent().getExtras().getString("PHOTO");
+        pp.put(Content.AOther_Url, photo);
 		SUBJECT =getIntent().getExtras().getString("SUBJECT");
 		initView();
 		setUpView();
@@ -380,19 +385,11 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		chatType = getIntent().getIntExtra("chatType", CHATTYPE_SINGLE);
 		// type=getIntent().getIntExtra("type", 0);
 
-		if (chatType == CHATTYPE_SINGLE) { // 单聊
 			toChatUsername = getIntent().getStringExtra("userId");
 			String toChatUserNick = getIntent().getStringExtra("userNick");
 			((TextView) findViewById(R.id.name)).setText(toChatUserNick);
 			toUserNick = getIntent().getStringExtra("userNick");
 			toUserAvatar = getIntent().getStringExtra("userAvatar");
-		} else {
-
-			findViewById(R.id.container_voice_call).setVisibility(View.GONE);
-			toChatUsername = getIntent().getStringExtra("groupId");
-			String groupName = getIntent().getStringExtra("groupName");
-			((TextView) findViewById(R.id.name)).setText(groupName);
-		}
 	//	conversation = EMChatManager.getInstance().getConversation(	toChatUsername);
 		
 		dd = EMChatManager.getInstance().getConversation(toChatUsername);
@@ -413,13 +410,12 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 	    for(int i=0;i<child.size();i++){
 	    this.conversation.addMessage(child.get(i));
 	    
-	    }
-		
-		
+	    }		
 		// 把此会话的未读数置为0
 	//	conversation.resetUnreadMsgCount();
 		Log.e("conversation----", conversation.toString());
 		Log.e("toChatUsername----", toChatUsername.toString());
+		Log.e("conversation----", dd.toString());
 		adapter = new MessageAdapter(this, toChatUsername, chatType,SUBJECT,conversation);
 		// 显示消息
 		listView.setAdapter(adapter);

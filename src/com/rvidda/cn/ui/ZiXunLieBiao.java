@@ -76,13 +76,12 @@ public class ZiXunLieBiao extends BaseActivity {
        }
        for(int i=0;i<list_message_unread.size();i++){
     	   try {
-			for(int j=0;j<list_map.size();j++){
 				if(list_map.containsKey(list_message_unread.get(i).getStringAttribute(Content.SUBJECT))){
-				list_map.put(list_message_unread.get(i).getStringAttribute(Content.SUBJECT), list_map.get(j).getInteger(list_message_unread.get(i).getStringAttribute(Content.SUBJECT))+1);
+				list_map.put(list_message_unread.get(i).getStringAttribute(Content.SUBJECT), list_map.get(list_message_unread.get(i).getStringAttribute(Content.SUBJECT)).getInteger(list_message_unread.get(i).getStringAttribute(Content.SUBJECT))+1);
 				}else{
 					list_map.put(list_message_unread.get(i).getStringAttribute(Content.SUBJECT), 1);
 				}
-			}
+			
 		} catch (EaseMobException e) {
 			e.printStackTrace();
 		}
@@ -130,6 +129,15 @@ public class ZiXunLieBiao extends BaseActivity {
 					int position, long id) {
 				if (position == 0 || position == -1) {
 					return;
+				}
+				if(position>0){
+					Intent intent =new Intent(getApplicationContext(),TiChuZiXun.class);
+					intent.putExtra("ID", data.get(position-1).getSubject());
+					intent.putExtra("SELECT","");
+					intent.putExtra("FILE", "");
+					intent.putExtra("TYPE", "TT");
+					startActivity(intent);
+
 				}
 				if (position == data.size() + 1) {
 					getZXLiaobiao(false);
@@ -199,8 +207,8 @@ lawyers":[{"id":6,"user_id":9,"real_name":"sfg","avatar_url":"http://7u2gfi.com1
 								for(int j=0;j<lawyers.length();j++){
 									templist1.add(((JSONObject)lawyers.get(j)).getString("real_name"));
 									templist2.add(((JSONObject)lawyers.get(j)).getString("avatar_url"));
-								if(list_map.containsKey(((JSONObject)jas.get(i)).getString("id"))){
-									templist3.add(list_map.get(((JSONObject)jas.get(i)).getString("id"))+"");
+								if(list_map.containsKey(((JSONObject)jas.get(i)).getInt("id"))){
+									templist3.add(list_map.get(((JSONObject)jas.get(i)).getInt("id"))+"");
 								}else{
 									templist3.add("0");
 								}
@@ -250,6 +258,7 @@ lawyers":[{"id":6,"user_id":9,"real_name":"sfg","avatar_url":"http://7u2gfi.com1
 				intent.putExtra("ID", "");
 				intent.putExtra("SELECT","");
 				intent.putExtra("FILE", "");
+				intent.putExtra("TYPE", "");
 				startActivity(intent);
 
 				break;

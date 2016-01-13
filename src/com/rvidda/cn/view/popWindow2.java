@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -36,7 +37,6 @@ public class popWindow2 extends BasePopupWindow {
 	public void initViews() {
 
 		mEtp2 = (EditText) findViewById(R.id.mEtp2);
-
 		mRlp1 = (RelativeLayout) findViewById(R.id.mRlpd1);
 		mRlp1.setOnClickListener(new OnClickListener() {
 

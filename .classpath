@@ -8,7 +8,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/baidumapapi_v3_2_0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/badgeview.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/android-support-v4.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/xUtils-2.6.14.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/httpmime-4.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/happy-dns-0.2.3.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/qiniu-android-sdk-7.0.7.2.jar"/>

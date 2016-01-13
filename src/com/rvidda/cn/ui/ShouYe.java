@@ -23,11 +23,11 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -40,7 +40,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSONArray;
 import com.easemob.EMCallBack;
 import com.easemob.EMError;
 import com.easemob.chat.EMChatManager;
@@ -49,21 +48,17 @@ import com.easemob.util.VoiceRecorder;
 import com.fanxin.app.DemoApplication;
 import com.fanxin.app.adapter.VoicePlayClickListener;
 import com.fanxin.app.utils.CommonUtils;
-import com.lidroid.xutils.http.RequestParams;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UpProgressHandler;
 import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.storage.UploadOptions;
-import com.rvidda.cn.AppManager;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
 import com.rvidda.cn.domain.Items;
 import com.rvidda.cn.http.ContantsUtil;
-import com.rvidda.cn.utils.Content;
 import com.rvidda.cn.utils.LoadingDialog;
 import com.rvidda.cn.utils.Media;
-import com.rvidda.cn.utils.PreferenceUtils;
 
 public class ShouYe extends BaseActivity {
 	private String toChatUsername;
@@ -561,7 +556,9 @@ public class ShouYe extends BaseActivity {
 				//抬起，如果大于2s是true，
 				if (System.currentTimeMillis() - exitTime1 < 2000) {
 					flagl = false;
+					flagan =false;
 				} else {
+					flagan=false;
 					flagl = true;
 					mRlsure.setVisibility(View.VISIBLE);
 					mIvtalk.setVisibility(View.GONE);
@@ -608,6 +605,9 @@ public class ShouYe extends BaseActivity {
 								Toast.LENGTH_SHORT).show();
 					}
 				}
+				
+				
+				
 				return true;
 			default:
 				recordingContainer.setVisibility(View.INVISIBLE);
@@ -722,6 +722,7 @@ public class ShouYe extends BaseActivity {
 			}
 		}
 	};
+	private long exitTime;
 
 	
 
@@ -783,6 +784,7 @@ public class ShouYe extends BaseActivity {
 			e.printStackTrace();
 		}
 	}
+	private String echo;
 	private void initTiJiao(String key)
 	{
 	    try {
@@ -790,6 +792,7 @@ public class ShouYe extends BaseActivity {
 			obj.put("body",key);
 		    obj.put("type", "VoiceMessage");
 		    obj.put("echo", System.currentTimeMillis()+"_"+LENGTH);
+		    echo =System.currentTimeMillis()+"_"+LENGTH;
           org.json.JSONArray ja =new org.json.JSONArray();
           ja.put(obj);
            org.json.JSONArray ja1 =new org.json.JSONArray();
@@ -824,6 +827,8 @@ public class ShouYe extends BaseActivity {
     							intent.putExtra("ID", id+"");
     							intent.putExtra("SELECT",getsendBiaoqian1());
     							intent.putExtra("FILE", file_path);
+    							intent.putExtra("TYPE", "");
+                                intent.putExtra("echo", echo);
     							startActivity(intent);
     							}else{
     								if (dialog.isShowing()) {
@@ -941,5 +946,19 @@ public class ShouYe extends BaseActivity {
 	  return str;
 	}
 
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		if(event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_BACK){
+			if((System.currentTimeMillis() - exitTime) > 2000){
+				Toast.makeText(getApplicationContext(),"再按一次退出应用", 1).show();
+				exitTime = System.currentTimeMillis();
+				}else{
+				com.rvidda.cn.AppManager.getAppManager().AppExit(getApplicationContext());
+					android.os.Process.killProcess(android.os.Process.myPid());
+				}
+			return true;
+			}
+		return false;
+		}
 	
 }
