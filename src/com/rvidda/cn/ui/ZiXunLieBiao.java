@@ -77,7 +77,9 @@ public class ZiXunLieBiao extends BaseActivity {
        for(int i=0;i<list_message_unread.size();i++){
     	   try {
 				if(list_map.containsKey(list_message_unread.get(i).getStringAttribute(Content.SUBJECT))){
-				list_map.put(list_message_unread.get(i).getStringAttribute(Content.SUBJECT), list_map.get(list_message_unread.get(i).getStringAttribute(Content.SUBJECT)).getInteger(list_message_unread.get(i).getStringAttribute(Content.SUBJECT))+1);
+					String str =list_message_unread.get(i).getStringAttribute(Content.SUBJECT);
+					Integer ii =list_map.get(str);
+					list_map.put(str,(ii+1));
 				}else{
 					list_map.put(list_message_unread.get(i).getStringAttribute(Content.SUBJECT), 1);
 				}

@@ -1,6 +1,9 @@
 package com.rvidda.cn.ui;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,21 +104,34 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 							JSONObject subject = jsonObj.getJSONObject("subject");
 							JSONArray messages = subject.getJSONArray("messages");
 							for(int i=0;i<messages.length();i++){
-							  ZXXiaoXi zx =new ZXXiaoXi();
-								 ((JSONObject)messages.get(i)).getString("body");
-								 ((JSONObject)messages.get(i)).getString("type");
-								 ((JSONObject)messages.get(i)).getString("created_at");
-							  
-								 zx.setKeyId("");
-								 zx.setMtype(((JSONObject)messages.get(i)).getString("type"));
-								 zx.setMtext(((JSONObject)messages.get(i)).getString("body"));
-								 zx.setMfilelocal("");
-								 if (!zx.getMtype().equals("ImageMessage")) {
-									 listzxxx.add(zx);
-								}
-								
-							}
-							zxxiaoxi.notifyDataSetChanged();
+								  ZXXiaoXi zx =new ZXXiaoXi();
+									 ((JSONObject)messages.get(i)).getString("body");
+									 ((JSONObject)messages.get(i)).getString("type");
+									 ((JSONObject)messages.get(i)).getString("created_at");
+									 
+								  
+									 zx.setKeyId("");
+									 zx.setMtype(((JSONObject)messages.get(i)).getString("type"));
+									 zx.setMtext(((JSONObject)messages.get(i)).getString("body"));
+									 zx.setMfilelocal("");
+										String echo = ((JSONObject)messages.get(i)).getString("echo");
+									if(echo.length()>=12){
+									 if(((JSONObject)messages.get(i)).getString("type").equals("VoiceMessage")){
+										   String time = echo.substring(0, 13);
+										   String length = echo.substring(14, echo.length());
+										   zx.setLength(length);
+										   zx.setTime(changetime(time));
+									 }else{
+										   String time = echo.substring(0, 13);
+										 zx.setTime(changetime(time));
+									 }
+									}else{
+										zx.setTime("");
+										zx.setLength("");
+									}
+									listzxxx.add(zx);
+								}				
+							zxxiaoxi.notifyDataSetChanged();list.setSelection(list.getCount()-1);
 							}else{
 			                       Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
 										}
@@ -124,6 +140,12 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 						}
 					}
 				});
+	}
+	private String changetime(String time){
+		DateFormat formatter = new SimpleDateFormat("MM-dd hh:mm:ss");
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(Long.parseLong(time));
+        return  formatter.format(calendar.getTime());  
 	}
 
 	

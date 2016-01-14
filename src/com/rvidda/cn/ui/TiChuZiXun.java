@@ -1,5 +1,7 @@
 package com.rvidda.cn.ui;
 
+import gov.nist.core.GenericObject;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -18,19 +20,24 @@ import org.json.JSONObject;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.text.ClipboardManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,7 +56,11 @@ import android.widget.Toast;
 
 import com.easemob.EMError;
 import com.easemob.chat.EMConversation;
+import com.easemob.chat.EMMessage;
+import com.easemob.chat.ImageMessageBody;
+import com.easemob.util.PathUtil;
 import com.easemob.util.VoiceRecorder;
+import com.fanxin.app.DemoApplication;
 import com.fanxin.app.adapter.MessageAdapter;
 import com.fanxin.app.adapter.VoicePlayClickListener;
 import com.fanxin.app.utils.CommonUtils;
@@ -136,7 +147,9 @@ public class TiChuZiXun extends BaseActivity implements
 		}
 	};
 
-	
+	public static final int REQUEST_CODE_CAMERA = 18;
+	public static final int REQUEST_CODE_LOCAL = 19;
+
 	private String Title;
 	private TextView mTvde;
 	private RelativeLayout mRlLogin;
@@ -161,6 +174,9 @@ public class TiChuZiXun extends BaseActivity implements
 	private PreferenceUtils pp;
 	private TextView mTvdd;
 	private String TYPE;
+	private ImageView btn_picture;
+	private ImageView btn_take_picture;
+	private Button btn_set_mode_keyboard;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -272,12 +288,9 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 									zx.setTime("");
 									zx.setLength("");
 								}
-								 if (!zx.getMtype().equals("ImageMessage")) {
-									 listzxxx.add(zx);
-								}
-								
+								listzxxx.add(zx);
 							}
-							zxxiaoxi.notifyDataSetChanged();
+							zxxiaoxi.notifyDataSetChanged();list.setSelection(list.getCount()-1);
 							}else{
 			                       Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
 										}
@@ -311,6 +324,7 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 		buttonSetModeVoice = findViewById(R.id.btn_set_mode_voice);
 		buttonSend = findViewById(R.id.btn_send);
 		buttonSend.setOnClickListener(listener);
+		buttonSend.setVisibility(View.GONE);
 		buttonPressToSpeak = findViewById(R.id.btn_press_to_speak);
 		expressionViewpager = (ViewPager) findViewById(R.id.vPager);
 		emojiIconContainer = (LinearLayout) findViewById(R.id.ll_face_container);
@@ -319,8 +333,13 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 		iv_emoticons_checked = (ImageView) findViewById(R.id.iv_emoticons_checked);
 		loadmorePB = (ProgressBar) findViewById(R.id.pb_load_more);
 		btnMore = (Button) findViewById(R.id.btn_more);
-		iv_emoticons_checked.setVisibility(View.INVISIBLE);
+		btn_picture =(ImageView)this.findViewById(R.id.btn_picture);
+		btn_take_picture =(ImageView)this.findViewById(R.id.btn_take_picture);
+		btn_picture.setOnClickListener(listener);
+		btn_take_picture.setOnClickListener(listener);
+		btnMore.setOnClickListener(listener);
 		more = findViewById(R.id.more);
+		iv_emoticons_checked.setVisibility(View.INVISIBLE);
 		edittext_layout.setBackgroundResource(R.drawable.input_bar_bg_normal);
 
 		// 动画资源文件,用于录制语音时
@@ -378,7 +397,7 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 					btnMore.setVisibility(View.GONE);
 					buttonSend.setVisibility(View.VISIBLE);
 				} else {
-					btnMore.setVisibility(View.GONE);
+					btnMore.setVisibility(View.VISIBLE);
 					buttonSend.setVisibility(View.GONE);
 				}
 			}
@@ -409,9 +428,10 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 		view.setVisibility(View.GONE);
 		buttonSetModeKeyboard.setVisibility(View.VISIBLE);
 		buttonSend.setVisibility(View.GONE);
-		btnMore.setVisibility(View.GONE);
+		btnMore.setVisibility(View.VISIBLE);
 		buttonPressToSpeak.setVisibility(View.VISIBLE);
 		btnContainer.setVisibility(View.VISIBLE);
+
 	}
 	
 	/**
@@ -500,7 +520,7 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 									voiceRecorder
 											.getVoiceFileName(toChatUsername),
 									Integer.toString(length), false);
-*/					sendFileAndLvyin(voiceRecorder.getVoiceFilePath());
+*/					sendFileAndLvyin(voiceRecorder.getVoiceFilePath(),"VoiceMessage");
 							} else if (length == EMError.INVALID_FILE) {
 							Toast.makeText(getApplicationContext(), "无录音权限",
 									Toast.LENGTH_SHORT).show();
@@ -525,7 +545,7 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 	}
 	
 	//发送文件到七牛
-	public void sendFileAndLvyin(final String filenames){		
+	public void sendFileAndLvyin(final String filenames,final String type){		
 		Map<String, Object> params = new HashMap<String, Object>();
 		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.QiNiu, "get", params,
 				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
@@ -536,7 +556,7 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 							JSONObject jsonObj = new JSONObject(json);
 							String uptoken = jsonObj.getString("uptoken");
 						    String key = jsonObj.getString("key");
-                            sendFiletoQiNiu(filenames,uptoken, key);
+                            sendFiletoQiNiu(filenames,uptoken, key,type);
 							}else{
 			                       Toast.makeText(getApplicationContext(), R.string.log6, 0).show();
 										}
@@ -546,7 +566,7 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 					}
 				});
 	}
-	private void sendFiletoQiNiu(final String file,String uptoken,String key) {
+	private void sendFiletoQiNiu(final String file,String uptoken,String key,final String type) {
 		UploadManager uploadManager = new UploadManager();
 		try{
 		uploadManager.put(file, key, uptoken,
@@ -559,17 +579,17 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 					String keyvalue = res.getString("key");
 					
 					ZXXiaoXi zxxx =new ZXXiaoXi();
-					zxxx.setMtype("VoiceMessage");
+					zxxx.setMtype(type);
 					zxxx.setMfilelocal(file);
 					zxxx.setMtext("");
 					zxxx.setLength(LENGTH);
 					zxxx.setTime(changetime(System.currentTimeMillis()+""));
 					listzxxx.add(zxxx);
-                    zxxiaoxi.notifyDataSetChanged();
+                    zxxiaoxi.notifyDataSetChanged();list.setSelection(list.getCount()-1);
                     if(!TextUtils.isEmpty(ID)){
-					initTJxx(key, "VoiceMessage");
+					initTJxx(key, type);
                     }else{
-                    initTiJiao(key, "VoiceMessage");
+                    initTiJiao(key, type);
                     }
 
 				} catch (JSONException e) {
@@ -686,7 +706,7 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 		mBtn_back =(ImageView)this.findViewById(R.id.mBtn_back);
 		mBtn_back.setOnClickListener(listener);
 		list =(ListView)this.findViewById(R.id.list);
-		zxxiaoxi =new ZXAdapter1(getApplicationContext(), listzxxx,media);
+		zxxiaoxi =new ZXAdapter1(TiChuZiXun.this, listzxxx,media);
 		list.setAdapter(zxxiaoxi);
 		mLLpp1 = (LinearLayout) this.findViewById(R.id.mLLpp1);
 		mRlw1 = (RelativeLayout) this.findViewById(R.id.mRlw1);
@@ -710,19 +730,52 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.btn_picture:
+				selectPicFromLocal(); // 点击图片图标
+				break;
+			case R.id.btn_take_picture:
+				selectPicFromCamera();// 点击照相图标
+				break;
+			case R.id.btn_more:
+				if (more.getVisibility() == View.GONE) {
+					System.out.println("more gone");
+					hideKeyboard();
+					more.setVisibility(View.VISIBLE);
+					btnContainer.setVisibility(View.VISIBLE);
+					emojiIconContainer.setVisibility(View.GONE);
+				} else {
+					if (emojiIconContainer.getVisibility() == View.VISIBLE) {
+						emojiIconContainer.setVisibility(View.GONE);
+						btnContainer.setVisibility(View.VISIBLE);
+						iv_emoticons_normal.setVisibility(View.VISIBLE);
+						iv_emoticons_checked.setVisibility(View.GONE);
+					} else {
+						more.setVisibility(View.GONE);
+					}
+
+				}
+
+				break;
 			case R.id.mBtn_back:
 				shouruanjianpan();
 				AppManager.getAppManager().finishActivity();
 				break;
 			case R.id.btn_set_mode_keyboard:
-			edittext_layout.setVisibility(View.VISIBLE);
-			buttonSetModeVoice.setVisibility(View.VISIBLE);
-			// mEditTextContent.setVisibility(View.VISIBLE);
-			mEditTextContent.requestFocus();
-			// buttonSend.setVisibility(View.VISIBLE);
-			buttonPressToSpeak.setVisibility(View.GONE);
-				buttonSend.setVisibility(View.VISIBLE);
+				edittext_layout.setVisibility(View.VISIBLE);
+				more.setVisibility(View.GONE);
 				buttonSetModeKeyboard.setVisibility(View.GONE);
+				buttonSetModeVoice.setVisibility(View.VISIBLE);
+				// mEditTextContent.setVisibility(View.VISIBLE);
+				mEditTextContent.requestFocus();
+				// buttonSend.setVisibility(View.VISIBLE);
+				buttonPressToSpeak.setVisibility(View.GONE);
+				if (TextUtils.isEmpty(mEditTextContent.getText())) {
+					btnMore.setVisibility(View.VISIBLE);
+					buttonSend.setVisibility(View.GONE);
+				} else {
+					btnMore.setVisibility(View.GONE);
+					buttonSend.setVisibility(View.VISIBLE);
+				}
           break;
 			case R.id.btn_send:
 				shouruanjianpan();
@@ -733,7 +786,8 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 					zxxx.setTime(changetime(System.currentTimeMillis()+""));
 					zxxx.setMtext(mEditTextContent.getEditableText().toString());
 					listzxxx.add(zxxx);
-                    zxxiaoxi.notifyDataSetChanged();
+					
+                    zxxiaoxi.notifyDataSetChanged();list.setSelection(list.getCount()-1);
                     if(!TextUtils.isEmpty(ID)){
 					initTJxx(mEditTextContent.getEditableText().toString(), "TextMessage");
                     }else{
@@ -776,6 +830,109 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 		imm.hideSoftInputFromWindow(mEditTextContent.getWindowToken(), 0);
 
 	}
+	
+  @Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	  super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == RESULT_OK) {
+			 if (requestCode == REQUEST_CODE_CAMERA) { // 发送照片
+					if (cameraFile != null && cameraFile.exists())
+						Log.e("cameraFile.getAbsolutePath()------>>>>",
+								cameraFile.getAbsolutePath());
+					sendPicture(cameraFile.getAbsolutePath(), false);
+				} else if (requestCode == REQUEST_CODE_LOCAL) { // 发送本地图片
+					if (data != null) {
+						Uri selectedImage = data.getData();
+						if (selectedImage != null) {
+							sendPicByUri(selectedImage);
+						}
+					}
+				} 
+		}
+	  }
+	/**
+	 * 发送图片
+	 * 
+	 * @param filePath
+	 */
+	private void sendPicture(final String filePath, boolean is_share) {
+	    sendFileAndLvyin(filePath, "ImageMessage");
+	}
+
+	/**
+	 * 根据图库图片uri发送图片
+	 * 
+	 * @param selectedImage
+	 */
+	private void sendPicByUri(Uri selectedImage) {
+		// String[] filePathColumn = { MediaStore.Images.Media.DATA };
+		Cursor cursor = getContentResolver().query(selectedImage, null, null,
+				null, null);
+		if (cursor != null) {
+			cursor.moveToFirst();
+			int columnIndex = cursor.getColumnIndex("_data");
+			String picturePath = cursor.getString(columnIndex);
+			cursor.close();
+			cursor = null;
+
+			if (picturePath == null || picturePath.equals("null")) {
+				Toast toast = Toast.makeText(this, "找不到图片", Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+				return;
+			}
+			sendPicture(picturePath, false);
+		} else {
+			File file = new File(selectedImage.getPath());
+			if (!file.exists()) {
+				Toast toast = Toast.makeText(this, "找不到图片", Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+				return;
+
+			}
+			sendPicture(file.getAbsolutePath(), false);
+		}
+
+	}
+
+
+	/**
+	 * 照相获取图片
+	 */
+	public void selectPicFromCamera() {
+		if (!CommonUtils.isExitsSdcard()) {
+			Toast.makeText(getApplicationContext(), "SD卡不存在，不能拍照",
+					Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		cameraFile = new File(PathUtil.getInstance().getImagePath(),
+				DemoApplication.getInstance().getUserName()
+						+ System.currentTimeMillis() + ".jpg");
+		cameraFile.getParentFile().mkdirs();
+		startActivityForResult(
+				new Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(
+						MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile)),
+				REQUEST_CODE_CAMERA);
+	}
+	/**
+	 * 从图库获取图片
+	 */
+	public void selectPicFromLocal() {
+		Intent intent;
+		if (Build.VERSION.SDK_INT < 19) {
+			intent = new Intent(Intent.ACTION_GET_CONTENT);
+			intent.setType("image/*");
+
+		} else {
+			intent = new Intent(
+					Intent.ACTION_PICK,
+					android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		}
+		startActivityForResult(intent, REQUEST_CODE_LOCAL);
+	}
+
 
 	//修改咨询见容
 	private void initChangeZX(String title,String content){

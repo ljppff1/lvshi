@@ -37,7 +37,7 @@ public class LvShiLeiXing extends BaseActivity {
 	private ArrayList<Items> list;
 	private RelativeLayout mRLL2;
    private List<Integer> listint =new ArrayList<Integer>();
-private LoadingDialog dialog;
+   private LoadingDialog dialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -91,6 +91,7 @@ private LoadingDialog dialog;
 								Items items = new Items();
 								items.setItems(jj.getString("name"));
 								items.setId(jj.getInt("id"));
+								if(listint.size()>0){
 								for(int k=0;k<listint.size();k++){
 									if(String.valueOf(jj.getInt("id")).equals(listint.get(k)+"")){
 								items.setFlag(true);
@@ -98,6 +99,9 @@ private LoadingDialog dialog;
 									}else{
 										items.setFlag(false);
 									}
+								}
+								}else{
+									items.setFlag(false);
 								}
 								list.add(items);
 						    }
@@ -141,28 +145,15 @@ private LoadingDialog dialog;
 		public View getView(final int position, View convertView,
 				ViewGroup parent) {
 
-			Holder holder = null;
-			if (convertView == null) {
 				convertView = LayoutInflater.from(LvShiLeiXing.this).inflate(
 						R.layout.item_gridview_1, null);
-				holder = new Holder();
-				holder.mRlg1 = (RelativeLayout) convertView
+				RelativeLayout mRlg1 = (RelativeLayout) convertView
 						.findViewById(R.id.mRlg1);
-				holder.mTvg1 = (TextView) convertView.findViewById(R.id.mTvg1);
-				holder.mIvg1 = (ImageView) convertView.findViewById(R.id.mIvg1);
-				convertView.setTag(holder);
+				final TextView mTvg1 = (TextView) convertView.findViewById(R.id.mTvg1);
+				final ImageView mIvg1 = (ImageView) convertView.findViewById(R.id.mIvg1);
 
-			} else {
-				holder = (Holder) convertView.getTag();
-			}
-			final TextView mTvg1 = (TextView) convertView
-					.findViewById(R.id.mTvg1);
-			final ImageView mIvg1 = (ImageView) convertView
-					.findViewById(R.id.mIvg1);
 
-			holder.mRlg1 = (RelativeLayout) convertView
-					.findViewById(R.id.mRlg1);
-			holder.mRlg1.setOnClickListener(new OnClickListener() {
+			mRlg1.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View arg0) {
@@ -185,14 +176,14 @@ private LoadingDialog dialog;
 			if (list.get(position).getFlag()) {
 				mTvg1.setTextColor(LvShiLeiXing.this.getResources().getColor(
 						R.color.white));
-				holder.mIvg1.setImageResource(R.drawable.xuanzhong);
+				mIvg1.setImageResource(R.drawable.xuanzhong);
 			} else {
 				mTvg1.setTextColor(LvShiLeiXing.this.getResources().getColor(
 						R.color.black));
-				holder.mIvg1.setImageResource(R.drawable.biaoqiandise);
+				mIvg1.setImageResource(R.drawable.biaoqiandise);
 
 			}
-			holder.mTvg1.setText(list.get(position).getItems());
+			mTvg1.setText(list.get(position).getItems());
 			return convertView;
 
 		}

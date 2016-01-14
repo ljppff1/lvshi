@@ -69,7 +69,7 @@ public class ShowBigImage extends BaseActivity {
 		String secret = getIntent().getExtras().getString("secret");
 		System.err.println("show big image uri:" + uri + " remotepath:"
 				+ remotepath);
-
+       Log.e("ddd","show big image uri:" + uri + " remotepath:"+ remotepath);
 		// 本地存在，直接显示本地的图片
 		if (uri != null && new File(uri.getPath()).exists()) {
 			System.err.println("showbigimage file exists. directly show it");

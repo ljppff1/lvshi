@@ -226,7 +226,7 @@ public class Login extends BaseActivity {
 			switch (v.getId()) {
 			case R.id.mIvchange:
 				java.util.Random random=new java.util.Random();// 定义随机类
-				int result=random.nextInt(7);
+				int result=random.nextInt(10);
 				List<String> ddd =new ArrayList<String>();
 				ddd.add("18525461598");
 				ddd.add("18525461598");
@@ -235,7 +235,9 @@ public class Login extends BaseActivity {
 				ddd.add("18526461596");
 				ddd.add("18612965346");
 				ddd.add("18612965346");
-				ddd.add("18612965346");
+				ddd.add("18671215443");
+				ddd.add("18671215443");
+				ddd.add("18671215443");
 				
 				mEtTell.setText(ddd.get(result));
 				break;

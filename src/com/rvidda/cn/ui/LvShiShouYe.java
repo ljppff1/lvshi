@@ -89,7 +89,7 @@ public class LvShiShouYe extends  FragmentActivity {
 
 		initView();
 		//initgetziliao();
-		getHuanXin();
+	//	getHuanXin();
 	}
 
 	private void getHuanXin(){

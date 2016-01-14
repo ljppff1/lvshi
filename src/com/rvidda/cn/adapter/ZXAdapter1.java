@@ -1,10 +1,13 @@
 package com.rvidda.cn.adapter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore.Video.Media;
@@ -21,6 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.easemob.chat.ImageMessageBody;
+import com.fanxin.app.activity.ShowBigImage;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rvidda.cn.R;
@@ -71,6 +76,7 @@ public class ZXAdapter1 extends BaseAdapter {
 			}
 		};
 	};
+	private ImageView iv_sendPicture;
 	class ViewHolder {
 		TextView mtv1, mtv2, mtv3;
 		RelativeLayout mRlshow1, mRlshow2, mRlshow3, mRlshow4, mRlshow5;
@@ -142,6 +148,41 @@ public class ZXAdapter1 extends BaseAdapter {
 		    }
 			}
 		});
+		}else if(data.get(position).getMtype().equals("ImageMessage")){
+			convertView = LayoutInflater.from(context).inflate(
+					R.layout.row_received_picture1, null);
+			iv_sendPicture =(ImageView)convertView.findViewById(R.id.iv_sendPicture);
+			TextView timestamp = (TextView)convertView.findViewById(R.id.timestamp);
+			timestamp.setText(data.get(position).getTime());
+            if(TextUtils.isEmpty(data.get(position).getTime())){
+            	timestamp.setVisibility(View.GONE);
+            }
+           LinearLayout ll_loading = (LinearLayout)convertView.findViewById(R.id.ll_loading);
+            ll_loading.setVisibility(View.GONE);
+    		ImageView iv_userhead = (ImageView)convertView.findViewById(R.id.iv_userhead);
+    		ImageLoader.getInstance().displayImage(myUserAvatar, iv_userhead, options);	
+    		if(TextUtils.isEmpty(data.get(position).getMfilelocal())){
+    		ImageLoader.getInstance().displayImage(data.get(position).getMtext(), iv_sendPicture, options);		
+    		}else{
+        		ImageLoader.getInstance().displayImage("file://"+data.get(position).getMfilelocal(), iv_sendPicture, options);		
+    		}
+    		iv_sendPicture.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(context, ShowBigImage.class);
+					if (!TextUtils.isEmpty(data.get(position).getMfilelocal())) {
+						File file = new File(data.get(position).getMfilelocal());
+						Uri uri = Uri.fromFile(file);
+						intent.putExtra("uri", uri);
+					} else {
+						intent.putExtra("secret", "");
+						intent.putExtra("remotepath", data.get(position).getMtext());
+					}	
+					context.startActivity(intent);
+				}
+			});
+
 		}else{
 			convertView = LayoutInflater.from(context).inflate(
 					R.layout.row_received_message, null);
