@@ -41,17 +41,17 @@
     <RelativeLayout 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/queding"
         android:id="@+id/mRlsure"
                 android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         >
-                        <TextView
-                    style="@style/t_r_30"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                  android:layout_centerInParent="true"
-                   android:text="@string/tczx6" />
+           <ImageView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fasong1"
+                android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        />
     </RelativeLayout>
     </RelativeLayout>
     

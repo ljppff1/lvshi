@@ -2,7 +2,12 @@ package com.rvidda.cn.adapter;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +17,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore.Video.Media;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,16 +27,24 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.easemob.chat.ImageMessageBody;
 import com.fanxin.app.activity.ShowBigImage;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UpProgressHandler;
+import com.qiniu.android.storage.UploadManager;
+import com.qiniu.android.storage.UploadOptions;
 import com.rvidda.cn.R;
 import com.rvidda.cn.domain.LSSYList;
 import com.rvidda.cn.domain.ZXXiaoXi;
+import com.rvidda.cn.http.ContantsUtil;
 import com.rvidda.cn.utils.Content;
 import com.rvidda.cn.utils.DownLoad;
 import com.rvidda.cn.utils.PreferenceUtils;
@@ -77,6 +91,8 @@ public class ZXAdapter1 extends BaseAdapter {
 		};
 	};
 	private ImageView iv_sendPicture;
+	private ProgressBar progressBar;
+	private TextView percentage;
 	class ViewHolder {
 		TextView mtv1, mtv2, mtv3;
 		RelativeLayout mRlshow1, mRlshow2, mRlshow3, mRlshow4, mRlshow5;
@@ -161,10 +177,17 @@ public class ZXAdapter1 extends BaseAdapter {
             ll_loading.setVisibility(View.GONE);
     		ImageView iv_userhead = (ImageView)convertView.findViewById(R.id.iv_userhead);
     		ImageLoader.getInstance().displayImage(myUserAvatar, iv_userhead, options);	
+    		progressBar =(ProgressBar)convertView.findViewById(R.id.progressBar);
+    		percentage =(TextView)convertView.findViewById(R.id.percentage);
     		if(TextUtils.isEmpty(data.get(position).getMfilelocal())){
     		ImageLoader.getInstance().displayImage(data.get(position).getMtext(), iv_sendPicture, options);		
     		}else{
         		ImageLoader.getInstance().displayImage("file://"+data.get(position).getMfilelocal(), iv_sendPicture, options);		
+        		String ID = data.get(position).getLength();
+        		data.get(position).setLength("");
+        		if(!TextUtils.isEmpty(ID)){
+        		sendFileAndLvyin(progressBar,percentage,data.get(position).getMfilelocal(), data.get(position).getMtype(), ID);
+        		}
     		}
     		iv_sendPicture.setOnClickListener(new OnClickListener() {
 				
@@ -182,6 +205,8 @@ public class ZXAdapter1 extends BaseAdapter {
 					context.startActivity(intent);
 				}
 			});
+    		
+    		
 
 		}else{
 			convertView = LayoutInflater.from(context).inflate(
@@ -204,6 +229,99 @@ public class ZXAdapter1 extends BaseAdapter {
 		
 		
 		return convertView;
+
+	}
+	
+	//发送文件到七牛
+	public void sendFileAndLvyin(final ProgressBar progressBar,final TextView percentage,final String filenames,final String type,final String ID){		
+		Map<String, Object> params = new HashMap<String, Object>();
+		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.QiNiu, "get", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+							JSONObject jsonObj = new JSONObject(json);
+							String uptoken = jsonObj.getString("uptoken");
+						    String key = jsonObj.getString("key");
+                            sendFiletoQiNiu(progressBar,percentage,filenames,uptoken, key,type,ID);
+							}else{
+			                       Toast.makeText(context, R.string.log6, 0).show();
+										}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+	}
+   private int dd =0;
+	private void sendFiletoQiNiu(final ProgressBar progressBar,final TextView percentage,final String file,String uptoken,String key,final String type,final String ID) {
+		UploadManager uploadManager = new UploadManager();
+		try{
+		uploadManager.put(file, key, uptoken,
+		new UpCompletionHandler() {
+		    @Override
+			public void complete(String key, ResponseInfo info, JSONObject res) {
+				// TODO Auto-generated method stub
+		        Log.e("qiniu---", key + ",\r\n " + info + ",\r\n " + res);
+		        try {
+					String keyvalue = res.getString("key");
+					initTJxx(key, type,ID);
+                     progressBar.setVisibility(View.GONE);
+                     percentage.setVisibility(View.GONE);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+//   /storage/2A94-E4F0/DCIM/Camera/1/IMG_20351008_174652.jpg
+//   /storage/2A94-E4F0/Android/data/com.rvidda.cn/ljppff1#rvidda/ljppff/voice/null20160104T164855.amr
+			}
+		}, new UploadOptions(null, "audio/amr", true,  new UpProgressHandler(){
+            public void progress(String key, double percent){
+               progressBar.setVisibility(View.VISIBLE);
+               percentage.setVisibility(View.VISIBLE);
+              double result=percent;
+              int temp  = (int)(result  * 1000);
+              if((temp-dd)>10){
+            	  dd=temp;
+               result  = (double)temp/ 10;
+               percentage.setText(result+"%");
+              }
+            
+            }
+        },null));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	private void initTJxx(String key,String type,String ID)
+	{
+		Map<String, Object> params = new HashMap<String, Object>();
+	//VoiceMessage   TextMessage	
+		params.put("message[body]",key);
+		params.put("message[type]",type);
+			params.put("message[echo]", System.currentTimeMillis());
+		
+		
+		com.rvidda.cn.http.HttpServiceUtil.request(ContantsUtil.HOST+"/subjects/"+ID+"/messages", "post", params,
+				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
+					@Override
+					public void callback(String json) {
+						try {
+							if(!json.equals("0")){
+							JSONObject jsonObj = new JSONObject(json);
+							
+							}else{
+                         Toast.makeText(context, R.string.log9, 0).show();
+
+							}
+							
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
 
 	}
 

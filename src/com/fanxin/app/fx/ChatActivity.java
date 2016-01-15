@@ -787,12 +787,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 			// 设置消息body
 			message.addBody(txtBody);
 			// 设置要发给谁,用户username或者群聊groupid
-		
-/*			message.setAttribute("toUserNick", toUserNick);
-			 message.setAttribute("toUserAvatar", toUserAvatar);
-			message.setAttribute("useravatar", myUserAvatar);
-			message.setAttribute("usernick", myUserNick);
-*/			message.setAttribute(Content.SUBJECT, SUBJECT);
+		message.setAttribute(Content.SUBJECT, SUBJECT);
             message.setReceipt(toChatUsername);
 			// 把messgage加到conversation中
 			conversation.addMessage(message);
@@ -822,17 +817,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		try {
 			final EMMessage message = EMMessage
 					.createSendMessage(EMMessage.Type.VOICE);
-
-/*			// 如果是群聊，设置chattype,默认是单聊
-			if (chatType == CHATTYPE_GROUP)
-				message.setChatType(ChatType.GroupChat);
-*/			
-			
-/*			message.setAttribute("toUserNick", toUserNick);
-			// message.setAttribute("toUserAvatar", toUserAvatar);
-			// message.setAttribute("useravatar", myUserAvatar);
-			message.setAttribute("usernick", myUserNick);
-*/			
 
 			int len = Integer.parseInt(length);
 			VoiceMessageBody body = new VoiceMessageBody(new File(filePath),
@@ -1170,170 +1154,24 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 			String msgid = intent.getStringExtra("msgid");
 			// 收到这个广播的时候，message已经在db和内存里了，可以通过id获取mesage对象
 			EMMessage message = EMChatManager.getInstance().getMessage(msgid);
-			// 如果是群聊消息，获取到group id
-			// if (message.getChatType() == ChatType.GroupChat) {
-			// username = message.getTo();
-			// String is_admin = message.getFrom();
-			// if (is_admin.equals("admin")) {
-			// try {
-			// String type = message.getStringAttribute("type");
-			// String groupid = message.getStringAttribute("groupid");
-			// if (groupid != null) {
-			// EMGroup emgroup = EMGroupManager.getInstance()
-			// .getGroup(groupid);
-			// if (emgroup == null) {
-			// emgroup = EMGroupManager.getInstance()
-			// .getGroupFromServer(groupid);
-			// if (emgroup != null) {
-			// Log.e("group is ok", "group is ok");
-			// } else {
-			// Log.e("group is not ok", "group is not ok");
-			// }
-			// } else {
-			// Log.e("local group is ok", "local group is ok");
-			// }
-			// }
-			// if (type.equals("creategroup")) {
-			// GluGroup group = new GluGroup();
-			//
-			// String groupname = message
-			// .getStringAttribute("groupname");
-			// // Log.e("groupid--->>>>.", groupid);
-			// // Log.e("groupname--->>>>.", groupname);
-			// group.setGroupId(groupid);
-			// group.setGroupName(groupname);
-			// List<User> memberList = new ArrayList<User>();
-			// String members = message
-			// .getStringAttribute("members");
-			//
-			// // Log.e("members--->>>>.", members);
-			// com.alibaba.fastjson.JSONArray jsonArray =
-			// com.alibaba.fastjson.JSONArray
-			// .parseArray(members);
-			// for (int i = 0; i < jsonArray.size(); i++) {
-			// com.alibaba.fastjson.JSONObject jsonObject = jsonArray
-			// .getJSONObject(i);
-			// String glufineid = jsonObject
-			// .getString("glufineid");
-			// String nickname = jsonObject
-			// .getString("nickname");
-			// String photo_url = jsonObject
-			// .getString("photo_url");
-			// User user = new User();
-			// user.setUsername(glufineid);
-			// user.setNick(nickname);
-			// user.setAvatar(photo_url);
-			// memberList.add(user);
-			// // Log.e("glufineid--->>>>.", glufineid);
-			// // Log.e("nickname--->>>>.", nickname);
-			// // Log.e("photo_url--->>>>.", photo_url);
-			// }
-			// group.setMembers(memberList);
-			// DemoApplication.getInstance().getGroupsList()
-			// .put(groupid, group);
-			// GroupDao dao = new GroupDao(ChatActivity.this);
-			// dao.saveGroup(group);
-			//
-			// } else if (type.equals("add")) {
-			//
-			// String groupname = message
-			// .getStringAttribute("groupname");
-			// String members = message
-			// .getStringAttribute("members");
-			// GluGroup group = DemoApplication.getInstance()
-			// .getGroupsList().get(groupid);
-			// if (group != null) {
-			// group.setGroupId(groupid);
-			// group.setGroupName(groupname);
-			// List<User> memberList = new ArrayList<User>();
-			// com.alibaba.fastjson.JSONArray jsonArray =
-			// com.alibaba.fastjson.JSONArray
-			// .parseArray(members);
-			// for (int i = 0; i < jsonArray.size(); i++) {
-			// com.alibaba.fastjson.JSONObject jsonObject = jsonArray
-			// .getJSONObject(i);
-			// String glufineid = jsonObject
-			// .getString("glufineid");
-			// String nickname = jsonObject
-			// .getString("nickname");
-			// String photo_url = jsonObject
-			// .getString("photo_url");
-			// User user = new User();
-			// user.setUsername(glufineid);
-			// user.setNick(nickname);
-			// user.setAvatar(photo_url);
-			// memberList.add(user);
-			// }
-			// group.getMembers().addAll(memberList);
-			// GroupDao dao = new GroupDao(ChatActivity.this);
-			// dao.saveGroup(group);
-			// }else {
-			// getNewGroup(groupid,message);
-			// abortBroadcast();
-			// return;
-			// }
-			//
-			// } else if (type.equals("del")) {
-			//
-			// String groupname = message
-			// .getStringAttribute("groupname");
-			// String glufineid = message
-			// .getStringAttribute("glufineid");
-			// GluGroup group = DemoApplication.getInstance()
-			// .getGroupsList().get(groupid);
-			// if (group != null) {
-			// group.setGroupName(groupname);
-			// for (User user : group.getMembers()) {
-			// if (user.getUsername().equals(glufineid)) {
-			// group.getMembers().remove(user);
-			//
-			// GroupDao dao = new GroupDao(
-			// ChatActivity.this);
-			// dao.saveGroup(group);
-			// break;
-			// }
-			//
-			// }
-			//
-			// }else {
-			// getNewGroup(groupid,message);
-			// abortBroadcast();
-			// return;
-			// }
-			//
-			//
-			// } else if (type.equals("upchatgroups")) {
-			//
-			// String groupname = message
-			// .getStringAttribute("groupname");
-			// GluGroup group = DemoApplication.getInstance()
-			// .getGroupsList().get(groupid);
-			// if (group != null) {
-			//
-			// group.setGroupName(groupname);
-			// GroupDao dao = new GroupDao(ChatActivity.this);
-			// dao.saveGroup(group);
-			// }else {
-			// getNewGroup(groupid,message);
-			// abortBroadcast();
-			// return;
-			// }
-			//
-			//
-			// }
-			//
-			// } catch (EaseMobException e) {
-			//
-			// e.printStackTrace();
-			//
-			// }
-			// }
-			// }
-			if (!username.equals(toChatUsername)) {
+			//if (!username.equals(toChatUsername)) {
 				// 消息不是发给当前会话，return
-				notifyNewMessage(message);
-				return;
-			}
+			//	notifyNewMessage(message);
+				
+				try {
+					if(message.getStringAttribute(Content.SUBJECT).equals(SUBJECT)){
+					ChatActivity.this.conversation.addMessage(message);
+					}else{
+						return;
+					}
+				} catch (EaseMobException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				
+				//return;
+		//	}
 
 			// conversation =
 			// EMChatManager.getInstance().getConversation(toChatUsername);
@@ -1354,14 +1192,23 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
 			String msgid = intent.getStringExtra("msgid");
 			String from = intent.getStringExtra("from");
-			EMConversation conversation = EMChatManager.getInstance()
+			EMConversation conversation1 = EMChatManager.getInstance()
 					.getConversation(from);
-			if (conversation != null) {
+			if (conversation1 != null) {
 				// 把message设为已读
-				EMMessage msg = conversation.getMessage(msgid);
+				EMMessage msg = conversation1.getMessage(msgid);
 				if (msg != null) {
 					msg.isAcked = true;
 				}
+				try {
+					if(msg.getStringAttribute(Content.SUBJECT).equals(SUBJECT)){
+					ChatActivity.this.conversation.addMessage(msg);
+					}
+				} catch (EaseMobException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
 			adapter.notifyDataSetChanged();
 
@@ -1378,16 +1225,17 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
 			String msgid = intent.getStringExtra("msgid");
 			String from = intent.getStringExtra("from");
-			EMConversation conversation = EMChatManager.getInstance()
+			EMConversation conversation1 = EMChatManager.getInstance()
 					.getConversation(from);
-			if (conversation != null) {
+			if (conversation1 != null) {
 				// 把message设为已读
-				EMMessage msg = conversation.getMessage(msgid);
+				EMMessage msg = conversation1.getMessage(msgid);
 				if (msg != null) {
 					msg.isDelivered = true;
 				}
-			}
+				ChatActivity.this.conversation.addMessage(msg);
 
+			}
 			adapter.notifyDataSetChanged();
 		}
 	};

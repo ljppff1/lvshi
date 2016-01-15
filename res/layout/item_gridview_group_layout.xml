@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:background="@drawable/cuxian"
+        android:background="@drawable/cuxian4"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
                                         <TextView

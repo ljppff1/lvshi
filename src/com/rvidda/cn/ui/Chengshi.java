@@ -106,19 +106,21 @@ public class Chengshi extends BaseActivity {
 	                        org.json.JSONArray jcc =((JSONObject)jp.get(i)).getJSONArray("cities");
 	                        for(int j=0;j<jcc.length();j++)	{
 	                        	City cc =new City();
-	                        	cc.setId(((JSONObject)jcc.get(i)).getInt("id")+"");
-	                        	cc.setName(((JSONObject)jcc.get(i)).getString("name"));
+	                        	cc.setId(((JSONObject)jcc.get(j)).getInt("id")+"");
+	                        	cc.setName(((JSONObject)jcc.get(j)).getString("name"));
 	                        	cccc.add(cc);
+	                        	
 	                        }
 	                        pp.setList_city(cccc);
 	                        list_province.add(pp);
+	                        }
 	                        adapter.notifyDataSetChanged();
 	                        adapter1.notifyDataSetChanged();
 	                        if(dialog.isShowing()){
 	                        	dialog.cancel();
 	                        }
 	                        mLLshow.setVisibility(View.VISIBLE);
-	                        }
+
 							}else{
                        Toast.makeText(getApplicationContext(), R.string.log9, 0).show();
                        if(dialog.isShowing()){
@@ -297,9 +299,10 @@ public class Chengshi extends BaseActivity {
 		 * 获取一级标签下二级标签的总数
 		 */
 		@Override
-		public int getChildrenCount(int groupPosition) {
+		public int getChildrenCount(int groupPosition1) {
 			// 这里返回1是为了让ExpandableListView只显示一个ChildView，否则在展开
 			// ExpandableListView时会显示和ChildCount数量相同的GridView
+			groupPosition =groupPosition1;
 			return 1;
 		}
 
@@ -308,7 +311,7 @@ public class Chengshi extends BaseActivity {
 		 */
 		@Override
 		public Object getGroup(int groupPosition) {
-			return list_province.get(1).getName();
+			return list_province.get(groupPosition).getName();
 		}
 
 		/**
@@ -316,7 +319,7 @@ public class Chengshi extends BaseActivity {
 		 */
 		@Override
 		public Object getChild(int groupPosition, int childPosition) {
-			return child_text_array[groupPosition][childPosition];
+			return list_province.get(groupPosition).getList_city().get(childPosition);
 		}
 
 		/**
@@ -375,8 +378,7 @@ public class Chengshi extends BaseActivity {
 					R.layout.item_grid_child_layout, null);
 			gridview = (com.rvidda.cn.view.MyGridView) convertView
 					.findViewById(R.id.gridview);
-			groupPosition =groupPosition;
-			// int size = child_text_array[groupPosition].length;
+						// int size = child_text_array[groupPosition].length;
 			/*
 			 * child_array = new ArrayList<String>(); for (int i = 0; i < size;
 			 * i++) { child_array.add(child_text_array[groupPosition][i]); }

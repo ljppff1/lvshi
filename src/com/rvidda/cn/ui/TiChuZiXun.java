@@ -1,14 +1,10 @@
 package com.rvidda.cn.ui;
 
-import gov.nist.core.GenericObject;
-
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +38,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -56,8 +53,6 @@ import android.widget.Toast;
 
 import com.easemob.EMError;
 import com.easemob.chat.EMConversation;
-import com.easemob.chat.EMMessage;
-import com.easemob.chat.ImageMessageBody;
 import com.easemob.util.PathUtil;
 import com.easemob.util.VoiceRecorder;
 import com.fanxin.app.DemoApplication;
@@ -136,7 +131,7 @@ public class TiChuZiXun extends BaseActivity implements
 	// 设置按钮
 	private ImageView iv_setting;
 	private String LENGTH;
-
+    private String CHENGSHIID="";
 	private ImageView iv_setting_group;
 	@SuppressLint("HandlerLeak")
 	private Handler micImageHandler = new Handler() {
@@ -195,7 +190,8 @@ public class TiChuZiXun extends BaseActivity implements
 	protected void onResume() {
 		
 			mTvdd.setText(pp.getString(Content.City_c1, "城市"));
-
+			CHENGSHIID =pp.getString(Content.City_id1, "");
+			 initChangeZX(Title, sendBiaoQianString);
 		super.onResume();
 	}
 	private void getData() {
@@ -206,7 +202,7 @@ public class TiChuZiXun extends BaseActivity implements
 		SELECT =getIntent().getExtras().getString("SELECT");
 		TYPE =getIntent().getExtras().getString("TYPE");
 	    strarray = SELECT.split(",");
-	    
+	    Title ="";
         sendBiaoQianString =SELECT;
 		if(!TextUtils.isEmpty(ID)){
 			if(TextUtils.isEmpty(TYPE)){
@@ -601,7 +597,7 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 			}
 		}, new UploadOptions(null, "audio/amr", true,  new UpProgressHandler(){
             public void progress(String key, double percent){
-                Log.i("qiniu", key + ": " + percent);
+                Log.e("qiniu", key + ": " + percent);
             }
         },null));
 		}catch(Exception e){
@@ -708,6 +704,16 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 		list =(ListView)this.findViewById(R.id.list);
 		zxxiaoxi =new ZXAdapter1(TiChuZiXun.this, listzxxx,media);
 		list.setAdapter(zxxiaoxi);
+		list.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				hideKeyboard();
+				more.setVisibility(View.GONE);
+				btnContainer.setVisibility(View.GONE);
+				return false;
+			}
+		});
 		mLLpp1 = (LinearLayout) this.findViewById(R.id.mLLpp1);
 		mRlw1 = (RelativeLayout) this.findViewById(R.id.mRlw1);
 		mRlw2 = (RelativeLayout) this.findViewById(R.id.mRlw2);
@@ -856,7 +862,19 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	 * @param filePath
 	 */
 	private void sendPicture(final String filePath, boolean is_share) {
-	    sendFileAndLvyin(filePath, "ImageMessage");
+	  //  sendFileAndLvyin(filePath, "ImageMessage");
+		ZXXiaoXi zxxx =new ZXXiaoXi();
+		zxxx.setMtype("ImageMessage");
+		zxxx.setMfilelocal(filePath);
+		zxxx.setMtext("");
+		zxxx.setLength(ID);
+		zxxx.setTime(changetime(System.currentTimeMillis()+""));
+		listzxxx.add(zxxx);
+        zxxiaoxi.notifyDataSetChanged();list.setSelection(list.getCount()-1);
+
+	    
+	    
+	    
 	}
 
 	/**
@@ -946,6 +964,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
        }
        JSONObject j2 =new JSONObject();
        j2.put("title", title);
+	j2.put("area_id", CHENGSHIID);
        j2.put("label_ids", ja1);       
        JSONObject jf =new JSONObject();
        jf.put("subject", j2);
