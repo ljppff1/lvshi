@@ -145,6 +145,7 @@
                     >
                <TextView
                     style="@style/t_d_30_2"
+                    android:id="@+id/mTvs1"
                     android:layout_width="fill_parent"
                     android:layout_centerVertical="true"
                     android:layout_height="wrap_content"

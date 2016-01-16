@@ -204,7 +204,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 	private Handler micImageHandler = new Handler() {
 		@Override
 		public void handleMessage(android.os.Message msg) {
-			// 切换msg切换图片
+			// 切换msg切换图片 186 5346   185 1598
 			micImage.setImageDrawable(micImages[msg.what]);
 		}
 	};
@@ -472,39 +472,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		}
 		iv_setting = (ImageView) this.findViewById(R.id.iv_setting);
 
-		/*
-		 * iv_setting = (ImageView) this.findViewById(R.id.iv_setting);
-		 * iv_setting_group = (ImageView)
-		 * this.findViewById(R.id.iv_setting_group); if (chatType ==
-		 * CHATTYPE_SINGLE) { iv_setting.setVisibility(View.VISIBLE);
-		 * iv_setting_group.setVisibility(View.GONE);
-		 * iv_setting.setOnClickListener(new OnClickListener() {
-		 * 
-		 * @Override public void onClick(View v) { // TODO Auto-generated method
-		 * stub
-		 * 
-		 * startActivity(
-		 * 
-		 * new Intent(ChatActivity.this,
-		 * ChatSingleSettingActivity.class).putExtra("userId", toChatUsername));
-		 * 
-		 * }
-		 * 
-		 * }); } else { iv_setting.setVisibility(View.GONE);
-		 * iv_setting_group.setVisibility(View.VISIBLE);
-		 * iv_setting_group.setOnClickListener(new OnClickListener() {
-		 * 
-		 * @Override public void onClick(View v) { // TODO Auto-generated method
-		 * stub
-		 * 
-		 * startActivityForResult((new Intent(ChatActivity.this,
-		 * ChatRoomSettingActivity.class).putExtra("groupId", toChatUsername)),
-		 * REQUEST_CODE_GROUP_DETAIL);
-		 * 
-		 * }
-		 * 
-		 * }); }
-		 */
 	}
 
 	/**

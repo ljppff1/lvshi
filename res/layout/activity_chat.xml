@@ -25,6 +25,7 @@
             android:id="@+id/mBtn_setting"
            android:src="@drawable/gengduo1"
             android:layout_width="wrap_content"
+            android:visibility="gone"
            android:layout_alignParentRight="true"
            android:layout_centerVertical="true"
             android:layout_height="wrap_content"

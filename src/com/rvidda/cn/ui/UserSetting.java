@@ -66,6 +66,7 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 	private TextView mtv2;
 	private popWindow3 pop3;
 	private TextView mTvchangebody;
+	private ImageView V6;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +97,11 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 		.showImageOnFail(R.drawable.content_bg).cacheInMemory(true)
 		.cacheOnDisc(true).build();
 		mtv1 =(TextView)this.findViewById(R.id.mtv1);
-		String city = pp.getString(Content.City, "城市");
-		mtv1.setText(city);
+	    if(TextUtils.isEmpty(pp.getString(Content.City, "城市"))){
+	    	mtv1.setText("城市");
+	    }else{
+	    	mtv1.setText(pp.getString(Content.City, "城市"));
+	    }
 		mIvedit =(ImageView)this.findViewById(R.id.mIvedit);
 		mIvedit.setOnClickListener(listener);
 		mtv3 =(TextView)this.findViewById(R.id.mtv3);
@@ -115,6 +119,7 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 		IV3 =(ImageView)this.findViewById(R.id.IV3);
 		IV2 =(ImageView)this.findViewById(R.id.IV2);
 		IV1 =(ImageView)this.findViewById(R.id.IV1);
+		V6 =(ImageView)this.findViewById(R.id.V6);
 		mtv2 =(TextView)this.findViewById(R.id.mtv2);
 		if(!pp.getString(Content.IS_PUTONG_User, "1").equals("1")){
 			mRlLw4.setVisibility(View.VISIBLE);
@@ -132,7 +137,7 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 			mRlLw2.setVisibility(View.GONE);
 			mRlLw1.setVisibility(View.GONE);
 			IV4.setVisibility(View.GONE);
-			IV3.setVisibility(View.GONE);
+			IV3.setVisibility(View.VISIBLE);
 			IV2.setVisibility(View.GONE);
 			IV1.setVisibility(View.GONE);
 			mRlw1.setVisibility(View.VISIBLE);
@@ -142,6 +147,8 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 			mRlw1.setVisibility(View.GONE);
          IV5.setVisibility(View.GONE);
 		}else{			
+			V6.setVisibility(View.GONE);
+			IV3.setVisibility(View.GONE);
 			mRlw1.setVisibility(View.VISIBLE);
 	         IV5.setVisibility(View.VISIBLE);
 		}
@@ -156,12 +163,16 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 		mBtn_back.setOnClickListener(listener);
 		mBtn_setting =(ImageView)this.findViewById(R.id.mBtn_setting);
 		mBtn_setting.setOnClickListener(listener);
+		mBtn_setting.setVisibility(View.GONE);
 		
 	}
 	@Override
 	protected void onResume() {
-		String city = pp.getString(Content.City, "城市");
-		mtv1.setText(city);
+	    if(TextUtils.isEmpty(pp.getString(Content.City, "城市"))){
+	    	mtv1.setText("城市");
+	    }else{
+	    	mtv1.setText(pp.getString(Content.City, "城市"));
+	    }
 		initTiJiao2(pp.getString(Content.Cityid, "2"));
 
 		super.onResume();
@@ -211,6 +222,11 @@ public class UserSetting extends BaseActivity implements onSearchBarItemClickLis
 							String id = area.getString("id");
                             pp.put(Content.City, city);
                             pp.put(Content.Cityid, id);
+                   	     String dd = pp.getString(Content.City, "城市");
+                	     String dd1 = pp.getString(Content.Cityid, "");
+                	     pp.put(Content.City_c1, dd);
+                	     pp.put(Content.City_id1, dd1);
+
 							mtv1.setText(city);
 							}else{
 			                       Toast.makeText(getApplicationContext(), R.string.log6, 0).show();

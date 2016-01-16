@@ -3,6 +3,7 @@ package com.rvidda.cn.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.R.anim;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
@@ -106,6 +107,7 @@ public class LvShiShouYeAdapter1 extends BaseAdapter {
 			layoutParamsButtonCancel.topMargin = dip2px(context, 1);
 			layoutParamsButtonCancel.bottomMargin = dip2px(context, 1);
 			TextView tv1 = new TextView(context);
+			tv1.setTextColor(context.getResources().getColor(R.color.white));
 			tv1.setLayoutParams(layoutParamsButtonCancel);
 			Drawable drawable1 = context.getResources().getDrawable(
 					R.drawable.flag_01);

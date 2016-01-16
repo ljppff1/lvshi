@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +56,7 @@ public class ShenQingQiliao extends BaseActivity {
 	private ImageView mBtn_back;
 	private TextView mTvdd;
 	private LoadingDialog dialog;
+	private TextView mTvs1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,6 +85,8 @@ public class ShenQingQiliao extends BaseActivity {
 		mEt3 =(EditText)this.findViewById(R.id.mEt3);
 		mEt4 =(EditText)this.findViewById(R.id.mEt4);
 		mtv2 =(TextView)this.findViewById(R.id.mtv2);
+		mTvs1 =(TextView)this.findViewById(R.id.mTvs1);
+		mTvs1.setText(pp.getString(Content.Mobile, ""));
 		mtv2.setOnClickListener(listener);
 		mIvziye =(ImageView)this.findViewById(R.id.mIvziye);
 		mIvziye.setOnClickListener(listener);
@@ -106,6 +111,8 @@ public class ShenQingQiliao extends BaseActivity {
 					Toast.makeText(getApplicationContext(), R.string.log11,0).show();
 				}else if(TextUtils.isEmpty(mEt2.getEditableText().toString())){
 					Toast.makeText(getApplicationContext(), R.string.log12,0).show();
+				}else if(isEmail(mEt2.getEditableText().toString())){
+					Toast.makeText(getApplicationContext(), R.string.log19, 0).show();
 				}else if(TextUtils.isEmpty(mEt4.getEditableText().toString())){
 					Toast.makeText(getApplicationContext(), R.string.log13,0).show();
 				}else if(TextUtils.isEmpty(certificate_id)){
@@ -125,6 +132,12 @@ public class ShenQingQiliao extends BaseActivity {
 			}
 		}
 	};
+	public static boolean isEmail(String email){     
+	     String str="^([a-zA-Z0-9]*[-_]?[a-zA-Z0-9]+)*@([a-zA-Z0-9]*[-_]?[a-zA-Z0-9]+)+[\\.][A-Za-z]{2,3}([\\.][A-Za-z]{2})?$";
+	        Pattern p = Pattern.compile(str);     
+	        Matcher m = p.matcher(email);     
+	        return m.matches();     
+	    }
 	private PreferenceUtils pp;
 
 	private void takephoto() {

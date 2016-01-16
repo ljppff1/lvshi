@@ -70,7 +70,7 @@ public class ZiXunLook extends BaseActivity {
 		mRltt2.setOnClickListener(listener);
 		
 		list =(ListView)this.findViewById(R.id.list);
-		zxxiaoxi =new ZXAdapter1(getApplicationContext(), listzxxx,media);
+		zxxiaoxi =new ZXAdapter1(ZiXunLook.this, listzxxx,media);
 		list.setAdapter(zxxiaoxi);
 
 	}
@@ -83,7 +83,7 @@ public class ZiXunLook extends BaseActivity {
 	{
 	
 		Map<String, Object> params = new HashMap<String, Object>();
-		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.HOST+"/subjects/"+ID, "get", params,
+		com.rvidda.cn.http.HttpServiceUtil.request(com.rvidda.cn.http.ContantsUtil.HOST+"/subjects/"+SUBJECT, "get", params,
 				new com.rvidda.cn.http.HttpServiceUtil.CallBack() {
 					@Override
 					public void callback(String json) {
@@ -108,8 +108,6 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 									 ((JSONObject)messages.get(i)).getString("body");
 									 ((JSONObject)messages.get(i)).getString("type");
 									 ((JSONObject)messages.get(i)).getString("created_at");
-									 
-								  
 									 zx.setKeyId("");
 									 zx.setMtype(((JSONObject)messages.get(i)).getString("type"));
 									 zx.setMtext(((JSONObject)messages.get(i)).getString("body"));

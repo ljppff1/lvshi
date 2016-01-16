@@ -110,7 +110,7 @@ id":13,"name":"房屋"},{"id":5,"name":"合同"},{"id":9,"name":"劳动争议"}]
 							JSONObject jsonObj = new JSONObject(json);
 							pageList.clear();
                             org.json.JSONArray jsub =jsonObj.getJSONArray("subjects");
-                            for(int i=0;i<jsub.length();i++){
+                            for(int i=0;i<jsub.length();i++){  
                             	LSSYList zx =new LSSYList();
                             	zx.setSubject_lawyer_id(((JSONObject)jsub.get(i)).getJSONObject("subject_lawyer").getString("id"));
                             	zx.setName(((JSONObject)jsub.get(i)).getString("title"));

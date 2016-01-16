@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:id="@+id/mRlwww"
     android:background="@color/white"
  >
 
@@ -22,12 +23,12 @@
             android:layout_weight="4"
             >
             <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     android:layout_centerInParent="true"
                     android:id="@+id/mIvchange"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/tubiao" />
+                    android:src="@drawable/logo1" />
             </RelativeLayout>
 
                     <LinearLayout

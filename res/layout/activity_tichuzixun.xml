@@ -95,7 +95,8 @@
                     style="@style/t_d_24_1"
                     android:id="@+id/mTvsztw"
                                         android:paddingLeft="@dimen/p20"
-                    
+                    android:maxEms="6"
+                    android:singleLine="true"
                     android:layout_toRightOf="@id/mIvt2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

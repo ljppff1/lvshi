@@ -34,6 +34,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -172,12 +173,18 @@ public class TiChuZiXun extends BaseActivity implements
 	private ImageView btn_picture;
 	private ImageView btn_take_picture;
 	private Button btn_set_mode_keyboard;
+	private TextView mTvsztw;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tichuzixun);
 	     pp =PreferenceUtils.getInstance(TiChuZiXun.this);
+	     String dd = pp.getString(Content.City, "城市");
+	     String dd1 = pp.getString(Content.Cityid, "");
+	     pp.put(Content.City_c1, dd);
+	     pp.put(Content.City_id1, dd1);
+	     CHENGSHIID =dd1;
 		media =new Media();
         getData();
 		initHuanXinView();
@@ -188,10 +195,15 @@ public class TiChuZiXun extends BaseActivity implements
 
 	@Override
 	protected void onResume() {
-		
-			mTvdd.setText(pp.getString(Content.City_c1, "城市"));
+		    if(TextUtils.isEmpty(pp.getString(Content.City_c1, "城市"))){
+			mTvdd.setText("城市");
+		    }else{
+				mTvdd.setText(pp.getString(Content.City_c1, "城市"));
+		    }
 			CHENGSHIID =pp.getString(Content.City_id1, "");
+			if(!TextUtils.isEmpty(ID)){
 			 initChangeZX(Title, sendBiaoQianString);
+			}
 		super.onResume();
 	}
 	private void getData() {
@@ -218,6 +230,7 @@ public class TiChuZiXun extends BaseActivity implements
 		zxxx.setMtext("");
 		listzxxx.add(zxxx);
 			}else{
+				Title =getIntent().getExtras().getString("TITLE");
 				initgetZiXunLook();
 			}
 		}else{
@@ -697,8 +710,18 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 
 	
 	private void initView() {
+		mTvsztw =(TextView)this.findViewById(R.id.mTvsztw);
+		if(!TextUtils.isEmpty(Title)){
+			mTvsztw.setText(Title);
+		}else{
+			mTvsztw.setText(getResources().getString(R.string.tczx4));
+		}
 		mTvdd =(TextView)this.findViewById(R.id.mTvdd);
-		mTvdd.setText(pp.getString(Content.City_c1, "城市"));
+	    if(TextUtils.isEmpty(pp.getString(Content.City_c1, "城市"))){
+		mTvdd.setText("城市");
+	    }else{
+			mTvdd.setText(pp.getString(Content.City_c1, "城市"));
+	    }
 		mBtn_back =(ImageView)this.findViewById(R.id.mBtn_back);
 		mBtn_back.setOnClickListener(listener);
 		list =(ListView)this.findViewById(R.id.list);
@@ -726,7 +749,7 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 				LayoutParams.WRAP_CONTENT,strarray);
 		pop1.setOnSearchBarItemClickListener(this);
 		pop2 = new popWindow2(TiChuZiXun.this, LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT);
+				LayoutParams.WRAP_CONTENT,Title);
 		pop2.setOnSearchBar1ItemClickListener(this);
 
 	}
@@ -764,7 +787,11 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 				break;
 			case R.id.mBtn_back:
 				shouruanjianpan();
+				if(!TextUtils.isEmpty(CHENGSHIID)){
 				AppManager.getAppManager().finishActivity();
+				}else{
+					Toast.makeText(getApplicationContext(), R.string.log18, 0).show();
+				}
 				break;
 			case R.id.btn_set_mode_keyboard:
 				edittext_layout.setVisibility(View.VISIBLE);
@@ -835,6 +862,16 @@ null,"created_at":"2015-11-16 17:44:20"},{"id":162,"body":"http://7u2gfi.com1.z0
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(mEditTextContent.getWindowToken(), 0);
 
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+      if(keyCode==KeyEvent.KEYCODE_BACK){
+    	  if(TextUtils.isEmpty(CHENGSHIID)){
+    		 Toast.makeText(getApplicationContext(), R.string.log18, 0).show();
+    		 return true;
+    	  }
+      }
+		return super.onKeyDown(keyCode, event);
 	}
 	
   @Override
@@ -1048,6 +1085,12 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	@Override
 	public void onSearchButtonClick1(String string, String searchType) {
       Title =string;
+		if(!TextUtils.isEmpty(Title)){
+			mTvsztw.setText(Title);
+		}else{
+			mTvsztw.setText(getResources().getString(R.string.tczx4));
+		}
+
       initChangeZX(Title, sendBiaoQianString);
 
 	}

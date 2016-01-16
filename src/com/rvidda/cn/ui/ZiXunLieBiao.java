@@ -138,6 +138,7 @@ public class ZiXunLieBiao extends BaseActivity {
 					intent.putExtra("SELECT","");
 					intent.putExtra("FILE", "");
 					intent.putExtra("TYPE", "TT");
+					intent.putExtra("TITLE", data.get(position-1).getTitle());
 					startActivity(intent);
 
 				}
@@ -201,6 +202,7 @@ lawyers":[{"id":6,"user_id":9,"real_name":"sfg","avatar_url":"http://7u2gfi.com1
 								zx.setSubject(((JSONObject)jas.get(i)).getString("id"));
 								zx.setTime(((JSONObject)jas.get(i)).getString("created_at"));
 								org.json.JSONArray lawyers = ((JSONObject)jas.get(i)).getJSONArray("lawyers");
+								String id = ((JSONObject)jas.get(i)).getString("id");
 								ArrayList<String> templist1 = new ArrayList<String>();
 								ArrayList<String> templist2 = new ArrayList<String>();
 								ArrayList<String> templist3 = new ArrayList<String>();
@@ -209,8 +211,8 @@ lawyers":[{"id":6,"user_id":9,"real_name":"sfg","avatar_url":"http://7u2gfi.com1
 								for(int j=0;j<lawyers.length();j++){
 									templist1.add(((JSONObject)lawyers.get(j)).getString("real_name"));
 									templist2.add(((JSONObject)lawyers.get(j)).getString("avatar_url"));
-								if(list_map.containsKey(((JSONObject)jas.get(i)).getInt("id"))){
-									templist3.add(list_map.get(((JSONObject)jas.get(i)).getInt("id"))+"");
+								if(list_map.containsKey(id)){
+									templist3.add(list_map.get(id)+"");
 								}else{
 									templist3.add("0");
 								}
@@ -245,6 +247,7 @@ lawyers":[{"id":6,"user_id":9,"real_name":"sfg","avatar_url":"http://7u2gfi.com1
 		listView.stopRefresh();
 		listView.stopLoadMore();
 		listView.setRefreshTime(DateUtil.getNowTime());
+		adapter.notifyDataSetChanged();
 	}
 
 	OnClickListener listener = new OnClickListener() {

@@ -26,17 +26,19 @@ public class popWindow2 extends BasePopupWindow {
 	private RelativeLayout mRlp2;
 
 	private EditText mEtp2;
-
-	public popWindow2(Context context, int width, int height) {
+    private String title;
+	public popWindow2(Context context, int width, int height,String title1) {
 		super(LayoutInflater.from(context).inflate(R.layout.pop_2, null),
 				width, height);
 		this.mContext = context;
+		this.title =title1;
 	}
 
 	@Override
 	public void initViews() {
 
 		mEtp2 = (EditText) findViewById(R.id.mEtp2);
+		mEtp2.setText(title);
 		mRlp1 = (RelativeLayout) findViewById(R.id.mRlpd1);
 		mRlp1.setOnClickListener(new OnClickListener() {
 

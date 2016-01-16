@@ -180,7 +180,7 @@ public class ZXAdapter1 extends BaseAdapter {
     		progressBar =(ProgressBar)convertView.findViewById(R.id.progressBar);
     		percentage =(TextView)convertView.findViewById(R.id.percentage);
     		if(TextUtils.isEmpty(data.get(position).getMfilelocal())){
-    		ImageLoader.getInstance().displayImage(data.get(position).getMtext(), iv_sendPicture, options);		
+    		ImageLoader.getInstance().displayImage(data.get(position).getMtext()+"?imageMogr2/thumbnail/100x100", iv_sendPicture, options);		
     		}else{
         		ImageLoader.getInstance().displayImage("file://"+data.get(position).getMfilelocal(), iv_sendPicture, options);		
         		String ID = data.get(position).getLength();

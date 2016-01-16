@@ -84,7 +84,11 @@ android:layout_centerVertical="true"
             </com.rvidda.cn.view.FlowLayout>
                                
         </RelativeLayout>
-           
+           <View 
+               android:layout_width="fill_parent"
+               android:layout_height="6dp"
+               
+               />
                 
                 </LinearLayout>
     </RelativeLayout>

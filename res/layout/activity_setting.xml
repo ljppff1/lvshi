@@ -69,7 +69,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="fill_parent"
                   android:id="@+id/mRllocal"
-                  android:layout_toLeftOf="@id/mBtn_setting"
+                android:layout_alignParentRight="true"
                   >
                 <TextView
                     style="@style/t_b_30"
@@ -84,7 +84,7 @@
             android:layout_toRightOf="@id/mtv1"
            android:src="@drawable/address"
             android:layout_width="wrap_content"
-            android:paddingLeft="@dimen/p20"
+            android:paddingLeft="@dimen/dp10"
             android:layout_height="fill_parent"
             />
               </RelativeLayout> 
@@ -193,8 +193,8 @@
                         <RelativeLayout
                 android:id="@+id/mRlw1"                
                 android:layout_width="fill_parent"
-               android:paddingTop="@dimen/p20"
-               android:paddingBottom="@dimen/p20"
+               android:paddingTop="@dimen/dp10"
+               android:paddingBottom="@dimen/dp10"
                 android:layout_height="@dimen/p150"
                >
                         <ImageView 
@@ -208,7 +208,7 @@
                     style="@style/t_d_30_2"
                     android:layout_toRightOf="@id/mIvw1"
                     android:layout_width="wrap_content"
-                    android:paddingLeft="@dimen/p20"
+                    android:paddingLeft="@dimen/dp10"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                    android:text="@string/setting1" />
@@ -216,6 +216,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/next"
+                            android:id="@+id/V6"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             />
@@ -230,8 +231,8 @@
                                    <RelativeLayout
                 android:id="@+id/mRlLw1"                
                 android:layout_width="fill_parent"
-               android:paddingTop="@dimen/p20"
-               android:paddingBottom="@dimen/p20"
+               android:paddingTop="@dimen/dp10"
+               android:paddingBottom="@dimen/dp10"
                 android:layout_height="@dimen/p150"
                >
                         <ImageView 
@@ -246,7 +247,7 @@
                     android:id="@+id/mTvchangebody"
                     android:layout_toRightOf="@id/mIvLw1"
                     android:layout_width="wrap_content"
-                    android:paddingLeft="@dimen/p20"
+                    android:paddingLeft="@dimen/dp10"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                    android:text="@string/settingl1" />
@@ -266,8 +267,8 @@
                             <RelativeLayout
                 android:id="@+id/mRlLw2"                
                 android:layout_width="fill_parent"
-               android:paddingTop="@dimen/p20"
-               android:paddingBottom="@dimen/p20"
+               android:paddingTop="@dimen/dp10"
+               android:paddingBottom="@dimen/dp10"
                 android:layout_height="@dimen/p150"
                >
                         <ImageView 
@@ -281,7 +282,7 @@
                     style="@style/t_d_30_2"
                     android:layout_toRightOf="@id/mIvLw2"
                     android:layout_width="wrap_content"
-                    android:paddingLeft="@dimen/p20"
+                    android:paddingLeft="@dimen/dp10"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                    android:text="@string/settingl2" />
@@ -293,6 +294,13 @@
                             android:layout_centerVertical="true"
                             />
                         </RelativeLayout> 
+                        <LinearLayout 
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:id="@+id/mLLshow1"
+                            android:visibility="gone"
+                            >
                          <ImageView 
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -302,8 +310,8 @@
                      <RelativeLayout
                 android:id="@+id/mRlLw3"                
                 android:layout_width="fill_parent"
-               android:paddingTop="@dimen/p20"
-               android:paddingBottom="@dimen/p20"
+               android:paddingTop="@dimen/dp10"
+               android:paddingBottom="@dimen/dp10"
                 android:layout_height="@dimen/p150"
                >
                         <ImageView 
@@ -317,7 +325,7 @@
                     style="@style/t_d_30_2"
                     android:layout_toRightOf="@id/mIvLw3"
                     android:layout_width="wrap_content"
-                    android:paddingLeft="@dimen/p20"
+                    android:paddingLeft="@dimen/dp10"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                    android:text="@string/settingl3" />
@@ -338,8 +346,8 @@
                 android:id="@+id/mRlw2"                
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/p150"
-                               android:paddingTop="@dimen/p20"
-               android:paddingBottom="@dimen/p20"
+                               android:paddingTop="@dimen/dp10"
+               android:paddingBottom="@dimen/dp10"
                 
                >
                         <ImageView 
@@ -353,7 +361,7 @@
                     style="@style/t_d_30_2"
                     android:layout_toRightOf="@id/mIvw2"
                     android:layout_width="wrap_content"
-                    android:paddingLeft="@dimen/p20"
+                    android:paddingLeft="@dimen/dp10"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                    android:text="@string/setting2" />
@@ -373,8 +381,8 @@
                                  <RelativeLayout
                 android:id="@+id/mRlLw4"                
                 android:layout_width="fill_parent"
-               android:paddingTop="@dimen/p20"
-               android:paddingBottom="@dimen/p20"
+               android:paddingTop="@dimen/dp10"
+               android:paddingBottom="@dimen/dp10"
                 android:layout_height="@dimen/p150"
                >
                         <ImageView 
@@ -388,7 +396,7 @@
                     style="@style/t_d_30_2"
                     android:layout_toRightOf="@id/mIvLw4"
                     android:layout_width="wrap_content"
-                    android:paddingLeft="@dimen/p20"
+                    android:paddingLeft="@dimen/dp10"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                    android:text="@string/settingl4" />
@@ -399,6 +407,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             /></RelativeLayout>
+                                 </LinearLayout>
                                            <ImageView 
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -408,8 +417,8 @@
                                        <RelativeLayout
                 android:id="@+id/mRlw3"                
                 android:layout_width="fill_parent"
-                               android:paddingTop="@dimen/p20"
-               android:paddingBottom="@dimen/p20"
+                               android:paddingTop="@dimen/dp10"
+               android:paddingBottom="@dimen/dp10"
                 
                 android:layout_height="@dimen/p150"
                >
@@ -424,7 +433,7 @@
                     style="@style/t_d_30_2"
                     android:layout_toRightOf="@id/mIvw3"
                     android:layout_width="wrap_content"
-                    android:paddingLeft="@dimen/p20"
+                    android:paddingLeft="@dimen/dp10"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                    android:text="@string/setting3" />

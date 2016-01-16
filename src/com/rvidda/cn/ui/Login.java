@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,8 +23,10 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.style.ClickableSpan;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,7 +38,6 @@ import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import com.fanxin.app.DemoApplication;
-import com.fanxin.app.DemoHXSDKHelper;
 import com.rvidda.cn.AppManager;
 import com.rvidda.cn.BaseActivity;
 import com.rvidda.cn.R;
@@ -55,6 +58,7 @@ public class Login extends BaseActivity {
 	private int id=0;
 	private LoadingDialog dialog;
 	private ImageView mIvchange;
+	private RelativeLayout mRlwww;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +66,16 @@ public class Login extends BaseActivity {
 		setContentView(R.layout.activity_login);
      pp =PreferenceUtils.getInstance(Login.this);
      pp.put(Content.TOKEN, "");
-     dialog =new LoadingDialog(Login.this, "正在登录，请稍后");
+     String dd = pp.getString(Content.City, "城市");
+     String dd1 = pp.getString(Content.Cityid, "");
+     pp.put(Content.City_c1, dd);
+     pp.put(Content.City_id1, dd1);
+
+/*     pp.put(Content.City, "");
+     pp.put(Content.City_c1, "");
+     pp.put(Content.Cityid, "");
+     pp.put(Content.City_id1, "");
+*/     dialog =new LoadingDialog(Login.this, "正在登录，请稍后");
 	/*	if (DemoHXSDKHelper.getInstance().isLogined()) {
 			// ** 免登陆情况 加载所有本地群和会话
 			// 不是必须的，不加sdk也会自动异步去加载(不会重复加载)；
@@ -121,7 +134,11 @@ public class Login extends BaseActivity {
     
 	private String hx_user;
 	private String hx_password;
-
+	public boolean isMobileNO(String mobiles) {
+		Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0-9]))\\d{8}$");
+		Matcher m = p.matcher(mobiles);
+		return m.matches();
+		}
 	private void initSendCode()
 	{
 	
@@ -258,7 +275,9 @@ public class Login extends BaseActivity {
 
 				break;
 			case R.id.mRll1:
+				
 				if(!TextUtils.isEmpty(mEtTell.getEditableText().toString())){
+					if(isMobileNO(mEtTell.getEditableText().toString())){
 				mRll1.setClickable(false);
 				// 开启倒计时的线程
 				timer = new CountDownTimer(6000, 1000) {
@@ -277,6 +296,9 @@ public class Login extends BaseActivity {
 				}.start();
 				shouruanjianpan();
 				initSendCode();
+					}else{
+						Toast.makeText(getApplicationContext(),R.string.log1a,Toast.LENGTH_SHORT).show();
+					}
 				}else{
 					Toast.makeText(getApplicationContext(),R.string.log1,Toast.LENGTH_SHORT).show();
 				}
